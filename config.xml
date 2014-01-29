@@ -6,7 +6,7 @@
 
     <!-- versionCode is optional and Android only -->
 
-    <name>Chester Comix Storyline</name>
+    <name>Chester Comix</name>
 
     <description>
         Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books! 
@@ -23,8 +23,13 @@
 
 
     <preference name="phonegap-version" value="3.1.0" />
+    <preference name="permissions" value="none" />
     <preference name="splashscreen" value="splash.png" />
     <preference name="fullscreen" value="true" />
-    <preference name="orienation" value="portrait" />
+    <preference name="orienation" value="landscape" />
+
+
+    <preference name="splash-screen-duration" value="10000"/>
+
 
 </widget>
