@@ -2,7 +2,6 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chester.storyline"
-        versionCode = "10" 
         version     = "1.0.0" >
 
     <!-- versionCode is optional and Android only -->
@@ -19,6 +18,13 @@
     
     
     <gap:plugin name="org.apache.cordova.splashscreen" />
+
+
+
+
+    <preference name="phonegap-version" value="3.1.0" />
     <preference name="splashscreen" value="splash.png" />
+    <preference name="fullscreen" value="true" />
+    <preference name="orienation" value="landscape" />
 
 </widget>
