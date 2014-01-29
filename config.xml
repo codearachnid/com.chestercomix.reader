@@ -6,10 +6,10 @@
 
     <!-- versionCode is optional and Android only -->
 
-    <name>PhoneGap Example</name>
+    <name>Chester Comix Storyline</name>
 
     <description>
-        An example for phonegap build docs. 
+        Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books! 
     </description>
 
     <author href="http://www.imaginesimplicity.com" email="tim@imaginesimplicity.com">
@@ -25,6 +25,6 @@
     <preference name="phonegap-version" value="3.1.0" />
     <preference name="splashscreen" value="splash.png" />
     <preference name="fullscreen" value="true" />
-    <preference name="orienation" value="landscape" />
+    <preference name="orienation" value="portrait" />
 
 </widget>
