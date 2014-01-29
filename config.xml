@@ -16,5 +16,9 @@
     <author href="http://www.imaginesimplicity.com" email="tim@imaginesimplicity.com">
         Timothy Wood @codearachnid 
     </author>
+    
+    
+    <gap:plugin name="org.apache.cordova.splashscreen" />
+    <preference name="splashscreen" value="splash.png" />
 
 </widget>
