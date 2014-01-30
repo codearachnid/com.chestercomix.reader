@@ -17,7 +17,6 @@
     <!-- plugins -->
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.device-orientation" />
-    <!-- <plugin name="ScreenOrientation" value="com.tsukurusha.phonegap.plugins.ScreenOrientation" /> -->
 
 
     <!-- preferences for app -->
@@ -35,7 +34,7 @@
     <!-- ios only prefs -->
 
     <!-- android only prefs -->
-    <preference name="splash-screen-duration" value="10000"/>
+    <preference name="splash-screen-duration" value="1500"/>
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
