@@ -22,7 +22,7 @@
 
     <!-- preferences for app -->
     <preference name="phonegap-version" value="3.3.0" />
-    <preference name="permissions" value="none" />
+    <!-- <preference name="permissions" value="none" /> -->
     <preference name="orienation" value="landscape" />
     <preference name="target-device" value="universal"/>
     <preference name="splashscreen" value="splash.png" />
