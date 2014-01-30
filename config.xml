@@ -3,6 +3,8 @@
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.storyline"
         version     = "1.0.0" >
+    <gap:plugin name="org.apache.cordova.device-orientation" />
+    <preference name="orienation" value="landscape" />
 
     <!-- app properties -->
     <name>Chester Comix</name>
@@ -16,15 +18,16 @@
     
     <!-- plugins -->
     <gap:plugin name="org.apache.cordova.splashscreen" />
-    <gap:plugin name="org.apache.cordova.device-orientation" />
+
 
 
     <!-- preferences for app -->
+
     <preference name="phonegap-version" value="3.3.0" />
     <preference name="permissions" value="none" />
     <preference name="splashscreen" value="splash.png" />
     <preference name="fullscreen" value="true" />
-    <preference name="orienation" value="landscape" />
+    
 
     <!-- ios only prefs -->
 
