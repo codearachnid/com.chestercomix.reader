@@ -17,13 +17,13 @@
     <!-- plugins -->
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.device-orientation" />
-    <plugin name="ScreenOrientation" value="com.tsukurusha.phonegap.plugins.ScreenOrientation" />
+    <!-- <plugin name="ScreenOrientation" value="com.tsukurusha.phonegap.plugins.ScreenOrientation" /> -->
 
 
     <!-- preferences for app -->
     <preference name="phonegap-version" value="3.3.0" />
     <!-- <preference name="permissions" value="none" /> -->
-    <preference name="orienation" value="landscape" />
+    <preference name="orientation" value="landscape" />
     <preference name="target-device" value="universal"/>
     <preference name="splashscreen" value="splash.png" />
     <preference name="fullscreen" value="true" />
