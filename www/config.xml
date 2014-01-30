@@ -17,6 +17,7 @@
     <!-- plugins -->
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.device-orientation" />
+    <plugin name="ScreenOrientation" value="com.tsukurusha.phonegap.plugins.ScreenOrientation" />
 
 
     <!-- preferences for app -->
