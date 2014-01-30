@@ -17,18 +17,21 @@
     </author>
     
     
+    <!-- plugins -->
     <gap:plugin name="org.apache.cordova.splashscreen" />
+    <gap:plugin name="org.apache.cordova.device-orientation" />
 
 
-
-
+    <!-- preferences for app -->
     <preference name="phonegap-version" value="3.1.0" />
     <preference name="permissions" value="none" />
     <preference name="splashscreen" value="splash.png" />
     <preference name="fullscreen" value="true" />
     <preference name="orienation" value="landscape" />
 
+    <!-- ios only prefs -->
 
+    <!-- android only prefs -->
     <preference name="splash-screen-duration" value="10000"/>
 
 
