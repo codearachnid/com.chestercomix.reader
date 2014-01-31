@@ -12,11 +12,17 @@
     <author href="http://www.imaginesimplicity.com" email="tim@imaginesimplicity.com">
         Timothy Wood @codearachnid 
     </author>
+
+    <!-- whitelist -->
+    <access origin="*.google.com" />
+    <access origin="*.googleapis.com" />
+    <access origin="*.gstatic.com" />
     
     
     <!-- plugins -->
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.device-orientation" />
+    <gap:plugin name="com.adobe.plugins.gaplugin" />
 
 
     <!-- preferences for app -->

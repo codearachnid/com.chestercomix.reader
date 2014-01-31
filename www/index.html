@@ -12,8 +12,11 @@
         <script src="js/jquery.min.js"></script>
         <!-- <script src="js/jquery.widget.min.js"></script> -->
         <script src="js/metro.min.js"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/googlemap.js"></script>
     </head>
-    <body class="metro">
+    <body class="metro" onload="onBodyLoad()">
         <nav class="navigation-bar">
             <div class="navigation-bar-content">
                 <a href="/" class="element"><span class="icon-grid-view"></span> Chester Comix <sup>1.0</sup></a>
@@ -45,12 +48,14 @@
                 </div>
                 <span class="element-divider place-right"></span>
                 <button class="element image-button image-left place-right">
-                    Hello Bala
+                    Account Name
                     <img src="images/me.jpg">
                 </button>
 
             </div>
         </nav>
+        <div id="map_canvas"></div>
+        <!--
         <div class="tile-group six">
 
             <a class="tile double bg-lightBlue live" data-role="live-tile" data-effect="slideUp">
@@ -88,7 +93,7 @@
                     <div class="label"><h3 class="no-margin fg-white"><span class="icon-mail"></span></h3></div>
                     <div class="badge">3</div>
                 </div>
-            </a> <!-- end tile -->
+            </a>
 
             <a class="tile double bg-violet" style="overflow: visible">
                 <div class="tile-content" style="overflow: visible">
@@ -104,7 +109,7 @@
                 <div class="brand">
                     <div class="label"><h3 class="no-margin fg-white"><span class="icon-calendar"></span></h3></div>
                 </div>
-            </a> <!-- end tile -->
+            </a> 
 
             <div class="tile">
                 <div class="tile-content image">
@@ -113,9 +118,9 @@
                 <div class="brand">
                     <div class="label fg-amber">Photos</div>
                 </div>
-            </div> <!-- end tile -->
+            </div> 
 
-            <!-- small tiles -->
+            
             <a href="#" class="tile half bg-darkRed">
                 <div class="tile-content icon">
                     <span class="icon-camera"></span>
@@ -139,7 +144,7 @@
                     <span class="icon-pictures"></span>
                 </div>
             </a>
-            <!-- end small tiles -->
+
 
             <a class="tile double double-vertical bg-steel">
                 <div class="tile-content" style="background: url(images/clouds2.png)">
@@ -157,7 +162,7 @@
                 <div class="tile-status">
                     <div class="label">Weather</div>
                 </div>
-            </a> <!-- end tile -->
+            </a> 
 
             <div class="tile double">
                 <div class="tile-content image-set">
@@ -167,7 +172,7 @@
                     <img src="images/obama.jpg">
                     <img src="images/shvarcenegger.jpg">
                 </div>
-            </div> <!-- end tile -->
+            </div>  
 
             <a href="#" class="tile bg-lightBlue">
                 <div class="tile-content icon">
@@ -205,6 +210,7 @@
                 </div>
             </a>
         </div>
+        -->
         <div class="app">
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
@@ -215,6 +221,40 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
+
+    //         function GoogleMap(){
+ 
+    //         this.initialize = function(){
+    //         var map = showMap();
+    //         }
+             
+    //          var showMap = function(){
+    //         var mapOptions = {
+    //         zoom: 4,
+    //         center: new google.maps.LatLng(-33, 151),
+    //         mapTypeId: google.maps.MapTypeId.ROADMAP
+    //         }
+             
+    //         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+             
+    //         return map;
+    //         }
+    //         }
+
+            function onBodyLoad(){      
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    function onDeviceReady()
+    {
+        var reachability = new Reachability();
+        if(reachability.IsNotConnected()){
+            navigator.notification.alert('No internet connection available',null, '', 'OK');
+        }
+        else{
+            var map = new GoogleMap();
+            map.initialize();
+        }
         </script>
     </body>
 </html>
