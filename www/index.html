@@ -370,7 +370,7 @@ body {
       "color" : "blue"
     }
   ];
-  var comicZip = '//www.chestercomix.com/app/comic.zip';
+  var comicZip = 'http://www.chestercomix.com/app/comic.zip';
 
 function getFileExtension(filename) {return (/[.]/.exec(filename)) && /[^.]+$/.exec(filename)[0] || '';}
 
@@ -399,7 +399,7 @@ function base64_encode(data) {
   var r = data.length % 3;
   return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
 }
-
+console.log('ajax');
 $.ajax({
   url: comicZip,
   beforeSend: function( xhr ) {
