@@ -153,6 +153,7 @@ body {
     }
   ];
   var comicZip = '//www.chestercomix.com/app/comic.zip';
+  console.log(slides);
 
 function getFileExtension(filename) {return (/[.]/.exec(filename)) && /[^.]+$/.exec(filename)[0] || '';}
 
@@ -224,9 +225,11 @@ $.ajax({
 }});
 
 */
+console.log('loading slides');
   jQuery.each( slides, function( i, item ) {
     var newSlide = slidesInDOM.createSlide('<div class="title">' + item.label + '</div>');
     newSlide.append();
+    console.log('new slide ' + item.label);
   });
   $('click').on("click", function(event){
      event.preventDefault();
