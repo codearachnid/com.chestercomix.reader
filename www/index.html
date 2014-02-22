@@ -373,7 +373,7 @@ body {
       "color" : "blue"
     }
   ];
-  var comicZip = '//www.chestercomix.com/app/comic.zip';
+  var comicZip = 'http://wpsite.co/comic.zip';
 
 function getFileExtension(filename) {return (/[.]/.exec(filename)) && /[^.]+$/.exec(filename)[0] || '';}
 
@@ -402,7 +402,10 @@ function base64_encode(data) {
   var r = data.length % 3;
   return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
 }
-
+$.get( "http://wpsite.co/test.txt", function( data ) {
+  // $( ".result" ).html( data );
+  alert( data );
+});
 $.ajax({
   url: comicZip,
   beforeSend: function( xhr ) {
