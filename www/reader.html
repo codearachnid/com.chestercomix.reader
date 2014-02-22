@@ -153,7 +153,6 @@ body {
     }
   ];
   var comicZip = '//www.chestercomix.com/app/comic.zip';
-  console.log(slides);
 
 function getFileExtension(filename) {return (/[.]/.exec(filename)) && /[^.]+$/.exec(filename)[0] || '';}
 
@@ -182,14 +181,15 @@ function base64_encode(data) {
   var r = data.length % 3;
   return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
 }
-/*
+
 $.ajax({
   url: comicZip,
   beforeSend: function( xhr ) {
     xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
-    console.log("request zip");
   },
   success: function( data, status, xhr ){
+
+    /*
     var zip = new JSZip(data);
     var listRAW = zip.file("comix.json").asBinary();
     console.log( 'listRAW: ' + listRAW);
@@ -221,15 +221,13 @@ $.ajax({
         //     $(".images").append(slide);
         // }
     });
-
+  */
 }});
 
-*/
-console.log('loading slides');
+
   jQuery.each( slides, function( i, item ) {
     var newSlide = slidesInDOM.createSlide('<div class="title">' + item.label + '</div>');
     newSlide.append();
-    console.log('new slide ' + item.label);
   });
   $('click').on("click", function(event){
      event.preventDefault();
