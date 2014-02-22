@@ -17,6 +17,8 @@
     <access origin="*.google.com" />
     <access origin="*.googleapis.com" />
     <access origin="*.gstatic.com" />
+    <access origin="*.chestercomix.com" />
+    <access origin="*.wpsite.co" />
     
     
     <!-- plugins -->

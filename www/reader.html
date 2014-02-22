@@ -95,6 +95,7 @@ body {
     <div class="pagination"></div>
   </div>
   <script src="js/jquery.min.js"></script>
+  <script src="js/jszip.min.js"></script>
   <script src="js/jquery.ba-dotimeout.min.js"></script>
   <script src="js/idangerous.swiper-2.1.min.js"></script>
   <script>
@@ -150,10 +151,36 @@ body {
       "color" : "blue"
     }
   ];
-  jQuery.each( slides, function( i, item ) {
-    var newSlide = slidesInDOM.createSlide('<div class="title">' + item.label + '</div>');
-    newSlide.append();
-  });
+  var comicZip = '//www.chestercomix.com/app/comic.zip';
+
+  var xhr1 = new XMLHttpRequest();
+  xhr1.open('GET', comicZip, true);
+  if (xhr1.overrideMimeType) {
+    xhr1.overrideMimeType('text/plain; charset=x-user-defined');
+  }
+
+  xhr1.onreadystatechange = function(e) {
+    if (this.readyState == 4 && this.status == 200) {
+      var zip = new JSZip(this.responseText);
+      // var elt = document.getElementById('xhr1_way');
+      // elt.innerHTML = "<p>loaded ! (as a " + (typeof this.responseText) + ")</p>";
+      // elt.innerHTML += "<p>Content = " + zip.file("Hello.txt").asText();
+      jQuery.each( zip.files, function( i, item ) {
+        if( ! item.name.indexOf('__MACOSX/')){
+          var newSlide = slidesInDOM.createSlide('<div class="title">' + item.name + '</div>');
+          newSlide.append();
+        }
+      });
+    }
+  };
+
+  xhr1.send();
+
+
+  // jQuery.each( slides, function( i, item ) {
+  //   var newSlide = slidesInDOM.createSlide('<div class="title">' + item.label + '</div>');
+  //   newSlide.append();
+  // });
   $('click').on("click", function(event){
      event.preventDefault();
 
