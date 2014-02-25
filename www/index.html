@@ -247,23 +247,14 @@ function base64_encode(data) {
   var r = data.length % 3;
   return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
 }
-console.log('ajax request');
-$.ajax({
-    url: "http://wpsite.co/test.txt", 
-    beforeSend: function( xhr ) {
-        xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
-        console.log('ajax pre send');
-      },
-    success: function( data ) {
-  // $( ".result" ).html( data );
-  alert( data );
-}});
+
 $.ajax({
   url: comicZip,
   beforeSend: function( xhr ) {
     xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
   },
   success: function( data, status, xhr ){
+    alert( 'received zip' );
     jQuery.each( slides, function( i, item ) {
         var newSlide = slidesInDOM.createSlide('<div class="title">' + item.label + '</div>');
         newSlide.append();
