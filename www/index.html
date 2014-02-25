@@ -117,28 +117,7 @@
       });
     }
   });
-  // var slides = [
-  //   {
-  //     "label" : "Slide 1",
-  //     "color" : "blue"
-  //   },
-  //   {
-  //     "label" : "Slide 2",
-  //     "color" : "blue"
-  //   },
-  //   {
-  //     "label" : "Slide 3",
-  //     "color" : "blue"
-  //   },
-  //   {
-  //     "label" : "Slide 4",
-  //     "color" : "blue"
-  //   },
-  //   {
-  //     "label" : "Slide 5",
-  //     "color" : "blue"
-  //   }
-  // ];
+
   var comicZip = 'http://wpsite.co/comic.zip';
 
 
@@ -148,17 +127,11 @@ $.ajax({
     xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
   },
   success: function( data, status, xhr ){
-    alert( 'received zip' );
-    // jQuery.each( slides, function( i, item ) {
-    //     var newSlide = slidesInDOM.createSlide('<div class="title">' + item.label + '</div>');
-    //     newSlide.append();
-    //   });
     
     var zip = new JSZip(data);
     var listRAW = zip.file("comix.json").asBinary();
     console.log( 'listRAW: ' + listRAW);
     var fileList = jQuery.parseJSON( listRAW );
-    alert( listRAW );
 
     jQuery.each( fileList, function( i, file ) {
         var tmpFile = "data:";
@@ -174,17 +147,9 @@ $.ajax({
                 tmpFile += "image/jpeg;base64,";
                 break;
         }
-        console.log( 'load file: ' + file );
-        alert( 'load file: ' + file );
         tmpFile += base64_encode( zip.file( file ).asBinary() );
-        // slide.push( $("<img>").attr('src', tmpFile ) );
         var newSlide = slidesInDOM.createSlide('<div class="title"><img src="' + tmpFile + '" /></div>');
         newSlide.append();
-
-        // if( i == fileList.length -1 ){
-        //     console.log( slide );
-        //     $(".images").append(slide);
-        // }
     });
 
 }});
@@ -209,12 +174,6 @@ $.ajax({
     slidesInDOM.swipeTo(slide);
   });
 
-
-
-function isNormalInteger(str) {
-    var n = ~~Number(str);
-    return String(n) === str && n >= 0;
-}
   </script>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
