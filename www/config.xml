@@ -50,7 +50,7 @@
     <!-- ios only prefs -->
 
     <!-- android only prefs -->
-    <preference name="splash-screen-duration" value="1500"/>
+    <preference name="splash-screen-duration" value="100"/>
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
