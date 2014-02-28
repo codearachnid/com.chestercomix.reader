@@ -149,7 +149,7 @@ $.ajax({
                 break;
         }
         tmpFile += base64_encode( zip.file( file ).asBinary() );
-        var newSlide = slidesInDOM.createSlide('<div class="title"><img src="' + tmpFile + '" /></div>');
+        var newSlide = slidesInDOM.createSlide('<img src="' + tmpFile + '" />');
         newSlide.append();
     });
 

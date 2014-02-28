@@ -19,29 +19,7 @@ body {
   text-align: center;
 }
 .swiper-slide{
-  background: #ca4040;
-}
-.red-slide {
-  background: #ca4040;
-}
-.blue-slide {
-  background: #4390ee;
-}
-.orange-slide {
-  background: #ff8604;
-}
-.green-slide {
-  background: #49a430;
-}
-.pink-slide {
-  background: #973e76;
-}
-.swiper-slide .title {
-  font-style: italic;
-  font-size: 42px;
-  margin-top: 80px;
-  margin-bottom: 0;
-  line-height: 45px;
+  background: #4EADA4;
 }
 .pagination {
   position: relative;
