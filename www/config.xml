@@ -38,8 +38,8 @@
     <preference name="phonegap-version" value="3.3.0" />
     <!-- <preference name="permissions" value="none" /> -->
     <preference name="orientation" value="landscape" />
-    <gap:platform name="android" />
-    <!-- <preference name="target-device" value="universal"/> -->
+<!--     <gap:platform name="android" /> -->
+    <preference name="target-device" value="universal"/>
     <preference name="splashscreen" value="splash.png" />
     <preference name="fullscreen" value="true" />
     <preference name="detect-data-types" value="false" />
