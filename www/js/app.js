@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var gaPlugin;
 var app = {
     // Application Constructor
     initialize: function() {
@@ -34,6 +35,11 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        gaPlugin = window.plugins.gaPlugin;
+        // Note: A request for permission is REQUIRED by google. You probably want to do this just once, though, and remember the answer for subsequent runs.
+        navigator.notification.confirm('We would like your permission to collect usage data. No personal or user identifiable data will be collected.', this.trackingPermission, 'Attention', 'Allow,Deny');
+        
+        
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -45,5 +51,20 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+
+    trackingPermission: function( button ){
+        if (button === 1)
+            gaPlugin.init(this.trackingSuccess, this.trackingError, "UA-48983835-1", 10);
+    },
+
+    trackingSuccess: function( result ){
+        //alert('nativePluginResultHandler - '+result);
+        console.log('nativePluginResultHandler: '+result);
+    },
+
+    trackingError: function( error ){
+        //alert('nativePluginErrorHandler - '+error);
+        console.log('nativePluginErrorHandler: '+error);
     }
 };

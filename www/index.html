@@ -177,7 +177,7 @@ $.ajax({
 
   </script>
         <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript">
             app.initialize();
 
@@ -204,34 +204,34 @@ $.ajax({
     //     document.addEventListener("deviceready", onDeviceReady, false);
     // }
 
-    document.addEventListener("deviceready", onDeviceReady, false);
+//     document.addEventListener("deviceready", onDeviceReady, false);
 
 
-    function onDeviceReady() {
-        var reachability = new Reachability();
-        if(reachability.IsNotConnected()){
-            navigator.notification.alert('No internet connection available',null, '', 'OK');
-        } else{
-            var map = new GoogleMap();
-            map.initialize();
-        }
-            document.addEventListener("backbutton", onBackKeyDown, false); //Listen to the User clicking on the back button
+//     function onDeviceReady() {
+//         var reachability = new Reachability();
+//         if(reachability.IsNotConnected()){
+//             navigator.notification.alert('No internet connection available',null, '', 'OK');
+//         } else{
+//             var map = new GoogleMap();
+//             map.initialize();
+//         }
+//             document.addEventListener("backbutton", onBackKeyDown, false); //Listen to the User clicking on the back button
 
-    }
+//     }
 
-function onBackKeyDown(e) {
-    e.preventDefault();
-    navigator.notification.confirm("Are you sure you want to exit ?", onConfirm, "Confirmation", "Yes,No"); 
-    // Prompt the user with the choice
-}
+// function onBackKeyDown(e) {
+//     e.preventDefault();
+//     navigator.notification.confirm("Are you sure you want to exit ?", onConfirm, "Confirmation", "Yes,No"); 
+//     // Prompt the user with the choice
+// }
 
-function onConfirm(button) {
-    if(button==2){//If User selected No, then we just do nothing
-        return;
-    }else{
-        navigator.app.exitApp();// Otherwise we quit the app.
-    }
-}
+// function onConfirm(button) {
+//     if(button==2){//If User selected No, then we just do nothing
+//         return;
+//     }else{
+//         navigator.app.exitApp();// Otherwise we quit the app.
+//     }
+// }
 
         </script>
     </body>
