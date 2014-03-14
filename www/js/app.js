@@ -68,3 +68,56 @@ var app = {
         console.log('nativePluginErrorHandler: '+error);
     }
 };
+
+$(document).ready(function(){
+
+
+  
+  $('click').on("click", function(event){
+     event.preventDefault();
+
+     // gotopage
+     if( $(this).data('gotopage') != null ){
+        $('.appPage').hide().siblings('#' + $(this).data('gotopage') ).fadeIn();
+        switch( $(this).data('gotopage') ){
+            case 'reader':
+                $('#nav-dashboard').fadeOut();
+                $('#nav-reader').fadeIn();
+                $('nav.navigation-bar').animate({
+                    top: "0px",
+                    opacity: 1
+                  },"fast").delay( 800 ).animate({
+                      top: "+=-45px",
+                      opacity: 0
+                    },"fast");
+                break;
+            default:
+                $('#nav-dashboard').fadeIn();
+                $('#nav-reader').fadeOut();
+                $('nav.navigation-bar').animate({
+                    top: "0px",
+                    opacity: 1
+                  },"fast");
+                break;
+        }
+     }
+
+     // slideshow
+    if( $(this).data('gotoslide') != null ) {
+          switch( $(this).data('gotoslide') ){
+            case 'first':
+              slide = 0;
+              break;
+            case 'last':
+              slide = slidesInDOM.slides.length-1;
+              break;
+            default:
+              slide = isNormalInteger( $(this).data('gotoslide') ) ? $(this).data('gotoslide') : 0;
+              break;
+          }
+
+        slidesInDOM.swipeTo(slide);
+    }
+  });
+
+});

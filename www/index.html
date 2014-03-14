@@ -30,14 +30,13 @@
     <body class="metro">
         <nav class="navigation-bar dark">
             <div id="nav-dashboard" class="navigation-bar-content">
-                <a href="/" class="element logo">
-                    <!-- <span class="icon-logo"></span>  -->
+                <click data-gotopage="dashboard" class="element logo">
                     <img src="img/chestercomix-logo.png" />
                     <span>
                         Chester Comix 
                         <sup>1.0</sup>
                     </span>
-                </a>
+                </click>
                 <span class="element-divider"></span>
 
                 <a class="pull-menu" href="#"></a>
@@ -69,7 +68,7 @@
                 <a href="#" class="element place-right"><span class="icon-trophy"></span> Hi Lucas</a>
             </div>
             <div id="nav-reader" class="navigation-bar-content">
-                <a href="#" class="element"><span class="icon-enter-2"></span></a>
+                <click data-gotopage="dashboard" class="element"><span class="icon-enter-2"></span></click>
 
                 <span class="element-divider"></span>
                 <div class="element"><click data-gotoslide="first"><span class="icon-first"></span></click></div>
@@ -107,14 +106,18 @@
                         </click>
                     </div>
                     <div class="tile ol-transparent bg-teal">
-                        <div class="tile-content icon">
-                            <span class="icon-facebook"></span>
+                        <a href="https://www.facebook.com/chestercomix">
+                        <div class="tile-content">
+                            <img src="img/facebook.png" />
                         </div>
+                        </a>
                     </div>
-                    <div class="tile ol-transparent bg-green">
-                        <div class="tile-content icon">
-                            <span class="icon-twitter"></span>
+                    <div class="tile ol-transparent">
+                        <a href="https://twitter.com/ChesterComix">
+                        <div class="tile-content">
+                            <img src="img/twitter.png" />
                         </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -210,34 +213,6 @@ $.ajax({
     });
 
 }});
-
-
-  
-  $('click').on("click", function(event){
-     event.preventDefault();
-
-     // gotopage
-     if( $(this).data('gotopage') != null ){
-        $('.appPage').hide().siblings('#' + $(this).data('gotopage') ).fadeIn();
-     }
-
-     // slideshow
-    if( $(this).data('gotoslide') != null ) {
-          switch( $(this).data('gotoslide') ){
-            case 'first':
-              slide = 0;
-              break;
-            case 'last':
-              slide = slidesInDOM.slides.length-1;
-              break;
-            default:
-              slide = isNormalInteger( $(this).data('gotoslide') ) ? $(this).data('gotoslide') : 0;
-              break;
-          }
-
-        slidesInDOM.swipeTo(slide);
-    }
-  });
 
   </script>
         <script type="text/javascript" src="phonegap.js"></script>

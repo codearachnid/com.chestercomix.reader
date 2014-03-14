@@ -11,7 +11,10 @@ body {
   line-height: 1.5;
   position: relative;
   height: 100%;
-}
+}/*
+nav.navigation-bar{
+  position: absolute;
+}*/
 #reader,
 #bookshelf,
 #nav-reader{
