@@ -29,7 +29,7 @@
     </head>
     <body class="metro">
         <nav class="navigation-bar dark">
-            <div class="navigation-bar-content">
+            <div id="nav-dashboard" class="navigation-bar-content">
                 <a href="/" class="element logo">
                     <!-- <span class="icon-logo"></span>  -->
                     <img src="img/chestercomix-logo.png" />
@@ -68,9 +68,16 @@
                 <span class="element-divider place-right"></span>
                 <a href="#" class="element place-right"><span class="icon-trophy"></span> Hi Lucas</a>
             </div>
+            <div id="nav-reader" class="navigation-bar-content">
+                <a href="#" class="element"><span class="icon-enter-2"></span></a>
+
+                <span class="element-divider"></span>
+                <div class="element"><click data-gotoslide="first"><span class="icon-first"></span></click></div>
+                <div class="element place-right"><click data-gotoslide="last"><span class="icon-last"></span></click></div>
+            </div>
         </nav>        
         <div class="app">
-            <div class="tile-area no-padding clearfix">
+            <div id="dashboard" class="appPage tile-area no-padding clearfix">
                 <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
                     <div class="tile quadro double-vertical ol-transparent">
                         <div class="tile-content">
@@ -93,9 +100,11 @@
                         </div>
                     </div>
                     <div class="tile bg-orange ol-transparent">
-                        <div class="tile-content icon">
-                            <span class="icon-bookmark-4"></span>
-                        </div>
+                        <click data-gotopage="bookshelf">
+                            <div class="tile-content icon">
+                                    <span class="icon-bookmark-4"></span>
+                            </div>
+                        </click>
                     </div>
                     <div class="tile ol-transparent bg-teal">
                         <div class="tile-content icon">
@@ -109,7 +118,22 @@
                     </div>
                 </div>
             </div>
+            <div id="bookshelf" class="appPage tile-area no-padding clearfix">
+                <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
+                    <click data-gotopage="reader">
+                    <div class="tile bg-lightBlue ol-transparent">
+                        <div class="tile-content">
+                            <img src="http://www.chestercomix.com/app/wp-content/uploads/2014/02/iBIGHORNstorescreen-300x300.jpg" />
+                        </div>
+                    </div>
+                    </click>
+                </div>
+            </div>
+            <div id="reader" class="appPage">
+                slideshow reader
+            </div>
         </div>
+        
         <div class="topNav">TOP NAV | 
     <click data-gotoslide="first">First Slide</click>
     |
@@ -192,19 +216,27 @@ $.ajax({
   $('click').on("click", function(event){
      event.preventDefault();
 
-      switch( $(this).data('gotoslide') ){
-        case 'first':
-          slide = 0;
-          break;
-        case 'last':
-          slide = slidesInDOM.slides.length-1;
-          break;
-        default:
-          slide = isNormalInteger( $(this).data('gotoslide') ) ? $(this).data('gotoslide') : 0;
-          break;
-      }
+     // gotopage
+     if( $(this).data('gotopage') != null ){
+        $('.appPage').hide().siblings('#' + $(this).data('gotopage') ).fadeIn();
+     }
 
-    slidesInDOM.swipeTo(slide);
+     // slideshow
+    if( $(this).data('gotoslide') != null ) {
+          switch( $(this).data('gotoslide') ){
+            case 'first':
+              slide = 0;
+              break;
+            case 'last':
+              slide = slidesInDOM.slides.length-1;
+              break;
+            default:
+              slide = isNormalInteger( $(this).data('gotoslide') ) ? $(this).data('gotoslide') : 0;
+              break;
+          }
+
+        slidesInDOM.swipeTo(slide);
+    }
   });
 
   </script>

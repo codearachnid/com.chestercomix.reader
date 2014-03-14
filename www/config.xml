@@ -30,6 +30,7 @@
     <gap:plugin name="org.apache.cordova.geolocation" />
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="com.adobe.plugins.gaplugin" />
+    <gap:plugin name="nl.x-services.plugins.toast" />
     <!-- <gap:plugin name="de.appplant.cordova.plugin.background-mode" /> -->
     <!-- https://github.com/katzer/cordova-plugin-background-mode -->
 
