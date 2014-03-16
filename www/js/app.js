@@ -39,14 +39,6 @@ var app = {
         // Note: A request for permission is REQUIRED by google. You probably want to do this just once, though, and remember the answer for subsequent runs.
         navigator.notification.confirm('We would like your permission to collect usage data. No personal or user identifiable data will be collected.', this.trackingPermission, 'Attention', 'Allow,Deny');
         
-        var element = document.getElementById('deviceProperties');
-
-        element.innerHTML = 'Device Name: '     + device.name     + '<br />' + 
-                            'Device PhoneGap: ' + device.phonegap + '<br />' + 
-                            'Device Platform: ' + device.platform + '<br />' + 
-                            'Device UUID: '     + device.uuid     + '<br />' + 
-                            'Device Version: '  + device.version  + '<br />';
-        
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -98,6 +90,13 @@ $(document).ready(function(){
                       opacity: 0
                     },"fast");
                 break;
+            case 'support':
+            $('#deviceProperties').html( 'Device Name: '     + device.name     + '<br />' + 
+                            'Device PhoneGap: ' + device.phonegap + '<br />' + 
+                            'Device Platform: ' + device.platform + '<br />' + 
+                            'Device UUID: '     + device.uuid     + '<br />' + 
+                            'Device Version: '  + device.version  + '<br />' );
+              break;
             default:
                 $('#nav-dashboard').fadeIn();
                 $('#nav-reader').fadeOut();
