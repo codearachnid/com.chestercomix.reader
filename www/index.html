@@ -178,8 +178,8 @@
     }
   });
 
-  var comicZip = 'the-battle-of-little-bighorn.zip';
-/*
+  var comicZip = 'http://chestercomix.com/app/wp-content/uploads/comix/the-battle-of-little-bighorn.zip';
+
 
 $.ajax({
   url: comicZip,
@@ -210,10 +210,13 @@ $.ajax({
         tmpFile += base64_encode( zip.file( file ).asBinary() );
         var newSlide = slidesInDOM.createSlide('<img src="' + tmpFile + '" />');
         newSlide.append();
+
+        if( i == 3)
+            return false;
     });
 
 }});
-*/
+
   </script>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
