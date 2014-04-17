@@ -147,75 +147,9 @@
     <div class="pagination"></div>
   </div>
   <script>
-  var showNav = false;
-  $('.pagination').fadeOut();
-  var slidesInDOM = $('#slides').swiper({
-    pagination: '.pagination',
-    paginationClickable: true,
-    onSlideTouch: function(swiper){
-      $.doTimeout( 'showNav', 100, function(){
-        if( !showNav ){
-          $('.pagination').fadeIn();
-          $('.topNav').animate({
-            top: "0px",
-            opacity: 1
-          },"fast");
-          showNav= true;
-        }
-      });
-    },
-    onTouchEnd: function( swiper ){
-      $.doTimeout( 'showNav', 2000, function(){
-        if(showNav){
-            $('.pagination').fadeOut();
-            $('.topNav').animate({
-              top: "+=-20px",
-              opacity: 0
-            },"fast");
-            showNav = false;
-        }
-      });
-    }
-  });
-
-  var comicZip = 'http://chestercomix.com/app/wp-content/uploads/comix/the-battle-of-little-bighorn.zip';
 
 
-$.ajax({
-  url: comicZip,
-  beforeSend: function( xhr ) {
-    xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
-  },
-  success: function( data, status, xhr ){
-    
-    var zip = new JSZip(data);
-    var listRAW = zip.file("comix.json").asBinary();
-    console.log( 'listRAW: ' + listRAW);
-    var fileList = jQuery.parseJSON( listRAW );
-
-    jQuery.each( fileList, function( i, file ) {
-        var tmpFile = "data:";
-        switch(getFileExtension(file).toLowerCase()) {
-            case 'gif' :
-                tmpFile += "image/gif;base64,";
-                break;
-            case 'png' :
-                tmpFile += "image/png;base64,";
-                break;
-            case 'jpg':
-            case 'jpeg':
-                tmpFile += "image/jpeg;base64,";
-                break;
-        }
-        tmpFile += base64_encode( zip.file( file ).asBinary() );
-        var newSlide = slidesInDOM.createSlide('<img src="' + tmpFile + '" />');
-        newSlide.append();
-
-        if( i == 3)
-            return false;
-    });
-
-}});
+  
 
   </script>
         <script type="text/javascript" src="phonegap.js"></script>
