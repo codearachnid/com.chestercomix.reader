@@ -11,18 +11,32 @@ body {
   line-height: 1.5;
   position: relative;
   height: 100%;
-}/*
+}
 nav.navigation-bar{
   position: absolute;
-}*/
+}
 #reader,
 #bookshelf,
 #nav-reader{
   display: none;
 }
-#reader{
+#dashboard,
+#reader,
+#bookshelf{
   position: relative;
-  top:-45px;
+  top:45px;
+}
+#reader{
+  top:0;
+  background: #4EADA4;
+}
+.loading-spinner{
+width: 100%;
+height: 100%;
+display: block;
+position: absolute;
+top: 200px;
+left: 50%;
 }
 .swiper-container {
   width: 100%;
@@ -31,7 +45,6 @@ nav.navigation-bar{
   text-align: center;
 }
 .swiper-slide{
-  background: #4EADA4;
   height:auto!!important;
 }
 /*.pagination {

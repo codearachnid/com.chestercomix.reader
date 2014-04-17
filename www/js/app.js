@@ -94,24 +94,16 @@ $(document).ready(function(){
                       comicZip = null,
                       comicManifest = [];
 
-
+showSpinner( 'loading-reader' );
 
   var showNav = false;
-  $('.pagination').fadeOut();
   var slidesInDOM = $('#slides').swiper({
     createPagination: false,
-    // pagination: '.pagination',
-    // paginationClickable: true,
     onSlideTouch: function(swiper){
       $.doTimeout( 'showNav', 100, function(){
         if( !showNav ){
-          // $('.pagination').fadeIn();
-          // $('.topNav').animate({
-          //   top: "0px",
-          //   opacity: 1
-          // },"fast");
-          // showNav= true;
-          $('nav.navigation-bar').animate({
+          showNav= true;
+          $('nav.navigation-bar').css('z-index',9999).animate({
                     top: "0px",
                     opacity: 1
                   },"fast");
@@ -121,26 +113,17 @@ $(document).ready(function(){
     onTouchEnd: function( swiper ){
       $.doTimeout( 'showNav', 2000, function(){
         if(showNav){
-            // $('.pagination').fadeOut();
-            // $('.topNav').animate({
-            //   top: "+=-20px",
-            //   opacity: 0
-            // },"fast");
-            // showNav = false;
+          showNav= false;
             $('nav.navigation-bar').animate({
                       top: "+=-45px",
                       opacity: 0
-                    },"fast");
+                    },"fast").css('z-index',0);
         }
       });
     },
     onSlideChangeEnd: function( swiper ){
-
-      // load swiper
+      // load next image
       if( swiper.slides.length < comicManifest.length && swiper.activeIndex+1 >= swiper.slides.length ){
-        // console.log( swiper.slides.length + ":" + swiper.activeIndex);
-        // console.log( comicManifest );
-        // console.log( 'add slide: ' + comicManifest[ swiper.activeIndex+1 ] );
         addSlideToReader( comicManifest[ swiper.activeIndex+1 ], comicZip, slidesInDOM );
       }
     }
@@ -170,6 +153,8 @@ $.ajax({
             return false;
     });
 
+    $('#loading-reader').empty();
+
 }});
 
 
@@ -185,6 +170,10 @@ $.ajax({
                             'Device Version: '  + device.version  + '<br />' );
               break;
             default:
+                $('nav.navigation-bar').css('z-index',0).animate({
+                        top: "0px",
+                        opacity: 1
+                      },"fast");
                 $('#nav-dashboard').fadeIn();
                 $('#nav-reader').fadeOut();
                 $('nav.navigation-bar').animate({
@@ -214,6 +203,29 @@ $.ajax({
   });
 
 });
+
+function showSpinner( target ){
+  var opts = {
+  lines: 9, // The number of lines to draw
+  length: 29, // The length of each line
+  width: 8, // The line thickness
+  radius: 35, // The radius of the inner circle
+  corners: 1, // Corner roundness (0..1)
+  rotate: 0, // The rotation offset
+  direction: 1, // 1: clockwise, -1: counterclockwise
+  color: '#000', // #rgb or #rrggbb or array of colors
+  speed: 1, // Rounds per second
+  trail: 64, // Afterglow percentage
+  shadow: false, // Whether to render a shadow
+  hwaccel: false, // Whether to use hardware acceleration
+  className: 'spinner', // The CSS class to assign to the spinner
+  zIndex: 2e9, // The z-index (defaults to 2000000000)
+  top: 'auto', // Top position relative to parent in px
+  left: 'auto' // Left position relative to parent in px
+};
+target = document.getElementById(target);
+var spinner = new Spinner(opts).spin(target);
+}
 
 function addSlideToReader( file, bundle, slider, direction ){
   file = file || false;
