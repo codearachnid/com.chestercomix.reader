@@ -115,16 +115,6 @@ $(document).ready(function(){
       });
     },
     onTouchEnd: function( swiper ){
-
-      // load swiper
-      if( swiper.slides.length < comicManifest.length && swiper.activeIndex+1 >= swiper.slides.length ){
-        // console.log( swiper.slides.length + ":" + swiper.activeIndex);
-        // console.log( comicManifest );
-        // console.log( 'add slide: ' + comicManifest[ swiper.activeIndex+1 ] );
-        addSlideToReader( comicManifest[ swiper.activeIndex+1 ], comicZip, slidesInDOM );
-      }
-
-
       $.doTimeout( 'showNav', 2000, function(){
         if(showNav){
             $('.pagination').fadeOut();
@@ -135,6 +125,16 @@ $(document).ready(function(){
             showNav = false;
         }
       });
+    },
+    onSlideChangeEnd: function( swiper ){
+
+      // load swiper
+      if( swiper.slides.length < comicManifest.length && swiper.activeIndex+1 >= swiper.slides.length ){
+        // console.log( swiper.slides.length + ":" + swiper.activeIndex);
+        // console.log( comicManifest );
+        // console.log( 'add slide: ' + comicManifest[ swiper.activeIndex+1 ] );
+        addSlideToReader( comicManifest[ swiper.activeIndex+1 ], comicZip, slidesInDOM );
+      }
     }
   });
 
