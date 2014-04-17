@@ -80,8 +80,8 @@ $(document).ready(function(){
         $('.appPage').hide().siblings('#' + $(this).data('gotopage') ).fadeIn();
         switch( $(this).data('gotopage') ){
             case 'reader':
-                $('#nav-dashboard').fadeOut();
-                $('#nav-reader').fadeIn();
+                $('#nav-dashboard').hide();
+                $('#nav-reader').show();
                 $('nav.navigation-bar').animate({
                     top: "0px",
                     opacity: 1
@@ -105,24 +105,32 @@ $(document).ready(function(){
     onSlideTouch: function(swiper){
       $.doTimeout( 'showNav', 100, function(){
         if( !showNav ){
-          $('.pagination').fadeIn();
-          $('.topNav').animate({
-            top: "0px",
-            opacity: 1
-          },"fast");
-          showNav= true;
+          // $('.pagination').fadeIn();
+          // $('.topNav').animate({
+          //   top: "0px",
+          //   opacity: 1
+          // },"fast");
+          // showNav= true;
+          $('nav.navigation-bar').animate({
+                    top: "0px",
+                    opacity: 1
+                  },"fast");
         }
       });
     },
     onTouchEnd: function( swiper ){
       $.doTimeout( 'showNav', 2000, function(){
         if(showNav){
-            $('.pagination').fadeOut();
-            $('.topNav').animate({
-              top: "+=-20px",
-              opacity: 0
-            },"fast");
-            showNav = false;
+            // $('.pagination').fadeOut();
+            // $('.topNav').animate({
+            //   top: "+=-20px",
+            //   opacity: 0
+            // },"fast");
+            // showNav = false;
+            $('nav.navigation-bar').animate({
+                      top: "+=-45px",
+                      opacity: 0
+                    },"fast");
         }
       });
     },
