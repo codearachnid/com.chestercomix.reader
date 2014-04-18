@@ -29,6 +29,7 @@ nav.navigation-bar{
 }
 #reader{
   top:0;
+  left:0;
   background: #4EADA4;
 }
 .loading-spinner{
