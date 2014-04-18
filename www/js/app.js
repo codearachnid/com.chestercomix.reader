@@ -16,6 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+amplify.request.define( "comixManifest", "ajax", {
+    url: "http://www.chestercomix.com/app/api/comix/",
+    dataType: "json",
+    beforeSend: function( _xhr, _ajaxSettings ){
+      $('#loading').fadeIn();
+    },
+    type: "POST",
+    cache: "persist"
+});
+
+amplify.request.define( "comixPayload", "ajax", {
+    url: "http://www.chestercomix.com/app/api/comix/",
+    dataType: "json",
+    beforeSend: function( _xhr, _ajaxSettings ){
+      _xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+      _ajaxSettings.url = decodeURIComponent( _ajaxSettings.data ).replace('payloadURL=', '');
+    },
+    type: "POST",
+    cache: "persist"
+});
+
+
 var gaPlugin;
 var app = {
     // Application Constructor
@@ -69,10 +92,12 @@ var app = {
 };
 
 $(document).ready(function(){
-
+showSpinner( 'loading' );
+$('#loading').fadeOut();
 
   
-  $('click').on("click", function(event){
+  // $('click').on("click", function(event){
+  $(document.body).on('click', 'click' , function(event){
      event.preventDefault();
 
      // gotopage
@@ -94,7 +119,7 @@ $(document).ready(function(){
                       comicZip = null,
                       comicManifest = [];
 
-showSpinner( 'loading-reader' );
+                      // $('#loading').fadeIn();
 
   var showNav = false;
   var slidesInDOM = $('#slides').swiper({
@@ -123,45 +148,91 @@ showSpinner( 'loading-reader' );
     },
     onSlideChangeEnd: function( swiper ){
       // load next image
+      // comicZip != null && 
       if( swiper.slides.length < comicManifest.length && swiper.activeIndex+1 >= swiper.slides.length ){
-        addSlideToReader( comicManifest[ swiper.activeIndex+1 ], comicZip, slidesInDOM );
+        // addSlideToReader( comicManifest[ swiper.activeIndex+1 ], comicZip, slidesInDOM );
+        addSlideToReader( comicManifest[ swiper.activeIndex+1 ], slidesInDOM );
       }
     }
   });
 
-
-$.ajax({
-  url: comicZipLocation,
-  beforeSend: function( xhr ) {
-    // console.log('getting zip');
-    xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
-  },
-  success: function( data, status, xhr ){
-    // console.log('got zip');
-    comicZip = new JSZip(data);
-    var manifestRAW = comicZip.file("comix.json").asBinary();
-    // console.log( 'listRAW: ' + listRAW);
-    comicManifest = jQuery.parseJSON( manifestRAW );
-    // alert(fileList);
-
-    jQuery.each( comicManifest, function( i, file ) {
-      
-      // append image  
-      addSlideToReader( file, comicZip, slidesInDOM );
-
-        if( i == 3)
-            return false;
+// console.log('fetch: ' + $(this).data('id'));
+amplify.request( "comixManifest", { "ID": $(this).data('id') }, function( response ) {
+  if( response.comix.length > 0 ){
+    comicManifest = response.comix[0].contents;
+    jQuery.each( response.comix[0].contents, function( i, image ) {
+      addSlideToReader( image, slidesInDOM );
+      if( i == 3)
+        return false;
     });
+  }
+  $('#loading').fadeOut();
+  console.log(response);
+  // amplify.request( "comixPayload", { "payloadURL": response.comix[0].payload }, function( data ){
+  //   // console.log('got zip');
+  //   comicZip = new JSZip(data);
+  // });
+  // $.ajax({
+  //   url: response.comix[0].payload,
+  //   beforeSend: function( xhr ) {
+  //     // console.log('getting zip');
+  //     xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+  //   },
+  //   success: function( data, status, xhr ){
+  //     // console.log('got zip');
+  //     comicZip = new JSZip(data);
+  //     var manifestRAW = comicZip.file("comix.json").asBinary();
+  //     // console.log( 'listRAW: ' + listRAW);
+  //     comicManifest = jQuery.parseJSON( manifestRAW );
+  //     // alert(fileList);
 
-    $('#loading-reader').empty();
+  //     jQuery.each( comicManifest, function( i, file ) {
+        
+  //       // append image  
+  //       addSlideToReader( file, comicZip, slidesInDOM );
 
-}});
+  //         if( i == 3)
+  //             return false;
+  //     });
+
+  //     $('#loading').fadeOut();
+
+  // }});
+        
+    }
+);
+
+
+
 
 
 
 
 
                 break;
+            case 'bookshelf':
+              $('#nav-dashboard').show();
+                $('#nav-reader').hide();
+            if( $("#bookshelf-list").is(':empty') ) {
+
+                amplify.request( "comixManifest", {}, function( response ) {
+                      $('#loading').fadeOut('fast');
+                      var tiles = [];
+                      jQuery.each( response.comix, function( i, comix ) {
+                        var tile = $('<click>').attr('data-gotopage', 'reader').attr('data-id', comix.ID ),
+                            wrapper = $('<div>').addClass('tile ol-transparent'),
+                            content = $('<div>').addClass('tile-content'),
+                            img = $('<img>').attr( 'src', comix.thumb );
+                        content.append( img );
+                        wrapper.append( content );
+                        tile.append( wrapper );
+                        $("#bookshelf-list").append( tile );
+                      });
+                  }
+              );
+
+              }
+              break;
             case 'support':
             $('#deviceProperties').html( 'Device Name: '     + device.name     + '<br />' + 
                             'Device PhoneGap: ' + device.phonegap + '<br />' + 
@@ -170,16 +241,16 @@ $.ajax({
                             'Device Version: '  + device.version  + '<br />' );
               break;
             default:
-                $('nav.navigation-bar').css('z-index',0).animate({
-                        top: "0px",
-                        opacity: 1
-                      },"fast");
-                $('#nav-dashboard').fadeIn();
-                $('#nav-reader').fadeOut();
-                $('nav.navigation-bar').animate({
-                    top: "0px",
-                    opacity: 1
-                  },"fast");
+                // $('nav.navigation-bar').css('z-index',0).animate({
+                //         top: "0px",
+                //         opacity: 1
+                //       },"fast");
+                $('#nav-dashboard').show();
+                $('#nav-reader').hide();
+                // $('nav.navigation-bar').animate({
+                //     top: "0px",
+                //     opacity: 1
+                //   },"fast");
                 break;
         }
      }
@@ -227,7 +298,7 @@ target = document.getElementById(target);
 var spinner = new Spinner(opts).spin(target);
 }
 
-function addSlideToReader( file, bundle, slider, direction ){
+function addSlideToReaderFromZip( file, bundle, slider, direction ){
   file = file || false;
   direction = direction || 'append';
   if( !file )
@@ -246,7 +317,22 @@ function addSlideToReader( file, bundle, slider, direction ){
           break;
   }
   tmpFile += base64_encode( bundle.file( file ).asBinary() );
-  var newSlide = slider.createSlide('<img src="' + tmpFile + '" />');
+  addSlideToReader( tmpFile, slider, direction );
+
+  // var newSlide = slider.createSlide('<img src="' + tmpFile + '" />');
+  // if( direction == 'append' ){
+  //   newSlide.append();
+  // } else {
+  //   newSlide.prepend();
+  // }
+}
+
+function addSlideToReader( file, slider, direction ){
+  file = file || false;
+  direction = direction || 'append';
+  if( !file )
+    return false;
+  var newSlide = slider.createSlide('<img src="' + file + '" />');
   if( direction == 'append' ){
     newSlide.append();
   } else {

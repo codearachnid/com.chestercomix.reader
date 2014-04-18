@@ -24,7 +24,8 @@ nav.navigation-bar{
 #reader,
 #bookshelf{
   position: relative;
-  top:45px;
+  top:55px;
+  left:10px;
 }
 #reader{
   top:0;
