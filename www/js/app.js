@@ -124,8 +124,10 @@ $('#loading').fadeOut();
   var showNav = false;
   var slidesInDOM = $('#slides').swiper({
     createPagination: false,
-    calculateHeight: true,
+    // calculateHeight: true,
     centeredSlides: true,
+    visibilityFullFit: true,
+    // cssWidthAndHeight:true,
     onSlideTouch: function(swiper){
       $.doTimeout( 'showNav', 100, function(){
         if( !showNav ){

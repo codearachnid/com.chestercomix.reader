@@ -15,6 +15,9 @@ body {
 nav.navigation-bar{
   position: absolute;
 }
+.app{
+  height:100%;
+}
 #reader,
 #bookshelf,
 #nav-reader{
@@ -31,6 +34,7 @@ nav.navigation-bar{
   top:0;
   left:0;
   background: #4EADA4;
+  height:100%;
 }
 .loading-spinner{
 width: 100%;
@@ -47,7 +51,10 @@ left: 50%;
   text-align: center;
 }
 .swiper-slide{
-  height:auto!!important;
+  height:auto!important;
+}
+.swiper-slide img{
+  min-height: 100%;
 }
 /*.pagination {
   position: relative;
