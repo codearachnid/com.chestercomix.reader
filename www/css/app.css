@@ -28,11 +28,12 @@ nav.navigation-bar{
 #bookshelf{
   position: relative;
   top:55px;
-  left:10px;
+  left:0;
+  padding-left:10px;
 }
 #reader{
   top:0;
-  left:0;
+  padding-left:0;
   background: #4EADA4;
   height:100%;
 }
