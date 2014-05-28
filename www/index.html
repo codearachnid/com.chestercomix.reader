@@ -43,11 +43,12 @@
                 <span class="element-divider"></span>
 
                 <a class="pull-menu" href="#"></a>
-                <a href="#" class="element"><span class="icon-cart"></span> Shop</a>
+                <click data-gotopage="shop" class="element"><span class="icon-cart"></span> Shop</click>
+                <click data-gotopage="bookshelf" class="element"><span class="icon-bookmark-4"></span> Owned</click>
 
                 <span class="element-divider"></span>
-                <div class="element"><span class="icon-search"></span></div>
-                <!-- <div class="element input-element">
+                <!-- <div class="element"><span class="icon-search"></span></div>
+                <div class="element input-element">
                     <form>
                         <div class="input-control text">
                             <input type="text" placeholder="Search...">
@@ -65,7 +66,7 @@
                     </ul>
                 </div>
                 <span class="element-divider place-right"></span>
-                <a href="#" class="element place-right"><span class="icon-trophy"></span> {{Username}}</a>
+                <click data-gotopage="account" class="element place-right" data-display="username">{{username}}</click>
             </div>
             <div id="nav-reader" class="navigation-bar-content">
                 <click data-gotopage="dashboard" class="element"><span class="icon-enter-2"></span></click>
@@ -78,21 +79,6 @@
         <div class="app">
             <div id="dashboard" class="appPage tile-area no-padding clearfix">
                 <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
-                    <div class="tile quadro double-vertical ol-transparent">
-                        <div class="tile-content">
-                            <div class="carousel" data-role="carousel" data-height="100%" data-width="100%" data-controls="false">
-                                <div class="slide">
-                                    <img src="http://www.chestercomix.com/app/wp-content/uploads/2014/02/iToon1@2x.jpg">
-                                </div>
-                                <div class="slide">
-                                    <img src="http://www.chestercomix.com/app/wp-content/uploads/2014/02/iToon2@2x.jpg">
-                                </div>
-                                <div class="slide">
-                                    <img src="http://www.chestercomix.com/app/wp-content/uploads/2014/02/iToon4@2x.jpg">
-                                </div>
-                            <div class="markers default"><ul><li class="active"><a href="javascript:void(0)" data-num="0"></a></li><li class=""><a href="javascript:void(0)" data-num="1"></a></li><li class=""><a href="javascript:void(0)" data-num="2"></a></li></ul></div></div>
-                        </div>
-                    </div>
                     <div class="tile bg-lightBlue ol-transparent">
                         <div class="tile-content icon">
                             <span class="icon-cart"></span>
