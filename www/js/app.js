@@ -42,6 +42,8 @@ var gaPlugin;
 var app = {
     // Application Constructor
     initialize: function () {
+        navigator.splashscreen.show();
+        showSpinner('loading');
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -293,10 +295,11 @@ var app = {
 
 
 
-$(document).ready(function () {
-    showSpinner('loading');
-    app.initialize();
-});
+
+
+
+
+app.initialize();
 
 
 

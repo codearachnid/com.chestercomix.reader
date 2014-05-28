@@ -52,7 +52,12 @@
     <!-- ios only prefs -->
 
     <!-- android only prefs -->
-    <preference name="splash-screen-duration" value="100"/>
+    <!--<preference name="splash-screen-duration" value="100"/>-->
+
+    <!--<feature name="SplashScreen">-->
+        <!--<param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />-->
+        <!--<param name="ios-package" value="CDVSplashScreen" />-->
+    <!--</feature>-->
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
