@@ -1,4 +1,4 @@
-var debugMode = false; //true;
+var debugMode = true;
 var appFramework = new Framework7();
 var $$ = Framework7.$;
 var appMain = appFramework.addView('.view-main', {
@@ -29,11 +29,39 @@ var comixObject = function(id, name, description, thumb, owned){
         description: ko.observable( description )
     }
 };
+
+var vmComixApplication = {
+    authenticated: ko.observable(),
+    context: new comixObject,
+    comix: new comixObject,
+    manifest: ko.observableArray(),
+    gotoComix: function( data, event ){
+        vmComixApplication.context = data;
+        if( data.owned() == 'true'){
+            console.log(data.owned(), data.id());
+            // photobrowser
+        } else {
+            appMain.loadPage('purchase.html');
+            console.log(vmComixApplication.context.id());
+        }
+        
+    }
+};
+
+
+
 var context = {
     comix: new comixObject
 };
 var vmComixManifest = {
-    manifest: ko.observableArray(),
+    manifest: ko.observableArray()
+    
+};
+// vmComixManifest.manifest.subscribe(function(newValue){
+
+// });
+var vmComixIndex = {
+    manifest: vmComixManifest.manifest,
     gotoComix: function( data, event ){
         context.comix = data;
         if( data.owned() == 'true'){
@@ -45,10 +73,22 @@ var vmComixManifest = {
         
     }
 };
+var vmAppTopNavigation = {
+    authenticated: ko.observable(false)
+};
+var vmPurchase = {
+
+};
+
+var vmAppSettings = {
+    version: ko.observable()
+};
 
 var chesterComix = {
     init: function () {
-        navigator.splashscreen.show();
+        if( navigator.splashscreen ){
+            navigator.splashscreen.show();    
+        }
         this.bindRequests();
         this.bindEvents();
     },
@@ -56,7 +96,9 @@ var chesterComix = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        ko.applyBindings( vmComixManifest, document.getElementById('comix-manifest') );
+        // ko.applyBindings( vmComixApplication );
+        ko.applyBindings( vmComixIndex, document.getElementById('comix-index') );
+        ko.applyBindings( vmAppTopNavigation, document.getElementById('app-navbar') );
         // temp
         this.onDeviceReady();
     },
@@ -77,12 +119,24 @@ var chesterComix = {
                 vmComixManifest.manifest.push( comixItem );
             });
         });
-        
-        appFramework.onPageAfterAnimation('about', function (page) {
-            appFramework.closePanel();
+        appFramework.onPageInit('index', function (page) {
+            alert('index activated');
+            // ko.applyBindings( vmPurchase, document.getElementById('comix-purchase') );
         });
+        appFramework.onPageInit('bookshelf', function (page) { alert( 'bookshelf')});
+        // appFramework.onPageAfterAnimation('about', function (page) {
+        //     appFramework.closePanel();
+        // });
+        // appFramework.onPageInit('*',function(page){
+        //     var element = $('body')[0];
+        //     ko.cleanNode(element);
+        //     ko.applyBindings( vmComixApplication );
+        // });
         appFramework.onPageInit('purchase', function (page) {
-            ko.applyBindings( context, document.getElementById('comix-purchase') );
+            ko.applyBindings( vmPurchase, document.getElementById('comix-purchase') );
+        });
+        appFramework.onPageInit('settings', function (page) {
+            // ko.applyBindings( vmAppSettings, document.getElementById('comix-settings') );
         });
         appFramework.init();
     },
@@ -110,6 +164,17 @@ var chesterComix = {
         });
 
         amplify.request.define("comixPayload", "ajax", {
+            url: "http://www.chestercomix.com/app/api/comix/",
+            dataType: "json",
+            beforeSend: function (_xhr, _ajaxSettings) {
+                _xhr.overrideMimeType("text/plain; charset=x-user-defined");
+                _ajaxSettings.url = decodeURIComponent(_ajaxSettings.data).replace('payloadURL=', '');
+            },
+            type: "POST",
+            cache: "persist"
+        });
+
+        amplify.request.define("userAuth", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
             dataType: "json",
             beforeSend: function (_xhr, _ajaxSettings) {
