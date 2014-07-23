@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /> -->
+        <link rel="stylesheet" href="css/metro-bootstrap.min.css">
+        <link rel="stylesheet" href="css/idangerous.swiper.css">
+        <link rel="stylesheet" href="css/app.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/amplify.min.js"></script>
+        <script src="js/knockout.js"></script>
+        <script src="js/jquery.widget.min.js"></script>
+        <script src="js/spin.min.js"></script>
+        <script src="js/methods.js"></script>
+        <script src="js/metro.min.js"></script>
+        <script src="js/jszip.min.js"></script>
+        <script src="js/jquery.ba-dotimeout.min.js"></script>
+        <script src="js/idangerous.swiper.min.js"></script>
+        <!-- <script src="js/jquery.widget.min.js"></script> -->
+        <!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
+        <!-- <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> -->
+        <!-- <script type="text/javascript" src="js/googlemap.js"></script> -->
+
+
+          
+          
+    </head>
+    <body class="metro">
+        <div id="loading" class="loading-spinner"></div>
+        <nav class="navigation-bar dark">
+            <div id="nav-dashboard" class="navigation-bar-content">
+                <click data-gotopage="dashboard" class="element logo">
+                    <img src="img/chestercomix-logo.png" />
+                    <span>
+                        Chester Comix 
+                        <sup>1.0</sup>
+                    </span>
+                </click>
+                <span class="element-divider"></span>
+
+                <a class="pull-menu" href="#"></a>
+                <click data-gotopage="shop" class="element"><span class="icon-cart"></span> Shop</click>
+                <click data-gotopage="bookshelf" class="element"><span class="icon-bookmark-4"></span> Owned</click>
+
+                <span class="element-divider"></span>
+                <!-- <div class="element"><span class="icon-search"></span></div>
+                <div class="element input-element">
+                    <form>
+                        <div class="input-control text">
+                            <input type="text" placeholder="Search...">
+                            <button class="btn-search"></button>
+                        </div>
+                    </form>
+                </div> -->
+
+                <div class="element place-right">
+                    <a class="dropdown-toggle" href="#">
+                        <span class="icon-cog"></span>
+                    </a>
+                    <ul class="dropdown-menu place-right" data-role="dropdown">
+                        <li><click data-gotopage="support">Support</click></li>
+                    </ul>
+                </div>
+                <span class="element-divider place-right"></span>
+                <click data-gotopage="account" class="element place-right" data-display="username">{{username}}</click>
+            </div>
+            <div id="nav-reader" class="navigation-bar-content">
+                <click data-gotopage="dashboard" class="element"><span class="icon-enter-2"></span></click>
+
+                <span class="element-divider"></span>
+                <div class="element"><click data-gotoslide="first"><span class="icon-first"></span></click></div>
+                <div class="element place-right"><click data-gotoslide="last"><span class="icon-last"></span></click></div>
+            </div>
+        </nav>        
+        <div class="app">
+            <div id="dashboard" class="appPage tile-area no-padding clearfix">
+                <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
+                    <div class="tile bg-lightBlue ol-transparent">
+                        <div class="tile-content icon">
+                            <span class="icon-cart"></span>
+                        </div>
+                    </div>
+                    <div class="tile bg-orange ol-transparent">
+                        <click data-gotopage="bookshelf">
+                            <div class="tile-content icon">
+                                    <span class="icon-bookmark-4"></span>
+                            </div>
+                        </click>
+                    </div>
+                    <div class="tile ol-transparent bg-teal">
+                        <a href="https://www.facebook.com/chestercomix">
+                        <div class="tile-content">
+                            <img src="img/facebook.png" />
+                        </div>
+                        </a>
+                    </div>
+                    <div class="tile ol-transparent">
+                        <a href="https://twitter.com/ChesterComix">
+                        <div class="tile-content">
+                            <img src="img/twitter.png" />
+                        </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="bookshelf" class="appPage tile-area no-padding clearfix">
+                <div id="bookshelf-list" class="tile-group no-margin no-padding clearfix" style="width: 100%"></div>
+            </div>
+            <div id="reader" class="appPage">
+                <div id="slides" class="swiper-container">
+                    <div class="swiper-wrapper"></div>
+<!--                     <div class="pagination"></div> -->
+                </div>
+            </div>
+            <div id="support" class="appPage">
+                <p id="deviceProperties">Loading device properties...</p>
+            </div>
+        </div>
+        
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+
+    //         function GoogleMap(){
+ 
+    //         this.initialize = function(){
+    //         var map = showMap();
+    //         }
+             
+    //          var showMap = function(){
+    //         var mapOptions = {
+    //         zoom: 4,
+    //         center: new google.maps.LatLng(-33, 151),
+    //         mapTypeId: google.maps.MapTypeId.ROADMAP
+    //         }
+             
+    //         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+             
+    //         return map;
+    //         }
+    //         }
+
+    //         function onBodyLoad(){      
+    //     document.addEventListener("deviceready", onDeviceReady, false);
+    // }
+
+//     document.addEventListener("deviceready", onDeviceReady, false);
+
+
+//     function onDeviceReady() {
+//         var reachability = new Reachability();
+//         if(reachability.IsNotConnected()){
+//             navigator.notification.alert('No internet connection available',null, '', 'OK');
+//         } else{
+//             var map = new GoogleMap();
+//             map.initialize();
+//         }
+//             document.addEventListener("backbutton", onBackKeyDown, false); //Listen to the User clicking on the back button
+
+//     }
+
+// function onBackKeyDown(e) {
+//     e.preventDefault();
+//     navigator.notification.confirm("Are you sure you want to exit ?", onConfirm, "Confirmation", "Yes,No"); 
+//     // Prompt the user with the choice
+// }
+
+// function onConfirm(button) {
+//     if(button==2){//If User selected No, then we just do nothing
+//         return;
+//     }else{
+//         navigator.app.exitApp();// Otherwise we quit the app.
+//     }
+// }
+
+        </script>
+    </body>
+</html>
