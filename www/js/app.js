@@ -1,8 +1,8 @@
 var debugMode = true;
 var appFramework = new Framework7();
 var $$ = Framework7.$;
-var mainView = appFramework.addView('.view-main', {
-    dynamicNavbar: true,
+var appMain = appFramework.addView('.view-main', {
+    // dynamicNavbar: true,
     init: false,
     modalUsernamePlaceholder: "Email",
     // Hide and show indicator during ajax requests
@@ -15,7 +15,7 @@ var mainView = appFramework.addView('.view-main', {
 });
 
 $$('.prompt-register').on('click', function () {
-    mainView.loadPage('register.html');
+    appMain.loadPage('register.html');
     appFramework.closeModal();
 });
 
@@ -29,8 +29,21 @@ var comixObject = function(id, name, description, thumb, owned){
         description: ko.observable( description )
     }
 };
+var context = {
+    comix: new comixObject
+};
 var vmComixManifest = {
-    manifest: ko.observableArray()
+    manifest: ko.observableArray(),
+    gotoComix: function( data, event ){
+        context.comix = data;
+        if( data.owned() == 'true'){
+            console.log(data.owned(), data.id());
+            // photobrowser
+        } else {
+            appMain.loadPage('purchase.html');
+        }
+        
+    }
 };
 
 var chesterComix = {
@@ -51,6 +64,7 @@ var chesterComix = {
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
         chesterComix.checkAuthentication();
+
         amplify.request("comixManifest", {}, function (response) {
             jQuery.each(response.comix, function (i, comix) {
                 var comixItem = new comixObject(
@@ -63,13 +77,25 @@ var chesterComix = {
                 vmComixManifest.manifest.push( comixItem );
             });
         });
+        
+        appFramework.onPageAfterAnimation('about', function (page) {
+            appFramework.closePanel();
+        });
+        appFramework.onPageInit('purchase', function (page) {
+            ko.applyBindings( context, document.getElementById('comix-purchase') );
+        });
         appFramework.init();
     },
     checkAuthentication: function(){
         // appFramework.showPreloader('loading...');
         // setTimeout(function () {
         //     appFramework.hidePreloader();
-        // }, 2000);
+        //     appFramework.addNotification({
+        //         hold: 1500,
+        //         title: 'Login successful',
+        //         message: 'You are logged in successfully. Thank you for supporting Chester Comix!'
+        //     });
+        // }, 1000);
     },
     bindRequests: function(){
         var comixManifestUrl = !debugMode ? "http://www.chestercomix.com/app/api/comix/" : "js/data/manifest.json";

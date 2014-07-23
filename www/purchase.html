@@ -1,0 +1,22 @@
+<div id="comix-purchase" class="page" data-page="purchase">
+	<div class="page-content">
+		<div class="content-block-title">Purchase Comix</div>
+		<div class="content-block">
+			<div class="content-block-inner" data-bind="with:comix">
+				<a href="#" class="item-link item-content" data-bind="click:$root.gotoComix">
+					<div class="item-media">
+						<img data-bind="attr:{src:thumb}" width="80">
+					</div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title" data-bind="text: name"></div>
+							<div class="item-after" data-bind="text: owned == 'true' ? 'Owned' : 'Purchase'"></div>
+						</div>
+						<div class="item-text" data-bind="text: description"></div>
+					</div>
+				</a>
+				<button>Buy Now</button>
+			</div>
+		</div>
+	</div>
+</div>
