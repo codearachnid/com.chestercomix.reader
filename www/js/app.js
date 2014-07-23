@@ -1,4 +1,4 @@
-var debugMode = true;
+var debugMode = false; //true;
 var appFramework = new Framework7();
 var $$ = Framework7.$;
 var appMain = appFramework.addView('.view-main', {
