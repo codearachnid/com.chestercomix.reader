@@ -48,7 +48,7 @@ var vmComixManifest = {
 
 var chesterComix = {
     init: function () {
-        // navigator.splashscreen.show();
+        navigator.splashscreen.show();
         this.bindRequests();
         this.bindEvents();
     },
