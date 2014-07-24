@@ -20,8 +20,6 @@
     <access origin="*.chestercomix.com" />
     <access origin="*.wpsite.co" />
     
-    <content src="index.html" />
-    
     <!-- plugins -->
     <gap:plugin name="org.apache.cordova.console" />
     <gap:plugin name="org.apache.cordova.device" />
