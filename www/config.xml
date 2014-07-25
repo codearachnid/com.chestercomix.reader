@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
-        version     = "1.0.0" >
+        version     = "1.8.0" >
 
     <!-- app properties -->
     <name>Chester Comix</name>
@@ -41,7 +41,7 @@
     <!-- <gap:platform name="android" /> -->
     <!-- <gap:platform name="ios" /> -->
     <!-- <preference name="target-device" value="universal"/> -->
-    <preference name="splashscreen" value="splash.png" />
+    <preference name="splashscreen" value="img/splash.png" />
     <preference name="fullscreen" value="true" />
     <preference name="detect-data-types" value="false" />
     <preference name="auto-hide-splash-screen" value="true" />
