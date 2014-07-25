@@ -41,8 +41,10 @@
     <!-- <gap:platform name="android" /> -->
     <!-- <gap:platform name="ios" /> -->
     <!-- <preference name="target-device" value="universal"/> -->
-    <preference name="splashscreen" value="img/splash.png" />
-    <preference name="fullscreen" value="true" />
+    <preference name="splashscreen" value="splash.png" />
+<!--     <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="10000" />
+ -->    <preference name="fullscreen" value="true" />
     <preference name="detect-data-types" value="false" />
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="exit-on-suspend" value="false" />
