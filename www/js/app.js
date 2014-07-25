@@ -4,6 +4,7 @@ var $$ = Framework7.$;
 var appMain = appFramework.addView('.view-main', {
     // dynamicNavbar: true,
     init: false,
+    cache: false,
     modalUsernamePlaceholder: "Email",
     // Hide and show indicator during ajax requests
     onAjaxStart: function (xhr) {
@@ -18,6 +19,7 @@ $$('.prompt-register').on('click', function () {
     appMain.loadPage('register.html');
     appFramework.closeModal();
 });
+
 
 var comixObject = function(id, name, description, thumb, owned){
     owned = owned || false;
@@ -79,6 +81,9 @@ var vmAppTopNavigation = {
 var vmPurchase = {
 
 };
+var vmRegister = {
+    UUID: ko.observable('1299841812299')
+}
 
 var vmAppSettings = {
     version: ko.observable()
@@ -106,22 +111,11 @@ var chesterComix = {
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
         chesterComix.checkAuthentication();
-
-        amplify.request("comixManifest", {}, function (response) {
-            jQuery.each(response.comix, function (i, comix) {
-                var comixItem = new comixObject(
-                    comix.ID,
-                    comix.name,
-                    comix.description,
-                    comix.thumb,
-                    comix.owned
-                    ) ;
-                vmComixManifest.manifest.push( comixItem );
-            });
-        });
+        fetchManifest()
+        
         appFramework.onPageInit('index', function (page) {
-            alert('index activated');
-            // ko.applyBindings( vmPurchase, document.getElementById('comix-purchase') );
+            ko.applyBindings( vmComixIndex, document.getElementById('comix-index') );
+            fetchManifest();    
         });
         appFramework.onPageInit('bookshelf', function (page) { alert( 'bookshelf')});
         // appFramework.onPageAfterAnimation('about', function (page) {
@@ -137,6 +131,29 @@ var chesterComix = {
         });
         appFramework.onPageInit('settings', function (page) {
             // ko.applyBindings( vmAppSettings, document.getElementById('comix-settings') );
+        });
+        appFramework.onPageInit('register', function (page){
+            ko.applyBindings( vmRegister, document.getElementById('app-register'));
+            $$('#app-register-form').on('submitted', function (e) {
+                // console.log(e);
+              // var xhr = e.detail.xhr; // actual XHR object
+             
+              var response = JSON.parse(e.detail.data); // Ajax repsonse from action file
+              if( response.status ){
+                appFramework.addNotification({
+                    hold: 3000,
+                    title: 'Success',
+                    message: 'Thank you for registering an account. Now you may find new comix or read previously purchased comix!',
+                    onClose: function () {
+                        appMain.loadPage('index.html');
+                    }
+                });
+              } else {
+                appFramework.alert(response.message);
+              }
+              // console.log(data);
+              // do something with response data
+            });
         });
         appFramework.init();
     },
@@ -190,7 +207,20 @@ var chesterComix = {
 chesterComix.init();
 
 
-
+function fetchManifest(){
+    amplify.request("comixManifest", {}, function (response) {
+        jQuery.each(response.comix, function (i, comix) {
+            var comixItem = new comixObject(
+                comix.ID,
+                comix.name,
+                comix.description,
+                comix.thumb,
+                comix.owned
+                ) ;
+            vmComixManifest.manifest.push( comixItem );
+        });
+    });
+}
 
 
 
