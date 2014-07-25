@@ -1,4 +1,9 @@
-var debugMode = true;
+var debugMode = false;
+var UUID = 'f06ca12c760a48bb';
+
+
+
+
 var appFramework = new Framework7();
 var $$ = Framework7.$;
 var appMain = appFramework.addView('.view-main', {
@@ -53,7 +58,9 @@ var vmComixApplication = {
 
 
 var context = {
-    comix: new comixObject
+    comix: new comixObject,
+    authenticated: ko.observable(false),
+    UUID: ko.observable( UUID )
 };
 var vmComixManifest = {
     manifest: ko.observableArray()
@@ -76,13 +83,17 @@ var vmComixIndex = {
     }
 };
 var vmAppTopNavigation = {
-    authenticated: ko.observable(false)
+    authenticated: context.authenticated,
+    allowBack: ko.observable(false)
 };
 var vmPurchase = {
 
 };
+var vmAccount = {
+
+};
 var vmRegister = {
-    UUID: ko.observable('1299841812299')
+    UUID: context.UUID
 }
 
 var vmAppSettings = {
@@ -117,28 +128,29 @@ var chesterComix = {
             ko.applyBindings( vmComixIndex, document.getElementById('comix-index') );
             fetchManifest();    
         });
-        appFramework.onPageInit('bookshelf', function (page) { alert( 'bookshelf')});
-        // appFramework.onPageAfterAnimation('about', function (page) {
-        //     appFramework.closePanel();
-        // });
-        // appFramework.onPageInit('*',function(page){
-        //     var element = $('body')[0];
-        //     ko.cleanNode(element);
-        //     ko.applyBindings( vmComixApplication );
-        // });
+        appFramework.onPageInit('bookshelf', function (page) { 
+            
+        });
         appFramework.onPageInit('purchase', function (page) {
+            vmAppTopNavigation.allowBack(true);
             ko.applyBindings( vmPurchase, document.getElementById('comix-purchase') );
         });
+        appFramework.onPageBeforeRemove('purchase',function (page){
+            vmAppTopNavigation.allowBack(false);
+        });
+        appFramework.onPageInit('account', function (page) {
+            vmAppTopNavigation.allowBack(true);
+            ko.applyBindings( vmAccount, document.getElementById('app-account') );
+        });
+        appFramework.onPageBeforeRemove('account',function (page){
+            vmAppTopNavigation.allowBack(false);
+        });
         appFramework.onPageInit('settings', function (page) {
-            // ko.applyBindings( vmAppSettings, document.getElementById('comix-settings') );
         });
         appFramework.onPageInit('register', function (page){
             ko.applyBindings( vmRegister, document.getElementById('app-register'));
             $$('#app-register-form').on('submitted', function (e) {
-                // console.log(e);
-              // var xhr = e.detail.xhr; // actual XHR object
-             
-              var response = JSON.parse(e.detail.data); // Ajax repsonse from action file
+              var response = JSON.parse(e.detail.data);
               if( response.status ){
                 appFramework.addNotification({
                     hold: 3000,
@@ -151,22 +163,47 @@ var chesterComix = {
               } else {
                 appFramework.alert(response.message);
               }
-              // console.log(data);
-              // do something with response data
             });
         });
+
+        appFramework.onPageBeforeAnimation('index', function (page) {
+            appFramework.closePanel();
+        });
+        appFramework.onPageBeforeAnimation('about', function (page) {
+            appFramework.closePanel();
+        });
+        appFramework.onPageBeforeAnimation('bookshelf', function (page) {
+            appFramework.closePanel();
+        });
+        appFramework.onPageBeforeAnimation('credits', function (page) {
+            appFramework.closePanel();
+        });
+        appFramework.onPageBeforeAnimation('settings', function (page) {
+            appFramework.closePanel();
+        });
+
+
+
         appFramework.init();
     },
     checkAuthentication: function(){
-        // appFramework.showPreloader('loading...');
-        // setTimeout(function () {
-        //     appFramework.hidePreloader();
-        //     appFramework.addNotification({
-        //         hold: 1500,
-        //         title: 'Login successful',
-        //         message: 'You are logged in successfully. Thank you for supporting Chester Comix!'
-        //     });
-        // }, 1000);
+        appFramework.loginScreen();
+        appFramework.showPreloader('loading...');
+        
+        amplify.request('userAuth',{ UUID: context.UUID() }, function(response){
+            if( response.status ) {
+                context.authenticated(true);
+                appFramework.hidePreloader();
+                appFramework.closeModal();
+                appFramework.addNotification({
+                    hold: 1500,
+                    title: 'Login successful',
+                    message: 'You are logged in successfully. Thank you for supporting Chester Comix!',
+                });
+            } else {
+                appFramework.hidePreloader();
+            }
+        });
     },
     bindRequests: function(){
         var comixManifestUrl = !debugMode ? "http://www.chestercomix.com/app/api/comix/" : "js/data/manifest.json";
@@ -192,12 +229,8 @@ var chesterComix = {
         });
 
         amplify.request.define("userAuth", "ajax", {
-            url: "http://www.chestercomix.com/app/api/comix/",
+            url: "http://www.chestercomix.com/app/api/auth-user/",
             dataType: "json",
-            beforeSend: function (_xhr, _ajaxSettings) {
-                _xhr.overrideMimeType("text/plain; charset=x-user-defined");
-                _ajaxSettings.url = decodeURIComponent(_ajaxSettings.data).replace('payloadURL=', '');
-            },
             type: "POST",
             cache: "persist"
         });
@@ -217,7 +250,12 @@ function fetchManifest(){
                 comix.thumb,
                 comix.owned
                 ) ;
-            vmComixManifest.manifest.push( comixItem );
+            var foundItem = ko.utils.arrayFirst(vmComixManifest.manifest(), function(existingItem) {
+                    return existingItem.id == comixItem.id;
+                });
+            if( !foundItem ){
+                vmComixManifest.manifest.push( comixItem );    
+            }
         });
     });
 }

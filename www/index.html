@@ -75,7 +75,8 @@
 			<div id="app-navbar" class="navbar">
 				<div class="navbar-inner">
 					<div class="left">
-						<a href="#" class="link icon-only open-panel"><i class="icon icon-bars-blue"></i></a>
+						<a href="#" class="link icon-only open-panel" data-bind="visible: !allowBack()"><i class="icon icon-bars-blue"></i></a>
+						<a href="index.html" class="back link" data-bind="visible: allowBack()"><i class="icon icon-back-blue" style="transform: translate3d(0px, 0px, 0px); -webkit-transform: translate3d(0px, 0px, 0px);"></i><span>Back</span></a>
 					</div>
 					<div class="center sliding">
 						<img src="img/chestercomix-logo.png" class="logo" />
@@ -86,14 +87,14 @@
 					</div>
 					<div class="right">
 						<a href="#" class="open-login-screen" data-bind="visible: !authenticated()">Login</a>
-						<a href="#" class="open-login-screen" data-bind="visible: authenticated()">Account</a>
+						<a href="account.html" data-bind="visible: authenticated()">Account</a>
 					</div>
 				</div>
 			</div>
 			<div class="pages navbar-through toolbar-through">
 				<div id="comix-index" data-page="index" class="page" data-url="index.html">
 					<div class="page-content">
-						<div class="content-block-title">Comic books that bring history to life!</div>
+						<div class="content-block-title">Comic books that bring history to life! View your <a href="bookshelf.html">bookshelf</a>.</div>
 						<div class="content-block">
 							<div class="content-block-inner">
 								<div id="comix-manifest" class="list-block media-list">
@@ -152,13 +153,12 @@
 							</ul>
 						</div>
 						<div class="list-block">
-							<ul>
+						<ul>
 								<li>
-									<a href="#" class="item-link list-button">Sign In</a>
-								</li>
+							<p><a href="#" class="item-link list-button">Sign In</a></p>
+							</li>
 							</ul>
-							<div class="list-block-labe">Some text with login information. <a href="register.html" class="prompt-register">Register</a>
-							</div>
+							<div class="list-block-label">Some text with login information. <a href="register.html" class="prompt-register">Register</a></div>
 						</div>
 					</form>
 				</div>
