@@ -2,175 +2,191 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
-	<meta name="description" content="">
-	<meta name="format-detection" content="telephone=no" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<link rel="stylesheet" href="css/framework7.min.css">
-	<link rel="stylesheet" href="css/app.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/framework7.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 </head>
 
 <body>
-	<div class="statusbar-overlay"></div>
-	<div class="panel-overlay"></div>
-	<div class="panel panel-left panel-reveal">
-		<div class="content-block">
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+    <div id="app-flyout-panel" class="panel panel-left panel-reveal">
+        <div class="content-block">
             <div class="content-block-title">Full Layout</div>
-    <div class="list-block">
-      <ul>
-      <li>
-        <a href="index.html" class="item-link item-content">
-          <div class="item-media"><i class="icon icon-f7"></i></div>
-          <div class="item-inner">
-            <div class="item-title">Home</div>
-          </div></a>
-        </li>
-        <li>
-        <a href="about.html" class="item-link item-content">
-          <div class="item-media"><i class="icon icon-f7"></i></div>
-          <div class="item-inner">
-            <div class="item-title">About</div>
-          </div></a>
-        </li>
-        <li>
-        <a href="bookshelf.html" class="item-link item-content">
-          <div class="item-media"><i class="icon icon-f7"></i></div>
-          <div class="item-inner">
-            <div class="item-title">Bookshelf</div>
-            <div class="item-after"><span class="badge">5</span></div>
-          </div>
-          </a>
-        </li>
-        <li>
-        <a href="credits.html" class="item-link item-content">
-          <div class="item-media"><i class="icon icon-f7"></i></div>
-          <div class="item-inner">
-            <div class="item-title">Credits</div>
-          </div>
-          </a>
-        </li>
-        <li>
-        <a  href="settings.html" class="item-link item-content">
-          <div class="item-media"><i class="icon icon-f7"></i></div>
-          <div class="item-inner">
-            <div class="item-title">Settings</div>
-          </div>
-          </a>
-        </li>
-      </ul>
-      <div class="list-block-label">List block label text goes here</div>
-      <div><a href="http://www.chestercomix.com/north-american-geography/" class="external"><img src="img/free-comic.gif" /></a></div>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <a href="index.html" class="item-link item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i>
+                            </div>
+                            <div class="item-inner">
+                                <div class="item-title">Home</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html" class="item-link item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i>
+                            </div>
+                            <div class="item-inner">
+                                <div class="item-title">About</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li data-bind="visible: authenticated()">
+                        <a href="bookshelf.html" class="item-link item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i>
+                            </div>
+                            <div class="item-inner">
+                                <div class="item-title">Bookshelf</div>
+                                <div class="item-after">
+                                    <span class="badge" data-bine="text:bookeshelf"></span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="credits.html" class="item-link item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i>
+                            </div>
+                            <div class="item-inner">
+                                <div class="item-title">Credits</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="item-link item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i>
+                            </div>
+                            <div class="item-inner">
+                                <div class="item-title">Settings</div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="list-block-label">List block label text goes here</div>
+                <div>
+                    <a href="http://www.chestercomix.com/north-american-geography/" class="external">
+                        <img src="img/free-comic.gif" />
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-		</div>
-	</div>
-	<!-- Views-->
-	<div class="views">
-		<!-- Your main view, should have "view-main" class-->
-		<div class="view view-main">
-			<!-- Top Navbar-->
-			<div id="app-navbar" class="navbar">
-				<div class="navbar-inner">
-					<div class="left">
-						<a href="#" class="link icon-only open-panel" data-bind="visible: !allowBack()"><i class="icon icon-bars-blue"></i></a>
-						<a href="index.html" class="back link" data-bind="visible: allowBack()"><i class="icon icon-back-blue" style="transform: translate3d(0px, 0px, 0px); -webkit-transform: translate3d(0px, 0px, 0px);"></i><span>Back</span></a>
-					</div>
-					<div class="center sliding">
-						<img src="img/chestercomix-logo.png" class="logo" />
-						<span>
-							Chester Comix
-							<sup>1.0</sup>
-						</span>
-					</div>
-					<div class="right">
-						<a href="#" class="open-login-screen" data-bind="visible: !authenticated()">Login</a>
-						<a href="account.html" data-bind="visible: authenticated()">Account</a>
-					</div>
-				</div>
-			</div>
-			<div class="pages navbar-through toolbar-through">
-				<div id="comix-index" data-page="index" class="page" data-url="index.html">
-					<div class="page-content">
-						<div class="content-block-title">Comic books that bring history to life! View your <a href="bookshelf.html">bookshelf</a>.</div>
-						<div class="content-block">
-							<div class="content-block-inner">
-								<div id="comix-manifest" class="list-block media-list">
-									<ul data-bind="foreach: manifest">
-										<li>
-											<a href="#" class="item-link item-content" data-bind="click:$root.gotoComix">
-												<div class="item-media">
-													<img data-bind="attr:{src:thumb}" width="80">
-												</div>
-												<div class="item-inner">
-													<div class="item-title-row">
-														<div class="item-title" data-bind="text: name"></div>
-														<div class="item-after" data-bind="text: owned() == 'true' ? 'Owned' : 'Purchase'"></div>
-													</div>
-													<div class="item-text" data-bind="text: description"></div>
-												</div>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="login-screen">
-		<div class="view">
-			<div class="page">
-				<div class="page-content login-screen-content">
-					<div class="login-screen-title">
-						<div class="center sliding">
-							<img src="img/chestercomix-logo.png" class="logo" />
-						</div>
-					</div>
-					<form>
-						<div class="list-block">
-							<ul>
-								<li class="item-content">
-									<div class="item-inner">
-										<div class="item-title label">Email</div>
-										<div class="item-input">
-											<input type="text" name="email" placeholder="Email">
-										</div>
-									</div>
-								</li>
-								<li class="item-content">
-									<div class="item-inner">
-										<div class="item-title label">Password</div>
-										<div class="item-input">
-											<input type="password" name="password" placeholder="Password">
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="list-block">
-						<ul>
-								<li>
-							<p><a href="#" class="item-link list-button">Sign In</a></p>
-							</li>
-							</ul>
-							<div class="list-block-label">Some text with login information. <a href="register.html" class="prompt-register">Register</a></div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/amplify.min.js"></script>
-	<script type="text/javascript" src="js/knockout.min.js"></script>
-	<script type="text/javascript" src="js/framework7.min.js"></script>
-	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
+    <!-- Views-->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class-->
+        <div class="view view-main">
+            <!-- Top Navbar-->
+            <div id="app-navbar" class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only open-panel" data-bind="visible: !allowBack()"><i class="icon icon-bars-blue"></i></a>
+                        <a href="index.html" class="back link" data-bind="visible: allowBack()"><i class="icon icon-back-blue" style="transform: translate3d(0px, 0px, 0px); -webkit-transform: translate3d(0px, 0px, 0px);"></i><span>Back</span></a>
+                    </div>
+                    <div class="center sliding">
+                        <img src="img/chestercomix-logo.png" class="logo" />
+                        <span>
+                            Chester Comix
+                            <sup>1.0</sup>
+                        </span>
+                    </div>
+                    <div class="right">
+                        <a href="#" class="open-login-screen" data-bind="visible: !authenticated()">Login</a>
+                        <a href="account.html" data-bind="visible: authenticated()">Account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through toolbar-through">
+                <div id="comix-index" data-page="index" class="page" data-url="index.html">
+                    <div class="page-content">
+                        <div class="content-block-title">Comic books that bring history to life! View your <a href="bookshelf.html">bookshelf</a>.</div>
+                        <div class="content-block">
+                            <div class="content-block-inner">
+                                <div id="comix-manifest" class="list-block media-list">
+                                    <ul data-bind="foreach: manifest">
+                                        <li>
+                                            <a href="#" class="item-link item-content" data-bind="click:$root.gotoComix">
+                                                <div class="item-media">
+                                                    <img data-bind="attr:{src:thumb}" width="80">
+                                                </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title" data-bind="text: name"></div>
+                                                        <div class="item-after" data-bind="text: owned() == 'true' ? 'Owned' : 'Purchase'"></div>
+                                                    </div>
+                                                    <div class="item-text" data-bind="text: description"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-screen">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">
+                        <div class="center sliding">
+                            <img src="img/chestercomix-logo.png" class="logo" />
+                        </div>
+                    </div>
+                    <form>
+                        <div class="list-block">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Email</div>
+                                        <div class="item-input">
+                                            <input type="text" name="email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Password</div>
+                                        <div class="item-input">
+                                            <input type="password" name="password" placeholder="Password">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-block">
+                            <ul>
+                                <li>
+                                    <p><a href="#" class="item-link list-button">Sign In</a>
+                                    </p>
+                                </li>
+                            </ul>
+                            <div class="list-block-label">Some text with login information. <a href="register.html" class="prompt-register">Register</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/amplify.min.js"></script>
+    <script type="text/javascript" src="js/knockout.min.js"></script>
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
 </body>
 
 </html>

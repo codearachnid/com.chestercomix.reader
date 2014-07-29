@@ -2,3 +2,13 @@
 	max-height:90%;
 	margin-right:10px;
 }
+.modal-text-input-double-left{
+	border-radius:0 0 0 5px!important;
+	margin-top:0!important;
+	border-top:none!important;
+
+}
+.modal-text-input-double-right{
+	border-radius:0 0 5px 0!important;
+	border-left:none!important;
+}
