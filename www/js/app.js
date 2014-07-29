@@ -114,26 +114,6 @@ var comixObject = function(id, name, description, thumb, featured, owned){
     }
 };
 
-// var vmComixApplication = {
-//     authenticated: ko.observable(),
-//     context: new comixObject,
-//     comix: new comixObject,
-//     manifest: ko.observableArray(),
-//     gotoComix: function( data, event ){
-//         vmComixApplication.context = data;
-//         if( data.owned() == 'true'){
-//             console.log(data.owned(), data.id());
-//             // photobrowser
-//         } else {
-//             appMain.loadPage('purchase.html');
-//             console.log(vmComixApplication.context.id());
-//         }
-        
-//     }
-// };
-
-
-
 var context = {
     comix: new comixObject,
     authenticated: ko.observable(false),
@@ -159,9 +139,6 @@ var vmComixManifest = {
     manifest: ko.observableArray()
     
 };
-// vmComixManifest.manifest.subscribe(function(newValue){
-
-// });
 var vmComixIndex = {
     applied: false,
     manifest: vmComixManifest.manifest,
@@ -221,6 +198,54 @@ var chesterComix = {
 
         // temp
         this.onDeviceReady();
+    },
+    bindRequests: function(){
+
+        amplify.request.define("comixManifest", "ajax", {
+            url: "http://www.chestercomix.com/app/api/comix/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        amplify.request.define("comixRead", "ajax", {
+            url: "http://www.chestercomix.com/app/api/comix/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        amplify.request.define("comixPayload", "ajax", {
+            url: "http://www.chestercomix.com/app/api/comix/",
+            dataType: "json",
+            beforeSend: function (_xhr, _ajaxSettings) {
+                _xhr.overrideMimeType("text/plain; charset=x-user-defined");
+                _ajaxSettings.url = decodeURIComponent(_ajaxSettings.data).replace('payloadURL=', '');
+            },
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        amplify.request.define("userAuth", "ajax", {
+            url: "http://www.chestercomix.com/app/api/user-user/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        amplify.request.define("userContext", "ajax", {
+            url: "http://www.chestercomix.com/app/api/user-context/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        amplify.request.define("getPaymentKey", "ajax", {
+            url: "http://www.chestercomix.com/app/api/payment-key/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
     },
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
@@ -360,54 +385,6 @@ var chesterComix = {
                 appFramework.hidePreloader();
             }
         });
-    },
-    bindRequests: function(){
-
-        amplify.request.define("comixManifest", "ajax", {
-            url: "http://www.chestercomix.com/app/api/comix/",
-            dataType: "json",
-            type: "POST",
-            cache: debugMode ? false : "persist"
-        });
-
-        amplify.request.define("comixRead", "ajax", {
-            url: "http://www.chestercomix.com/app/api/comix/",
-            dataType: "json",
-            type: "POST",
-            cache: debugMode ? false : "persist"
-        });
-
-        amplify.request.define("comixPayload", "ajax", {
-            url: "http://www.chestercomix.com/app/api/comix/",
-            dataType: "json",
-            beforeSend: function (_xhr, _ajaxSettings) {
-                _xhr.overrideMimeType("text/plain; charset=x-user-defined");
-                _ajaxSettings.url = decodeURIComponent(_ajaxSettings.data).replace('payloadURL=', '');
-            },
-            type: "POST",
-            cache: debugMode ? false : "persist"
-        });
-
-        amplify.request.define("userAuth", "ajax", {
-            url: "http://www.chestercomix.com/app/api/user-user/",
-            dataType: "json",
-            type: "POST",
-            cache: debugMode ? false : "persist"
-        });
-
-        amplify.request.define("userContext", "ajax", {
-            url: "http://www.chestercomix.com/app/api/user-context/",
-            dataType: "json",
-            type: "POST",
-            cache: debugMode ? false : "persist"
-        });
-
-        amplify.request.define("getPaymentKey", "ajax", {
-            url: "http://www.chestercomix.com/app/api/payment-key/",
-            dataType: "json",
-            type: "POST",
-            cache: debugMode ? false : "persist"
-        });
     }
 };
 
@@ -481,12 +458,9 @@ function buyComix( data, event ){
     }
 }
 function stripeRequestHandler (modal, index) {
-    // var cc = $(modal).find('.modal-text-input[name="modal-cc"]').val();
-    // var cvc = $(modal).find('.modal-text-input[name="modal-cvc"]').val();
     var expires = $(modal).find('.modal-text-input[name="modal-expires"]').val().split("/");
     var expMo = expires[0];
     var expYr = "20" + expires[1];
-    // appFramework.alert( cc + " " + cvc + " " + expires);
     Stripe.setPublishableKey(context.paymentKey.publish());
     Stripe.card.createToken({
       number: $(modal).find('.modal-text-input[name="modal-cc"]').val(),
@@ -494,7 +468,6 @@ function stripeRequestHandler (modal, index) {
       exp_month: expMo,
       exp_year: expYr
     }, stripeResponseHandler);
-  // appFramework.alert(context.paymentKey.publish());
 }
 function stripeResponseHandler(status, response){
   if (response.error) {
