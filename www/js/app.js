@@ -1,4 +1,5 @@
 var debugMode = true;
+var deviceMode = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
 var UUID = 'f06ca12c760a48bb';
 
 var usStates = ko.observableArray([
@@ -190,14 +191,18 @@ var chesterComix = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function () {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-        // ko.applyBindings( vmComixApplication );
+
         ko.applyBindings( vmComixIndex, document.getElementById('comix-index') );
         ko.applyBindings( vmAppTopNavigation, document.getElementById('app-navbar') );
         ko.applyBindings( vmAppSideNavigation, document.getElementById('app-flyout-panel') );
 
-        // temp
-        this.onDeviceReady();
+        // load device ready via device or force in dev mode
+        if( deviceMode ) {
+            document.addEventListener('deviceready', this.onDeviceReady, false);
+        } else {
+            this.onDeviceReady();
+        }
+            
     },
     bindRequests: function(){
 
@@ -246,6 +251,13 @@ var chesterComix = {
             type: "POST",
             cache: debugMode ? false : "persist"
         });
+
+        amplify.request.define("submitPayment", "ajax", {
+            url: "http://www.chestercomix.com/app/api/payment/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
     },
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
@@ -288,7 +300,6 @@ var chesterComix = {
                     message: 'Thank you for updating your account information!',
                     onClose: function () {
                         if( context.purchaseAttempt() != '' ) {
-                            // console.log(context.purchaseAttempt())
                             gotoComixPage( context.purchaseAttempt() );
                         } else {
                             appMain.loadPage('index.html');
@@ -356,15 +367,17 @@ var chesterComix = {
 
 
                 amplify.request('userContext',{ UUID: context.UUID() }, function(newContext){
-                    context.user.name( newContext.user.name );
-                    context.user.email( newContext.user.email );
-                    context.user.billing_name( newContext.user.billing_name );
-                    context.user.billing_address( newContext.user.billing_address );
-                    context.user.billing_address2( newContext.user.billing_address2 );
-                    context.user.billing_city( newContext.user.billing_city );
-                    context.user.billing_state( newContext.user.billing_state );
-                    context.user.billing_zip( newContext.user.billing_zip );
-                    // console.log(newContext);
+                    if( newContext.status ) {
+                        context.user.name( newContext.user.name );
+                        context.user.email( newContext.user.email );
+                        context.user.billing_name( newContext.user.billing_name );
+                        context.user.billing_address( newContext.user.billing_address );
+                        context.user.billing_address2( newContext.user.billing_address2 );
+                        context.user.billing_city( newContext.user.billing_city );
+                        context.user.billing_state( newContext.user.billing_state );
+                        context.user.billing_zip( newContext.user.billing_zip );
+                    }
+                    // console.log("get userContext", newContext);
                 });
 
                 amplify.request('getPaymentKey',{ UUID: context.UUID() }, function(newContext){
@@ -436,10 +449,12 @@ function gotoComixPage( data, event ){
 
 function buyComix( data, event ){
     if( context.user.billing_zip() != '' ) {
-        console.log(context.user);
+        // console.log(context.comix.name());
+        // console.log(data);
+        context.comix = data;
         appFramework.modal({
             title: paymentModalTitle,
-            text: paymentModal,
+            afterText: paymentModal,
             buttons: paymentModalButtons
             });
         
@@ -458,33 +473,70 @@ function buyComix( data, event ){
     }
 }
 function stripeRequestHandler (modal, index) {
+    var cc = $(modal).find('.modal-text-input[name="modal-cc"]').val();
+    var cvc = $(modal).find('.modal-text-input[name="modal-cvc"]').val();
     var expires = $(modal).find('.modal-text-input[name="modal-expires"]').val().split("/");
+    // console.log('expires',expires);
     var expMo = expires[0];
     var expYr = "20" + expires[1];
-    Stripe.setPublishableKey(context.paymentKey.publish());
-    Stripe.card.createToken({
-      number: $(modal).find('.modal-text-input[name="modal-cc"]').val(),
-      cvc: $(modal).find('.modal-text-input[name="modal-cvc"]').val(),
-      exp_month: expMo,
-      exp_year: expYr
-    }, stripeResponseHandler);
+    var validated = true;
+    var errorMessage = '';
+
+    if( ! Stripe.card.validateCardNumber(cc) ){
+        validated = false;
+        errorMessage = 'Your credit card number is invalid. Please correct and try again.';
+    }
+
+    if( validated && ! Stripe.card.validateCVC(cvc) ){
+        validated = false;
+        errorMessage = 'Your CVC number is invalid. Please correct and try again.';
+    }
+
+    if( validated && ! Stripe.card.validateExpiry(expMo, expYr) ){
+        validated = false;
+        errorMessage = 'Your card expiration is invalid. Please correct and try again.';
+    }
+
+    if( validated ){
+        appFramework.showIndicator();
+        Stripe.setPublishableKey(context.paymentKey.publish());
+        Stripe.card.createToken({
+          number: cc,
+          cvc: cvc,
+          exp_month: expMo,
+          exp_year: expYr
+        }, stripeResponseHandler);
+    } else {
+        appFramework.modal({
+            title: paymentModalTitle,
+            text: '<div class="error">' + errorMessage + '</div>',
+            afterText: paymentModal,
+            buttons: paymentModalButtons
+            });
+    }
 }
 function stripeResponseHandler(status, response){
+    
+    // console.log('stripeResponseHandler', status, response, context);
   if (response.error) {
-    // Show the errors on the form
-    $form.find('.payment-errors').text(response.error.message);
-    $form.find('button').prop('disabled', false);
+    appFramework.hideIndicator();
+// Show the errors on the form
+    appFramework.modal({
+        title: paymentModalTitle,
+        text: '<div class="error">' + response.error.message + '</div>',
+        afterText: paymentModal,
+        buttons: paymentModalButtons
+        });
   } else {
-    // response contains id and card, which contains additional card details
-    var token = response.id;
-    // Insert the token into the form so it gets submitted to the server
-    $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-    // and submit
-    $form.get(0).submit();
-  }
-  appFramework.modal({
-    title: paymentModalTitle,
-    text: paymentModal,
-    buttons: paymentModalButtons
+
+    amplify.request('submitPayment', { UUID: context.UUID(), token: response.id, ID: context.comix.id() }, function (submitResponse) {
+        console.log(submitResponse);
+        if( submitResponse.status ) {
+            appFramework.hideIndicator();
+            context.comix.owned( 'true' );
+            gotoComixPage( context.comix );
+        }
     });
+
+  }
 }
