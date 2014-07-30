@@ -104,7 +104,10 @@ $$('.panel-left').on('open', function () {
     var element = document.getElementById('app-flyout-panel');
     ko.cleanNode( element );
     ko.applyBindings( vmAppSideNavigation, element );
-    console.log( vmAppSideNavigation.bookshelf() );
+    // console.log( vmAppSideNavigation.bookshelf() );
+});
+$$('.logout').on('click', function () {
+
 });
 
 var paymentModal = '<div class="row no-gutter"><input type="text" placeholder="Credit Card" name="modal-cc" class="modal-text-input modal-text-input-double" /></div>' +
@@ -176,7 +179,7 @@ var vmAppTopNavigation = {
 var vmAppSideNavigation = {
     applied: false,
     authenticated: context.authenticated,
-    bookshelf: ko.observable()
+    bookshelf: ko.observable(0)
 };
 var vmPurchase = {
     applied: false,
@@ -280,6 +283,13 @@ var chesterComix = {
 
         amplify.request.define("userContext", "ajax", {
             url: "http://www.chestercomix.com/app/api/user-context/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        amplify.request.define("userLogout", "ajax", {
+            url: "http://www.chestercomix.com/app/api/user-logout/",
             dataType: "json",
             type: "POST",
             cache: debugMode ? false : "persist"
