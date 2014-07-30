@@ -34,7 +34,7 @@
                             <div class="item-inner">
                                 <div class="item-title">Bookshelf</div>
                                 <div class="item-after">
-                                    <span class="badge" data-bine="text:bookshelf()"></span>
+                                    <span class="badge" data-bind="text:bookshelf"></span>
                                 </div>
                             </div>
                         </a>
@@ -111,6 +111,7 @@
                     <div class="right">
                         <a href="#" class="open-login-screen" data-bind="visible: !authenticated()">Login</a>
                         <a href="account.html" data-bind="visible: authenticated()">Account</a>
+                        <a href="#" class="logout button" data-bind="visible: authenticated()">Logout</a>
                     </div>
                 </div>
             </div>
@@ -182,7 +183,7 @@
                                     </p>
                                 </li>
                             </ul>
-                            <div class="list-block-label">Some text with login information. <a href="register.html" class="prompt-register">Register</a>
+                            <div class="list-block-label">To get Chester Comix, for whereever you read, <a href="register.html" class="prompt-register">register</a>.
                             </div>
                         </div>
                     </form>
