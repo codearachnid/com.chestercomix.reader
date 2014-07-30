@@ -100,10 +100,17 @@ $$('#signin-button').on('click', function () {
         }
     });
 });
+$$('.panel-left').on('open', function () {
+    var element = document.getElementById('app-flyout-panel');
+    ko.cleanNode( element );
+    ko.applyBindings( vmAppSideNavigation, element );
+    console.log( vmAppSideNavigation.bookshelf() );
+});
 
 var paymentModal = '<div class="row no-gutter"><input type="text" placeholder="Credit Card" name="modal-cc" class="modal-text-input modal-text-input-double" /></div>' +
         '<div class="row no-gutter"><input type="text" placeholder="MM/YY" name="modal-expires" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-left" />' + 
-        '<input type="text" name="modal-cvc" placeholder="CVC Code" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-right" /></div>';
+        '<input type="text" name="modal-cvc" placeholder="CVC Code" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-right" /></div>' +
+        '<div class="row"><label><input type="checkbox" name="modal-remember" /> Remember this card.</label></div>';
 var paymentModalTitle = 'Credit Card Details';
 var paymentModalButtons = [
               {
@@ -147,7 +154,8 @@ var context = {
         billing_address2: ko.observable(''),
         billing_city: ko.observable(''),
         billing_state: ko.observable(''),
-        billing_zip: ko.observable('')
+        billing_zip: ko.observable(''),
+        payment_id: ko.observable('')
     },
     purchaseAttempt: ko.observable('')
 };
@@ -195,6 +203,24 @@ var vmBookshelf = {
     gotoComix: gotoComixPage
 };
 
+var vmRemotePageAbout = {
+    title: ko.observable(),
+    content: ko.observable()
+};
+var vmRemotePageAuthorBio = {
+    title: ko.observable(),
+    content: ko.observable()
+};
+var vmRemotePageCredits = {
+    title: ko.observable(),
+    content: ko.observable()
+};
+var vmRemotePageLegal = {
+    title: ko.observable(),
+    content: ko.observable()
+};
+
+
 var chesterComix = {
     init: function () {
         if( navigator.splashscreen ){
@@ -209,7 +235,6 @@ var chesterComix = {
 
         ko.applyBindings( vmComixIndex, document.getElementById('comix-index') );
         ko.applyBindings( vmAppTopNavigation, document.getElementById('app-navbar') );
-        ko.applyBindings( vmAppSideNavigation, document.getElementById('app-flyout-panel') );
 
         // load device ready via device or force in dev mode
         if( deviceMode ) {
@@ -273,6 +298,39 @@ var chesterComix = {
             type: "POST",
             cache: debugMode ? false : "persist"
         });
+
+        amplify.request.define("remotePageAbout", "ajax", {
+            url: "http://www.chestercomix.com/app/page/about/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+
+        // pages
+        amplify.request.define("remotePageAbout", "ajax", {
+            url: "http://www.chestercomix.com/app/page/about/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+        amplify.request.define("remotePageAuthorBio", "ajax", {
+            url: "http://www.chestercomix.com/app/page/authors-bio/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+        amplify.request.define("remotePageCredits", "ajax", {
+            url: "http://www.chestercomix.com/app/page/credits/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
+        amplify.request.define("remotePageLegal", "ajax", {
+            url: "http://www.chestercomix.com/app/page/legal/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
     },
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
@@ -284,7 +342,7 @@ var chesterComix = {
         if( deviceMode &&  typeof device != 'undefined' ) {
             context.UUID( device.uuid );
         } else {
-            // context.UUID( 'f06ca12c760a48bb' );
+            context.UUID( 'testbrowser' );
         }
 
         chesterComix.checkAuthentication();
@@ -365,18 +423,29 @@ var chesterComix = {
         appFramework.onPageBeforeAnimation('index', function (page) {
             appFramework.closePanel();
         });
-        appFramework.onPageBeforeAnimation('about', function (page) {
-            appFramework.closePanel();
-        });
+        
         appFramework.onPageBeforeAnimation('bookshelf', function (page) {
-            appFramework.closePanel();
-        });
-        appFramework.onPageBeforeAnimation('credits', function (page) {
             appFramework.closePanel();
         });
         appFramework.onPageBeforeAnimation('settings', function (page) {
             appFramework.closePanel();
         });
+
+        // remote pages
+        appFramework.onPageBeforeAnimation('about', function (page) {
+            setupRemotePage('remotePage-about', vmRemotePageAbout, 'remotePageAbout');
+        });
+        appFramework.onPageBeforeAnimation('author', function (page) {
+            setupRemotePage('remotePage-author', vmRemotePageAuthorBio, 'remotePageAuthorBio');
+        });
+        appFramework.onPageBeforeAnimation('credits', function (page) {
+            setupRemotePage('remotePage-credits', vmRemotePageCredits, 'remotePageCredits');
+        });
+        appFramework.onPageBeforeAnimation('legal', function (page) {
+            setupRemotePage('remotePage-legal', vmRemotePageLegal, 'remotePageLegal');
+        });
+
+        
 
 
 
@@ -569,4 +638,18 @@ function stripeResponseHandler(status, response){
     });
 
   }
+}
+
+function setupRemotePage(domid, vm, aReq){
+    appFramework.closePanel();
+    // vmAppTopNavigation.allowBack(true);
+    var element = document.getElementById(domid);
+    ko.cleanNode(element);
+    ko.applyBindings( vm, element );
+    amplify.request(aReq,{},function(response){
+        if( response.status ){
+            vm.title( response.page.title );
+            vm.content( response.page.content );
+        }
+    });
 }

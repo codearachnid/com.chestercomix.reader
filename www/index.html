@@ -20,64 +20,73 @@
     <div class="panel-overlay"></div>
     <div id="app-flyout-panel" class="panel panel-left panel-reveal">
         <div class="content-block">
-            <div class="content-block-title">Full Layout</div>
             <div class="list-block">
                 <ul>
                     <li>
                         <a href="index.html" class="item-link item-content">
-                            <div class="item-media"><i class="icon icon-f7"></i>
-                            </div>
                             <div class="item-inner">
                                 <div class="item-title">Home</div>
                             </div>
                         </a>
                     </li>
-                    <li>
-                        <a href="about.html" class="item-link item-content">
-                            <div class="item-media"><i class="icon icon-f7"></i>
-                            </div>
-                            <div class="item-inner">
-                                <div class="item-title">About</div>
-                            </div>
-                        </a>
-                    </li>
                     <li data-bind="visible: authenticated()">
                         <a href="bookshelf.html" class="item-link item-content">
-                            <div class="item-media"><i class="icon icon-f7"></i>
-                            </div>
                             <div class="item-inner">
                                 <div class="item-title">Bookshelf</div>
                                 <div class="item-after">
-                                    <span class="badge" data-bine="text:bookeshelf"></span>
+                                    <span class="badge" data-bine="text:bookshelf()"></span>
                                 </div>
                             </div>
                         </a>
                     </li>
                     <li>
-                        <a href="credits.html" class="item-link item-content">
-                            <div class="item-media"><i class="icon icon-f7"></i>
+                        <a href="about.html" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title">About</div>
                             </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="author.html" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Author's Bio</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="credits.html" class="item-link item-content">
                             <div class="item-inner">
                                 <div class="item-title">Credits</div>
                             </div>
                         </a>
                     </li>
                     <li>
-                        <a href="settings.html" class="item-link item-content">
-                            <div class="item-media"><i class="icon icon-f7"></i>
+                        <a href="legal.html" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Legal</div>
                             </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="item-link item-content">
                             <div class="item-inner">
                                 <div class="item-title">Settings</div>
                             </div>
                         </a>
                     </li>
+                    <li>
+                        <a href="feedback.html" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title">Feedback</div>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
-                <div class="list-block-label">List block label text goes here</div>
-                <div>
-                    <a href="#" onclick="window.open('http://www.chestercomix.com/north-american-geography/', '_system');" class="external">
-                        <img src="img/free-comic.gif" />
-                    </a>
-                </div>
+            </div>
+            <div>
+                <a href="#" onclick="window.open('http://www.chestercomix.com/north-american-geography/', '_system');" class="external">
+                    <img src="img/free-comic.gif" />
+                </a>
             </div>
         </div>
     </div>
