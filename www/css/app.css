@@ -12,3 +12,10 @@
 	border-radius:0 0 5px 0!important;
 	border-left:none!important;
 }
+.theClaw{
+	display: inline;
+	left: -45%;
+	position: absolute;
+	bottom: 5%;
+	z-index: 99999;
+}

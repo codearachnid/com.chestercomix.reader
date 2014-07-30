@@ -547,7 +547,15 @@ function gotoComixPage( data, event ){
             amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id() }, function (response) {
                 console.log(response);
                 var myPhotoBrowserStandalone = appFramework.photoBrowser({
-                    photos : response.comix[0].panels
+                    photos : response.comix[0].panels,
+                    onSlideChangeEnd: function(slider){
+                        console.log(slider);
+                        if( response.comix[0].panels[ slider.activeSlideIndex ].link != '' && isEmptyElement($('.slider-slide-active').find('.theClaw')) ){
+                            // console.log('show the claw');
+                            $('.slider-slide-active').find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="system"><img src="img/iCLAWscreen.png" /></a>');
+                        }
+                    },
+                    photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}"><span class="theClaw"></span></span></div>'
                 });
                 myPhotoBrowserStandalone.open();
             });
@@ -663,3 +671,8 @@ function setupRemotePage(domid, vm, aReq){
         }
     });
 }
+
+function isEmptyElement( el ){
+      return !$.trim(el.html())
+  }
+
