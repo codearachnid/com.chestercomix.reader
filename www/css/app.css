@@ -1,6 +1,3 @@
-*:not(html) {
-    -webkit-transform: translate3d(0, 0, 0)!important;
-}
 .logo{
 	max-height:90%;
 	margin-right:10px;
