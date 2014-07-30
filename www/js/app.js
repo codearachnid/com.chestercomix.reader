@@ -1,6 +1,5 @@
 var debugMode = true;
 var deviceMode = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
-var UUID = 'f06ca12c760a48bb';
 
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
@@ -112,13 +111,13 @@ var comixObject = function(id, name, description, thumb, featured, owned){
         name: ko.observable( name ),
         featured: ko.observable( featured ),
         description: ko.observable( description )
-    }
+    };
 };
 
 var context = {
     comix: new comixObject,
     authenticated: ko.observable(false),
-    UUID: ko.observable( UUID ),
+    UUID: ko.observable(''),
     paymentKey: {
         secret: ko.observable(),
         publish: ko.observable()
@@ -262,6 +261,16 @@ var chesterComix = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
+
+        if( typeof device != 'undefined' )
+            console.log(device);
+
+        if( deviceMode &&  typeof device != 'undefined' ) {
+            context.UUID( device.uuid );
+        } else {
+            context.UUID( 'f06ca12c760a48bb' );
+        }
+
         chesterComix.checkAuthentication();
         fetchManifest()
         
@@ -422,7 +431,10 @@ function fetchManifest(){
                 vmAppSideNavigation.bookshelf( bookshelf );
             }
             var foundItem = ko.utils.arrayFirst(vmComixManifest.manifest(), function(existingItem) {
-                    return existingItem.id == comixItem.id;
+                // console('compare:', 
+                //     existingItem, 
+                //     comixItem );
+                    return existingItem.id == comixItem.id();
                 });
             if( !foundItem ){
                 vmComixManifest.manifest.push( comixItem );    
