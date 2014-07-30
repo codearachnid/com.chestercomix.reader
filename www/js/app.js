@@ -84,6 +84,22 @@ $$('.prompt-register').on('click', function () {
     appMain.loadPage('register.html');
     appFramework.closeModal();
 });
+$$('#signin-button').on('click', function () {
+    var pageContainer = $$('.login-screen');
+    var username = pageContainer.find('input[name="email"]').val();
+    var password = pageContainer.find('input[name="password"]').val();
+    appFramework.showPreloader('checking access...');
+    amplify.request('userAuth',{ UUID: context.UUID(), u: username, p: password }, function(response){
+        if( response.status ) {
+            successLogin( response );
+            appFramework.hidePreloader();
+            appFramework.closeModal();
+        } else {
+            appFramework.hidePreloader();
+            appFramework.alert( response.message, 'Login Attempt Failed' );
+        }
+    });
+});
 
 var paymentModal = '<div class="row no-gutter"><input type="text" placeholder="Credit Card" name="modal-cc" class="modal-text-input modal-text-input-double" /></div>' +
         '<div class="row no-gutter"><input type="text" placeholder="MM/YY" name="modal-expires" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-left" />' + 
@@ -268,7 +284,7 @@ var chesterComix = {
         if( deviceMode &&  typeof device != 'undefined' ) {
             context.UUID( device.uuid );
         } else {
-            context.UUID( 'f06ca12c760a48bb' );
+            // context.UUID( 'f06ca12c760a48bb' );
         }
 
         chesterComix.checkAuthentication();
@@ -369,40 +385,11 @@ var chesterComix = {
     checkAuthentication: function(){
         appFramework.loginScreen();
         appFramework.showPreloader('loading...');
-        
         amplify.request('userAuth',{ UUID: context.UUID() }, function(response){
             if( response.status ) {
-                context.authenticated(true);
-
-
-                amplify.request('userContext',{ UUID: context.UUID() }, function(newContext){
-                    if( newContext.status ) {
-                        context.user.name( newContext.user.name );
-                        context.user.email( newContext.user.email );
-                        context.user.billing_name( newContext.user.billing_name );
-                        context.user.billing_address( newContext.user.billing_address );
-                        context.user.billing_address2( newContext.user.billing_address2 );
-                        context.user.billing_city( newContext.user.billing_city );
-                        context.user.billing_state( newContext.user.billing_state );
-                        context.user.billing_zip( newContext.user.billing_zip );
-                    }
-                    // console.log("get userContext", newContext);
-                });
-
-                amplify.request('getPaymentKey',{ UUID: context.UUID() }, function(newContext){
-                    context.paymentKey.secret( newContext.paymentKey.secret );
-                    context.paymentKey.publish( newContext.paymentKey.publish );
-                });
-
+                successLogin( response );
                 appFramework.hidePreloader();
                 appFramework.closeModal();
-                appFramework.addNotification({
-                    hold: 1500,
-                    title: 'Login successful',
-                    message: 'You are logged in successfully. Thank you for supporting Chester Comix!',
-                });
-
-
             } else {
                 appFramework.hidePreloader();
             }
@@ -412,6 +399,37 @@ var chesterComix = {
 
 chesterComix.init();
 
+function successLogin( response ){
+    if( response.status ) {
+        context.authenticated(true);
+
+
+        amplify.request('userContext',{ UUID: context.UUID() }, function(newContext){
+            if( newContext.status ) {
+                context.user.name( newContext.user.name );
+                context.user.email( newContext.user.email );
+                context.user.billing_name( newContext.user.billing_name );
+                context.user.billing_address( newContext.user.billing_address );
+                context.user.billing_address2( newContext.user.billing_address2 );
+                context.user.billing_city( newContext.user.billing_city );
+                context.user.billing_state( newContext.user.billing_state );
+                context.user.billing_zip( newContext.user.billing_zip );
+            }
+            // console.log("get userContext", newContext);
+        });
+
+        amplify.request('getPaymentKey',{ UUID: context.UUID() }, function(newContext){
+            context.paymentKey.secret( newContext.paymentKey.secret );
+            context.paymentKey.publish( newContext.paymentKey.publish );
+        });
+
+        appFramework.addNotification({
+            hold: 1500,
+            title: 'Login successful',
+            message: 'You are logged in successfully. Thank you for supporting Chester Comix!',
+        });
+    }
+}
 
 function fetchManifest(){
     var bookshelf = 0;
