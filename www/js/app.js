@@ -182,7 +182,7 @@ var vmAppSideNavigation = {
     bookshelf: ko.observable(0)
 };
 var vmPurchase = {
-    applied: false,
+    owned: false,
     buyComixNow: buyComix
 };
 var vmAccount = {
@@ -666,6 +666,7 @@ function setupRemotePage(domid, vm, aReq){
     ko.applyBindings( vm, element );
     amplify.request(aReq,{},function(response){
         if( response.status ){
+            console.log(response.page.content);
             vm.title( response.page.title );
             vm.content( response.page.content );
         }
