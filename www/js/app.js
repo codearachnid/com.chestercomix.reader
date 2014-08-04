@@ -528,10 +528,10 @@ function fetchManifest(){
                 vmAppSideNavigation.bookshelf( bookshelf );
             }
             var foundItem = ko.utils.arrayFirst(vmComixManifest.manifest(), function(existingItem) {
-                // console('compare:', 
-                //     existingItem, 
-                //     comixItem );
-                    return existingItem.id == comixItem.id();
+                // console.log('compare:',
+                //     existingItem.id(), 
+                //     comixItem.id() );
+                    return existingItem.id() == comixItem.id();
                 });
             if( !foundItem ){
                 vmComixManifest.manifest.push( comixItem );    
@@ -666,7 +666,6 @@ function setupRemotePage(domid, vm, aReq){
     ko.applyBindings( vm, element );
     amplify.request(aReq,{},function(response){
         if( response.status ){
-            console.log(response.page.content);
             vm.title( response.page.title );
             vm.content( response.page.content );
         }
