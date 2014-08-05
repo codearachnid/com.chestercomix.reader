@@ -83,10 +83,12 @@
                     </li>
                 </ul>
             </div>
-            <div>
-                <a href="#" onclick="window.open('http://www.chestercomix.com/north-american-geography/', '_system');" class="external">
-                    <img src="img/free-comic.gif" />
+            <div data-bind="foreach: modules">
+                <div>
+                <a href="#" data-bind="attr:{ onclick: link }" class="external">
+                    <img data-bind="attr:{src:image}" />
                 </a>
+                </div>
             </div>
         </div>
     </div>

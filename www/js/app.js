@@ -115,6 +115,21 @@ $$('.panel-left').on('open', function () {
     var element = document.getElementById('app-flyout-panel');
     ko.cleanNode( element );
     ko.applyBindings( vmAppSideNavigation, element );
+
+    amplify.request('remoteSidebar',{},function(response){
+        if( response.status ){
+            // console.log( response.sidebar );
+            $.each(response.sidebar, function(i, module){
+                vmAppSideNavigation.modules.push({
+                    title: module.title,
+                    image: module.image,
+                    link: "window.open('" + module.link + "', '_system')"
+                });
+                console.log(vmAppSideNavigation.modules());
+            });
+            
+        }
+    });
     // console.log( vmAppSideNavigation.bookshelf() );
 });
 $$('.logout').on('click', function () {
@@ -196,7 +211,8 @@ var vmAppTopNavigation = {
 var vmAppSideNavigation = {
     applied: false,
     authenticated: context.authenticated,
-    bookshelf: ko.observable(0)
+    bookshelf: ko.observable(0),
+    modules: ko.observableArray()
 };
 var vmPurchase = {
     owned: false,
@@ -358,6 +374,12 @@ var chesterComix = {
             type: "POST",
             cache: debugMode ? false : "persist"
         });
+        amplify.request.define("remoteSidebar", "ajax", {
+            url: "http://www.chestercomix.com/app/api/sidebar/",
+            dataType: "json",
+            type: "POST",
+            cache: debugMode ? false : "persist"
+        });
     },
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
@@ -373,7 +395,7 @@ var chesterComix = {
         }
 
         chesterComix.checkAuthentication();
-        fetchManifest()
+        fetchManifest();
         
         appFramework.onPageInit('index', function (page) {
             var element = document.getElementById('comix-index');
