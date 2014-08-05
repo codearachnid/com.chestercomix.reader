@@ -12,12 +12,16 @@
 	border-radius:0 0 5px 0!important;
 	border-left:none!important;
 }
-.theClaw{
+span.theClaw{
 	display: inline;
-	left: -45%;
-	position: absolute;
-	bottom: 5%;
-	z-index: 99999;
+	position: relative!!important;
+	text-align: left!important;
+	z-index: 99999!important;
+}
+span.theClaw img{
+	top: -45px;
+	/*left: 272px;*/
+	position: relative;
 }
 
 .alignright{
@@ -60,4 +64,7 @@
   padding: 0;
   text-align: center;
   font-weight: bold;
+}
+.photo-browser-caption{
+	display: none;
 }

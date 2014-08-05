@@ -499,6 +499,7 @@ function successLogin( response ){
     if( response.status ) {
         context.authenticated(true);
 
+        fetchManifest();
 
         amplify.request('userContext',{ UUID: context.UUID() }, function(newContext){
             if( newContext.status ) {
@@ -564,15 +565,20 @@ function gotoComixPage( data, event ){
             amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id() }, function (response) {
                 console.log(response);
                 var myPhotoBrowserStandalone = appFramework.photoBrowser({
+                    expositionHideCaptions: false,
                     photos : response.comix[0].panels,
                     onSlideChangeEnd: function(slider){
-                        console.log(slider);
+                        // console.log(slider);
                         if( response.comix[0].panels[ slider.activeSlideIndex ].link != '' && isEmptyElement($('.slider-slide-active').find('.theClaw')) ){
                             // console.log('show the claw');
-                            $('.slider-slide-active').find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="system"><img src="img/iCLAWscreen.png" /></a>');
+                            var activeSlide = $('.slider-slide-active');
+                            var alignLeft = activeSlide.find('.align-claw-to-this').position().left;
+                            console.log( activeSlide.find('.align-claw-to-this').position() );
+                            activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="system" class="external"><img src="img/iCLAWscreen.png" /></a>');
+                            activeSlide.find('.theClaw img').css({left:(alignLeft+8)+"px"});
                         }
                     },
-                    photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}"><span class="theClaw"></span></span></div>'
+                    photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this"><span class="theClaw"></span></span></div>'
                 });
                 myPhotoBrowserStandalone.open();
             });
