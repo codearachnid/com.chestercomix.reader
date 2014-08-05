@@ -1,4 +1,15 @@
-var debugMode = true;
+var qs = (function(a) {
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+        var p=a[i].split('=');
+        if (p.length != 2) continue;
+        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+})(window.location.search.substr(1).split('&'));
+var debugMode = qs['debug'] != 'undefined' ? Boolean(qs.debug) : false;
 var deviceMode = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
 
 var usStates = ko.observableArray([
@@ -107,7 +118,12 @@ $$('.panel-left').on('open', function () {
     // console.log( vmAppSideNavigation.bookshelf() );
 });
 $$('.logout').on('click', function () {
-
+    amplify.request('userLogout',{ UUID: context.UUID() },function(response){
+        context.authenticated(false);
+        context.UUID(false);
+        chesterComix.checkAuthentication();
+        appFramework.alert( response.message, 'Logout Successful' );
+    });
 });
 
 var paymentModal = '<div class="row no-gutter"><input type="text" placeholder="Credit Card" name="modal-cc" class="modal-text-input modal-text-input-double" /></div>' +
@@ -162,6 +178,7 @@ var context = {
     },
     purchaseAttempt: ko.observable('')
 };
+var emptyContext = context;
 var vmComixManifest = {
     manifest: ko.observableArray()
     
@@ -673,6 +690,5 @@ function setupRemotePage(domid, vm, aReq){
 }
 
 function isEmptyElement( el ){
-      return !$.trim(el.html())
-  }
-
+  return !$.trim(el.html())
+}
