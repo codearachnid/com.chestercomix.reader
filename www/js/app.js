@@ -533,6 +533,7 @@ function successLogin( response ){
                 context.user.billing_city( newContext.user.billing_city );
                 context.user.billing_state( newContext.user.billing_state );
                 context.user.billing_zip( newContext.user.billing_zip );
+                context.user.payment_id( newContext.user.payment_id );
             }
             // console.log("get userContext", newContext);
         });
@@ -613,12 +614,27 @@ function buyComix( data, event ){
     if( context.user.billing_zip() != '' ) {
         // console.log(context.comix.name());
         // console.log(data);
-        context.comix = data;
-        appFramework.modal({
-            title: paymentModalTitle,
-            afterText: paymentModal,
-            buttons: paymentModalButtons
+        if( context.user.payment_id() != '' ){
+            appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
+                context.comix = data;
+                appFramework.showIndicator();
+                amplify.request('submitPayment', { UUID: context.UUID(), ID: context.comix.id() }, function (submitResponse) {
+                    // console.log(submitResponse);
+                    if( submitResponse.status ) {
+                        successfulPurchase( submitResponse );
+                    } else {
+                        appFramework.alert(response.error.message,"Purchase Error");
+                    }
+                });
             });
+        } else {
+            context.comix = data;
+            appFramework.modal({
+                title: paymentModalTitle,
+                afterText: paymentModal,
+                buttons: paymentModalButtons
+                });
+        }
         
     } else {
         appMain.loadPage('account.html');
@@ -635,6 +651,7 @@ function buyComix( data, event ){
     }
 }
 function stripeRequestHandler (modal, index) {
+    appFramework.showIndicator();
     var cc = $(modal).find('.modal-text-input[name="modal-cc"]').val();
     var cvc = $(modal).find('.modal-text-input[name="modal-cvc"]').val();
     var expires = $(modal).find('.modal-text-input[name="modal-expires"]').val().split("/");
@@ -660,7 +677,7 @@ function stripeRequestHandler (modal, index) {
     }
 
     if( validated ){
-        appFramework.showIndicator();
+        // appFramework.showIndicator();
         Stripe.setPublishableKey(context.paymentKey.publish());
         Stripe.card.createToken({
           number: cc,
@@ -669,6 +686,7 @@ function stripeRequestHandler (modal, index) {
           exp_year: expYr
         }, stripeResponseHandler);
     } else {
+        appFramework.hideIndicator();
         appFramework.modal({
             title: paymentModalTitle,
             text: '<div class="error">' + errorMessage + '</div>',
@@ -692,15 +710,27 @@ function stripeResponseHandler(status, response){
   } else {
 
     amplify.request('submitPayment', { UUID: context.UUID(), token: response.id, ID: context.comix.id() }, function (submitResponse) {
-        console.log(submitResponse);
+        // console.log(submitResponse);
         if( submitResponse.status ) {
-            appFramework.hideIndicator();
-            context.comix.owned( 'true' );
-            gotoComixPage( context.comix );
+            successfulPurchase( submitResponse );
+        } else {
+            appFramework.alert(response.error.message,"Payment Error");
         }
     });
 
   }
+}
+
+function successfulPurchase( response ){
+    appFramework.hideIndicator();
+    context.comix.owned( 'true' );
+    appFramework.addNotification({
+        hold: 3000,
+        title: 'Successful purchase',
+        message: 'Thank you for purchasing the ' + context.comix.name() + '. Please wait while we load it for you now.',
+    });
+    appMain.loadPage('index.html');
+    gotoComixPage( context.comix );
 }
 
 function setupRemotePage(domid, vm, aReq){
