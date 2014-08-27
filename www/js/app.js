@@ -282,18 +282,23 @@ var chesterComix = {
     },
     bindRequests: function(){
 
+        var cacheExpire = {
+            type: "sqlite",
+            expires: 604800000 //900000
+        };
+
         amplify.request.define("comixManifest", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("comixRead", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("comixPayload", "ajax", {
@@ -304,49 +309,49 @@ var chesterComix = {
                 _ajaxSettings.url = decodeURIComponent(_ajaxSettings.data).replace('payloadURL=', '');
             },
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("userAuth", "ajax", {
             url: "http://www.chestercomix.com/app/api/user-user/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("userContext", "ajax", {
             url: "http://www.chestercomix.com/app/api/user-context/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("userLogout", "ajax", {
             url: "http://www.chestercomix.com/app/api/user-logout/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("getPaymentKey", "ajax", {
             url: "http://www.chestercomix.com/app/api/payment-key/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("submitPayment", "ajax", {
             url: "http://www.chestercomix.com/app/api/payment/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         amplify.request.define("remotePageAbout", "ajax", {
             url: "http://www.chestercomix.com/app/page/about/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
 
         // pages
@@ -354,31 +359,31 @@ var chesterComix = {
             url: "http://www.chestercomix.com/app/page/about/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
         amplify.request.define("remotePageAuthorBio", "ajax", {
             url: "http://www.chestercomix.com/app/page/authors-bio/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
         amplify.request.define("remotePageCredits", "ajax", {
             url: "http://www.chestercomix.com/app/page/credits/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
         amplify.request.define("remotePageLegal", "ajax", {
             url: "http://www.chestercomix.com/app/page/legal/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
         amplify.request.define("remoteSidebar", "ajax", {
             url: "http://www.chestercomix.com/app/api/sidebar/",
             dataType: "json",
             type: "POST",
-            cache: debugMode ? false : "persist"
+            cache: cacheExpire
         });
     },
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
