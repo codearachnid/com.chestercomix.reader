@@ -29,7 +29,8 @@
     <gap:plugin name="org.apache.cordova.geolocation" />
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="cc.fovea.plugins.inapppurchase" />
-    <gap:plugin name="com.millerjames01.sqlite-plugin" version="1.0.1" />
+    <gap:plugin name="com.brodysoft.sqliteplugin" />
+    <!--<gap:plugin name="com.millerjames01.sqlite-plugin" version="1.0.1" />-->
     <!-- <gap:plugin name="org.apache.cordova.network-information" /> -->
     <!-- <gap:plugin name="com.adobe.plugins.gaplugin" /> -->
     <!-- <gap:plugin name="de.appplant.cordova.plugin.background-mode" /> -->
