@@ -26,6 +26,9 @@ span.theClaw img{
 #comix-purchase .item-content .item-title-row{
   height: 48px;
 }
+#comix-purchase .list-block .item-text{
+  overflow: visible;
+}
 .alignright{
 	float: right;
   margin: 0 0 2.618em 1.618em;
