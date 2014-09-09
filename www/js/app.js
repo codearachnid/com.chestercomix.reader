@@ -642,7 +642,7 @@ function buyComix( data, event ){
                     if( submitResponse.status ) {
                         successfulPurchase( submitResponse );
                     } else {
-                        appFramework.alert(response.error.message,"Purchase Error");
+                        appFramework.alert(submitResponse.message,"Purchase Error");
                     }
                 });
             });
@@ -733,6 +733,7 @@ function stripeResponseHandler(status, response){
         if( submitResponse.status ) {
             successfulPurchase( submitResponse );
         } else {
+            appFramework.hideIndicator();
             appFramework.alert(response.error.message,"Payment Error");
         }
     });
