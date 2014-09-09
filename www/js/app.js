@@ -396,7 +396,8 @@ var chesterComix = {
         if( typeof device != 'undefined' )
             console.log(device);
 
-        if( deviceMode &&  typeof device != 'undefined' ) {
+        if( deviceMode && typeof device != 'undefined' ) {
+            alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
             context.UUID( device.uuid );
         } else {
             context.UUID( 'testbrowser' );
