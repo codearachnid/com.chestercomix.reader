@@ -16,11 +16,11 @@ amplify.sqlite = function() {
 		db: {
 			name: 'chestercomix.db',
 			version: '1.0',
-			display: 'Amplify Storage',
+			display: 'Chester Comix Storage',
 			size: 40000
 		},
 		table: {
-			store: "amplify_store"
+			store: "chestercomix_store"
 		}
 	}, userConfiguration);
 	// private object of prewritten queries used by this class.

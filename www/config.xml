@@ -42,6 +42,9 @@
     <!-- <preference name="permissions" value="none" /> -->
     <preference name="orientation" value="landscape" />
     <preference name="Fullscreen" value="true" />
+    <gap:config-file platform="ios" parent="UIStatusBarHidden" overwrite="true">
+        <true/>
+    </gap:config-file>
     <preference name="WebViewBounce" value="true" />
     <!-- <gap:platform name="android" /> -->
     <!-- <gap:platform name="ios" /> -->
@@ -85,7 +88,10 @@
     <gap:splash src="res/screen/android/chester-xhdpi.png" gap:platform="android" gap:density="xhdpi" />
     <gap:splash src="res/screen/ios/chester-ipad.png"     gap:platform="ios"     width="1024" height="768" />
     <gap:splash src="res/screen/ios/chester-iphone.png"     gap:platform="ios"     width="480" height="320" />
+    <gap:splash src="res/screen/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640"  height="1136" />
     <gap:splash src="res/screen/windows-phone/chester.jpg" gap:platform="winphone" />
+
+
 
 
 </widget>
