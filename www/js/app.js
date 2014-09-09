@@ -138,6 +138,7 @@ $$('.logout').on('click', function () {
         context.UUID(false);
         chesterComix.checkAuthentication();
         appFramework.alert( response.message, 'Logout Successful' );
+        navigator.app.exitApp();
     });
 });
 
