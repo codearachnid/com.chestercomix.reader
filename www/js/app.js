@@ -75,9 +75,7 @@ var usStates = ko.observableArray([
     {id:"WY",name: "Wyoming"}]);
 
 
-var appFramework = new Framework7({
-    cache: false
-});
+var appFramework = new Framework7();
 var $$ = Framework7.$;
 var appMain = appFramework.addView('.view-main', {
     // dynamicNavbar: true,
@@ -402,6 +400,7 @@ var chesterComix = {
             context.UUID( device.uuid );
         } else {
             context.UUID( 'testbrowser' );
+            // console.log(context.UUID());
         }
 
         chesterComix.checkAuthentication();
@@ -523,6 +522,7 @@ var chesterComix = {
                 appFramework.closeModal();
             } else {
                 appFramework.hidePreloader();
+                amplify.sqlite.instance.clear();
             }
         });
     }
