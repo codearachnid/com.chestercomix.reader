@@ -75,7 +75,9 @@ var usStates = ko.observableArray([
     {id:"WY",name: "Wyoming"}]);
 
 
-var appFramework = new Framework7();
+var appFramework = new Framework7({
+    cache: false
+});
 var $$ = Framework7.$;
 var appMain = appFramework.addView('.view-main', {
     // dynamicNavbar: true,
@@ -233,7 +235,8 @@ var vmRegister = {
 
 var vmAppSettings = {
     applied: false,
-    version: ko.observable()
+    version: ko.observable(),
+    clearLocalData: clearLocalData
 };
 var vmBookshelf = {
     applied: false,
@@ -454,6 +457,9 @@ var chesterComix = {
             vmAppTopNavigation.allowBack(false);
         });
         appFramework.onPageInit('settings', function (page) {
+            var element = document.getElementById('app-settings');
+            ko.cleanNode(element);
+            ko.applyBindings( vmAppSettings, element );
         });
         appFramework.onPageInit('register', function (page){
             var element = document.getElementById('app-register');
@@ -586,6 +592,12 @@ function fetchManifest(){
             }
         });
     });
+}
+
+function clearLocalData( data, event ){
+    amplify.sqlite.instance.clear();
+    alert('clear local data');
+    chesterComix.checkAuthentication();
 }
 
 function gotoComixPage( data, event ){
