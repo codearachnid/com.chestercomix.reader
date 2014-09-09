@@ -10,7 +10,7 @@ var qs = (function(a) {
     return b;
 })(window.location.search.substr(1).split('&'));
 var debugMode = qs['debug'] != 'undefined' ? Boolean(qs.debug) : false;
-var deviceMode = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
+var deviceMode = ( typeof device != 'undefined' ) ? true : false; //navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
 
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
