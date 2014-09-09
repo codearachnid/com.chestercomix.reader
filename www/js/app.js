@@ -118,6 +118,7 @@ $$('.panel-left').on('open', function () {
 
     amplify.request('remoteSidebar',{},function(response){
         if( response.status ){
+            vmAppSideNavigation.modules([]);
             // console.log( response.sidebar );
             $.each(response.sidebar, function(i, module){
                 vmAppSideNavigation.modules.push({
@@ -125,7 +126,7 @@ $$('.panel-left').on('open', function () {
                     image: module.image,
                     link: "window.open('" + module.link + "', '_system')"
                 });
-                console.log(vmAppSideNavigation.modules());
+                // console.log(vmAppSideNavigation.modules());
             });
             
         }
