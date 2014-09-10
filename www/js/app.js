@@ -290,6 +290,8 @@ var chesterComix = {
             expires: 604800000 //900000
         };
 
+        cacheExpire = false;
+
         amplify.request.define("comixManifest", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
             dataType: "json",
