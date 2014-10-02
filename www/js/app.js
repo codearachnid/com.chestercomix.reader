@@ -394,7 +394,7 @@ var chesterComix = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
-
+alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
         if( deviceMode ) {
             alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
             context.UUID( device.uuid );
