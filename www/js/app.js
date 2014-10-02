@@ -10,7 +10,8 @@ var qs = (function(a) {
     return b;
 })(window.location.search.substr(1).split('&'));
 var debugMode = qs['debug'] != 'undefined' ? Boolean(qs.debug) : false;
-var deviceMode = ( typeof device != 'undefined' ) ? true : false; //navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
+// var deviceMode = ( typeof device != 'undefined' ) ? true : false; //
+var deviceMode =navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
 
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
@@ -394,7 +395,7 @@ var chesterComix = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
-alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
+
         if( deviceMode ) {
             alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
             context.UUID( device.uuid );
