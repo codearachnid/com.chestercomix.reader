@@ -395,9 +395,10 @@ var chesterComix = {
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
 
-        if( typeof device != 'undefined' )
+        if( typeof device != 'undefined' ){
             console.log(device);
-alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid + "|" + deviceMode);
+            alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid + "|" + deviceMode);
+        }
         if( deviceMode && typeof device != 'undefined' ) {
             alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
             context.UUID( device.uuid );
