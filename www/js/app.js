@@ -404,13 +404,11 @@ var chesterComix = {
         }
 
         chesterComix.checkAuthentication();
-        fetchManifest();
         
         appFramework.onPageInit('index', function (page) {
             var element = document.getElementById('comix-index');
             ko.cleanNode(element);
             ko.applyBindings( vmComixIndex, element );
-            fetchManifest();    
         });
         appFramework.onPageInit('bookshelf', function (page) { 
             var element = document.getElementById('comix-bookshelf');
