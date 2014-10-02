@@ -397,7 +397,7 @@ var chesterComix = {
     onDeviceReady: function () {
 
         if( deviceMode ) {
-            alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
+            // alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
             context.UUID( device.uuid );
         } else {
             context.UUID( 'testbrowser' );
@@ -594,7 +594,7 @@ function fetchManifest(){
 
 function clearLocalData( data, event ){
     amplify.sqlite.instance.clear();
-    alert('clear local data');
+    appFramework.alert('Successfully cleared local data', 'Data Cleared');
     chesterComix.checkAuthentication();
 }
 
