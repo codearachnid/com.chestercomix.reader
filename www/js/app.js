@@ -96,6 +96,28 @@ $$('.prompt-register').on('click', function () {
     appMain.loadPage('register.html');
     appFramework.closeModal();
 });
+$$('.prompt-forgot-password').on('click', function () {
+    var modalTitle = 'Password Reset';
+    appFramework.prompt('What is your registered email?', modalTitle + " Request", function (email) {
+        if( email == '' ) {
+            appFramework.alert( "You must supply a valid email to reset your password.", modalTitle + " Failure" );
+        } else {
+            appFramework.showPreloader('requesting reset');
+            amplify.request('userPasswordReset',{ u: email }, function(response){
+                appFramework.hidePreloader();
+                if( response.status ) {
+                    appFramework.addNotification({
+                        hold: 3000,
+                        title: modalTitle + " Success",
+                        message: 'You will receive an email at "' + email + '" with a link to change your password. Thank you for supporting Chester Comix!',
+                    });
+                } else {
+                    appFramework.alert( response.message, modalTitle + ' Failed' );
+                }
+            });
+        }
+    });
+});
 $$('#signin-button').on('click', function () {
     var pageContainer = $$('.login-screen');
     var username = pageContainer.find('input[name="email"]').val();
@@ -323,6 +345,13 @@ var chesterComix = {
             dataType: "json",
             type: "POST",
             cache: cacheExpire
+        });
+
+        amplify.request.define("userPasswordReset", "ajax", {
+            url: "http://www.chestercomix.com/app/api/user-password-reset/",
+            dataType: "json",
+            type: "POST",
+            cache: false
         });
 
         amplify.request.define("userContext", "ajax", {
