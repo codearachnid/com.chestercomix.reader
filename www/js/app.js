@@ -593,7 +593,7 @@ function successLogin( response ){
 
 function fetchManifest(){
     var bookshelf = 0;
-    amplify.request("comixManifest", { UUID: context.UUID() }, function (response) {
+    amplify.request("comixManifest", { UUID: context.UUID(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
         // console.log(response);
         jQuery.each(response.comix, function (i, comix) {
             var comixItem = new comixObject(
@@ -631,8 +631,8 @@ function gotoComixPage( data, event ){
         context.comix = data;
         if( data.owned() == 'true'){
             // console.log(data);
-            amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id() }, function (response) {
-                console.log(response);
+            amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
+                // console.log(response);
                 var myPhotoBrowserStandalone = appFramework.photoBrowser({
                     expositionHideCaptions: false,
                     photos : response.comix[0].panels,
@@ -664,7 +664,7 @@ function buyComix( data, event ){
             appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
                 context.comix = data;
                 appFramework.showIndicator();
-                amplify.request('submitPayment', { UUID: context.UUID(), ID: context.comix.id() }, function (submitResponse) {
+                amplify.request('submitPayment', { UUID: context.UUID(), ID: context.comix.id(), res: { w: $(window).width(), h: $(window).height() } }, function (submitResponse) {
                     // console.log(submitResponse);
                     if( submitResponse.status ) {
                         successfulPurchase( submitResponse );
