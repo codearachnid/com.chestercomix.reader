@@ -13,9 +13,9 @@
 	border-left:none!important;
 }
 span.theClaw{
-	display: inline;
-	position: relative!!important;
-	text-align: left!important;
+	display: block;
+	position: absolute!important;
+	/*text-align: left!important;*/
 	z-index: 99999!important;
 }
 span.theClaw img{
