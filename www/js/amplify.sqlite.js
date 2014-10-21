@@ -440,7 +440,7 @@ amplify.sqlite = function() {
 	}
 
 	function desanitize(data) {
-		return JSON.parse(data.replace("&#39;", "'"));
+		return JSON.parse(data.replace(/&#39;/, "'"));
 	}
 
 	function getType(variable) {

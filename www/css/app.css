@@ -73,3 +73,13 @@ span.theClaw img{
 .photo-browser-caption{
 	display: none;
 }
+.tabbar a.tab-link, .tabbar a.link{
+  display: -webkit-box;
+}
+.tabbar a.tab-link span, 
+.tabbar a.link span,
+.tabbar a.tab-link i, 
+.tabbar a.link i{
+  display: inline-block;
+  color:#007aff;
+}
