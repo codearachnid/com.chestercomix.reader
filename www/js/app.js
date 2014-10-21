@@ -652,7 +652,7 @@ function gotoComixPage( data, event ){
                 // console.log(response);
                 var myPhotoBrowserStandalone = appFramework.photoBrowser({
                     expositionHideCaptions: false,
-                    lazyLoading: true,
+                    // lazyLoading: true,
                     toolbarTemplate: '<div class="toolbar tabbar"><div class="toolbar-inner"><a href="#" class="link photo-browser-prev"><i class="icon icon-prev"></i> <span>Previous</span></a><a href="#" class="link photo-browser-next"><span>Next</span> <i class="icon icon-next"></i></a></div></div>',
                     photos : response.comix[0].panels,
                     onSlideChangeEnd: function(slider){
@@ -660,13 +660,16 @@ function gotoComixPage( data, event ){
                         if( response.comix[0].panels[ slider.activeSlideIndex ].link != '' && isEmptyElement($('.slider-slide-active').find('.theClaw')) ){
                             // console.log('show the claw');
                             var activeSlide = $('.slider-slide-active');
-                            var alignLeft = activeSlide.find('.align-claw-to-this').position().left;
-                            if( activeSlide.find('.align-claw-to-this').attr('alt') == '' ){
-                                activeSlide.find('.align-claw-to-this').attr('alt', response.comix[0].panels[ slider.activeSlideIndex ].caption );
+                            var position = activeSlide.find('.align-claw-to-this').position();
+                            if( position ) {
+                                // var alignLeft = position.left;
+                                if( activeSlide.find('.align-claw-to-this').attr('alt') == '' ){
+                                    activeSlide.find('.align-claw-to-this').attr('alt', response.comix[0].panels[ slider.activeSlideIndex ].caption );
+                                }
+                                // console.log( activeSlide.find('.align-claw-to-this').position() );
+                                activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="system" class="external"><img src="img/iCLAWscreen.png" /></a>');
+                                activeSlide.find('.theClaw img').css({left:(position.left+8)+"px"});
                             }
-                            // console.log( activeSlide.find('.align-claw-to-this').position() );
-                            activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="system" class="external"><img src="img/iCLAWscreen.png" /></a>');
-                            activeSlide.find('.theClaw img').css({left:(alignLeft+8)+"px"});
                             var resumeContext = {
                                 comix: context.comix,
                                 slide: slider.activeSlideIndex
@@ -674,7 +677,7 @@ function gotoComixPage( data, event ){
                             amplify.sqlite.instance.put('onResumeGoTo', resumeContext, 86400000 ); // save state for 24 hours
                         }
                     },
-                    photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this" alt=""><span class="theClaw"></span></span></div>'
+                    photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this"><span class="theClaw"></span></span></div>'
                 });
                 myPhotoBrowserStandalone.open();
             });
