@@ -1,5 +1,5 @@
 .logo{
-	max-height:90%;
+	max-height:40px; /* 90%; */
 	margin-right:10px;
 }
 .modal-text-input-double-left{

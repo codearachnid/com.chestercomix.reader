@@ -30,6 +30,7 @@
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="cc.fovea.plugins.inapppurchase" />
     <gap:plugin name="com.brodysoft.sqliteplugin" />
+    <gap:plugin name="com.phonegap.plugins.childbrowser" />
     <!--<gap:plugin name="com.millerjames01.sqlite-plugin" version="1.0.1" />-->
     <!-- <gap:plugin name="org.apache.cordova.network-information" /> -->
     <!-- <gap:plugin name="com.adobe.plugins.gaplugin" /> -->
