@@ -27,9 +27,10 @@
     <gap:plugin name="org.apache.cordova.device-orientation" />
     <gap:plugin name="org.apache.cordova.file" />
     <gap:plugin name="org.apache.cordova.geolocation" />
-    <!-- <gap:plugin name="org.apache.cordova.inappbrowser" /> -->
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
     <!-- <gap:plugin name="com.phonegap.plugins.childbrowser" /> -->
-    <gap:plugin name="org.li8.inappbrowser" />
+    <!-- <gap:plugin name="org.li8.inappbrowser" /> -->
+    <!-- <gap:plugin name="com.surfernetwork.startapp" /> -->
     <gap:plugin name="cc.fovea.plugins.inapppurchase" />
     <gap:plugin name="com.brodysoft.sqliteplugin" />
     
