@@ -147,7 +147,8 @@ $$('.panel-left').on('open', function () {
                 vmAppSideNavigation.modules.push({
                     title: module.title,
                     image: module.image,
-                    link: "window.plugins.ChildBrowser.showWebPage('" + module.link + "', { showLocationBar: true })"
+                    link: "window.open('" + module.link + "', '_blank', 'location=yes&toolbar=yes')"
+                    // link: "window.plugins.ChildBrowser.showWebPage('" + module.link + "', { showLocationBar: true })"
                     // link: "window.open('" + module.link + "', '_system')"
                 });
                 // console.log(vmAppSideNavigation.modules());
