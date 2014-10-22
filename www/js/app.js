@@ -134,6 +134,10 @@ $$('#signin-button').on('click', function () {
         }
     });
 });
+$$('.open-external').on('click', function () {
+    console.log('open external');
+    appFramework.popup('.popup-external');
+});
 function openDeviceBrowser(externalLinkToOpen){
     window.open(externalLinkToOpen, '_system', 'location=no');
 }
@@ -150,7 +154,8 @@ $$('.panel-left').on('open', function () {
                 vmAppSideNavigation.modules.push({
                     title: module.title,
                     image: module.image,
-                    link: "window.open('" + module.link + "', '_blank', 'location=yes')"
+                    link: module.link
+                    // link: "window.open('" + module.link + "', '_blank', 'location=yes')"
                     // link: "openDeviceBrowser('" + module.link + "')"
                     // link: "navigator.startApp.start('" + module.link + "')"
                     // link: (navigator.userAgent.match(/Android/i)) == "Android" ?  "navigator.app.loadUrl('" + module.link + "', { openExternal:true })" : "window.open('" + module.link + "', '_system', 'location=yes&toolbar=yes')"
@@ -668,7 +673,9 @@ function gotoComixPage( data, event ){
                                     activeSlide.find('.align-claw-to-this').attr('alt', response.comix[0].panels[ slider.activeSlideIndex ].caption );
                                 }
                                 // console.log( activeSlide.find('.align-claw-to-this').position() );
-                                activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="system" class="external"><img src="img/iCLAWscreen.png" /></a>');
+                                //  data-popup=".popup-about" class="open-external"
+                                // activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" data-popup=".popup-external" class="open-external"><img src="img/iCLAWscreen.png" /></a>');
+                                activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="_system" class="external"><img src="img/iCLAWscreen.png" /></a>');
                                 activeSlide.find('.theClaw img').css({left:(position.left+8)+"px"});
                             }
                             var resumeContext = {
