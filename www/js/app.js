@@ -156,11 +156,11 @@ $$('.panel-left').on('open', function () {
                     image: module.image,
                     // link: module.link
                     // link: "window.open('" + module.link + "', '_blank', 'location=yes')"
-                    // link: "openDeviceBrowser('" + module.link + "')"
+                    link: "openDeviceBrowser('" + module.link + "')"
                     // link: "navigator.startApp.start('" + module.link + "')"
                     // link: (navigator.userAgent.match(/Android/i)) == "Android" ?  "navigator.app.loadUrl('" + module.link + "', { openExternal:true })" : "window.open('" + module.link + "', '_system', 'location=yes&toolbar=yes')"
                     // link: "window.plugins.ChildBrowser.showWebPage('" + module.link + "', { showLocationBar: true })"
-                    link: "window.open('" + module.link + "', '_system')"
+                    // link: "window.open('" + module.link + "', '_system')"
                 });
                 // console.log(vmAppSideNavigation.modules());
             });
@@ -686,7 +686,7 @@ function gotoComixPage( data, event ){
                             var position = activeSlide.find('.align-claw-to-this').position();
                             if( position ) {
                                 // activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" data-popup=".popup-external" class="open-external"><img src="img/iCLAWscreen.png" /></a>');
-                                activeSlide.find('.theClaw').html('<a href="#" onClick="openDeviceBrowser(' + response.comix[0].panels[ slider.activeSlideIndex ].link + ')"><img src="img/iCLAWscreen.png" /></a>');
+                                activeSlide.find('.theClaw').html('<a href="#" onclick="openDeviceBrowser(\'' + response.comix[0].panels[ slider.activeSlideIndex ].link + '\')"><img src="img/iCLAWscreen.png" /></a>');
                                 // activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="_system" class="external"><img src="img/iCLAWscreen.png" /></a>');
                                 activeSlide.find('.theClaw img').css({left:(position.left+8)+"px"});
                             }
