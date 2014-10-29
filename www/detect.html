@@ -1,0 +1,33 @@
+<div id="remotePage-detect" class="page" data-page="detect">
+	<div class="page-content">
+		<div class="content-block-title" data-bind="text: title"></div>
+		<div class="content-block">
+			<div class="content-block-inner" data-bind="html: content"></div>
+		</div>
+		<div class="content-block-title">Read your comix with unlocked screens!</div>
+		<div class="content-block">
+			<div class="content-block-inner">
+				<div id="comix-manifest" class="list-block media-list">
+					<ul data-bind="foreach: manifest">
+						<!-- ko if: unlocked() == 'true' -->
+	                    <li>
+	                        <a href="#" class="item-link item-content" data-bind="click:$root.gotoComix">
+	                            <div class="item-media">
+	                                <img data-bind="attr:{src:thumb}" width="80">
+	                            </div>
+	                            <div class="item-inner">
+	                                <div class="item-title-row">
+	                                    <div class="item-title" data-bind="text: name"></div>
+	                                    <div class="item-after">Read Now</div>
+	                                </div>
+	                                <div class="item-text" data-bind="text: description"></div>
+	                            </div>
+	                        </a>
+	                    </li>
+	                    <!-- /ko -->
+	                </ul>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

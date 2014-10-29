@@ -134,8 +134,11 @@ $$('#signin-button').on('click', function () {
         }
     });
 });
+$$('.photo-browser-first').on('click',function(){
+
+});
 $$('.open-external').on('click', function () {
-    console.log('open external');
+    // console.log('open external');
     appFramework.popup('.popup-external');
 });
 function openDeviceBrowser(externalLinkToOpen){
@@ -197,12 +200,14 @@ var paymentModalButtons = [
 
 
 
-var comixObject = function(id, name, description, thumb, featured, owned){
+var comixObject = function(id, name, description, thumb, featured, owned, unlocked){
+    unlocked = unlocked || false;
     owned = owned || false;
     return {
         thumb: ko.observable( thumb ),
         id: ko.observable( id ),
         owned: ko.observable( owned ),
+        unlocked: ko.observable( unlocked ),
         name: ko.observable( name ),
         featured: ko.observable( featured ),
         description: ko.observable( description )
@@ -295,6 +300,11 @@ var vmRemotePageLegal = {
     content: ko.observable()
 };
 
+var vmRemotePageDetect = {
+    manifest: vmComixManifest.manifest,
+    title: ko.observable(),
+    content: ko.observable()
+};
 
 var chesterComix = {
     init: function () {
@@ -353,6 +363,13 @@ var chesterComix = {
             cache: cacheExpire
         });
 
+        amplify.request.define("userDetect", "ajax", {
+            url: "http://www.chestercomix.com/app/api/user-detect/",
+            dataType: "json",
+            type: "POST",
+            cache: cacheExpire
+        });
+
         amplify.request.define("userAuth", "ajax", {
             url: "http://www.chestercomix.com/app/api/user-user/",
             dataType: "json",
@@ -397,6 +414,13 @@ var chesterComix = {
 
         amplify.request.define("remotePageAbout", "ajax", {
             url: "http://www.chestercomix.com/app/page/about/",
+            dataType: "json",
+            type: "POST",
+            cache: cacheExpire
+        });
+
+        amplify.request.define("remotePageDetect", "ajax", {
+            url: "http://www.chestercomix.com/app/page/detect/",
             dataType: "json",
             type: "POST",
             cache: cacheExpire
@@ -532,6 +556,38 @@ var chesterComix = {
             appFramework.closePanel();
         });
 
+        appFramework.onPageBeforeAnimation('detect', function (page) {
+            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+            setupRemotePage('remotePage-detect', vmRemotePageDetect, 'remotePageDetect');
+        });
+        function geolocationSuccess(position){
+            appFramework.showPreloader('checking your location to unlock new screens...');
+            amplify.request('userDetect',{ UUID: context.UUID(), longitude: position.coords.longitude, latitude: position.coords.latitude }, function(response){
+                if( response.status ) {
+                    if( response.user_new_comix_ids.length > 0 ){
+                        fetchManifest();
+                        $.each( vmRemotePageDetect.manifest(), function(key, value){
+                            console.log('checking', value.id(), response.user_owned_unlocked_comix_ids);
+                            if( $.inArray( value.id(), response.user_owned_unlocked_comix_ids ) ){
+                                vmRemotePageDetect.manifest()[ key ].unlocked( true );
+                            }
+                        });
+                        // vmRemotePageDetect.manifest = vmComixManifest.manifest;
+                        // console.log(vmRemotePageDetect.manifest);
+                    }
+                    appFramework.hidePreloader();
+                    // appFramework.closeModal();
+                } else {
+                    appFramework.hidePreloader();
+                    appFramework.alert( response.message, 'Failed detecting your current location' );
+                }
+            });
+        }
+        function geolocationError(error){
+            appFramework.hidePreloader();
+            appFramework.alert( error.message, 'Failed detecting your current location '+ error.code );
+        }
+
         // remote pages
         appFramework.onPageBeforeAnimation('about', function (page) {
             setupRemotePage('remotePage-about', vmRemotePageAbout, 'remotePageAbout');
@@ -624,7 +680,8 @@ function fetchManifest(){
                 comix.description,
                 comix.thumb,
                 comix.featured,
-                comix.owned
+                comix.owned,
+                comix.unlocked
                 ) ;
             if( comix.owned.toString() == 'true' ){
                 bookshelf++;
@@ -659,7 +716,7 @@ function gotoComixPage( data, event ){
                 var myPhotoBrowserStandalone = appFramework.photoBrowser({
                     expositionHideCaptions: false,
                     // lazyLoading: true,
-                    toolbarTemplate: '<div class="toolbar tabbar"><div class="toolbar-inner"><a href="#" class="link photo-browser-prev"><i class="icon icon-prev"></i> <span>Previous</span></a><a href="#" class="link photo-browser-next"><span>Next</span> <i class="icon icon-next"></i></a></div></div>',
+                    toolbarTemplate: '<div class="toolbar tabbar"><div class="toolbar-inner"><!--<a href="#" class="link photo-browser-index"><i class="icon-iconmonstr-arrow-48-icon icon-direction-rotate-180"></i> <span>First</span></a>--><a href="#" class="link photo-browser-prev"><i class="icon-iconmonstr-arrow-37-icon icon-direction-rotate-180"></i> <span>Previous</span></a><a href="#" class="link photo-browser-next"><span>Next</span> <i class="icon-iconmonstr-arrow-37-icon"></i></a></div></div>',
                     photos : response.comix[0].panels,
                     onOpen: function(){
                         var activeSlide = $('.slider-slide-active');
