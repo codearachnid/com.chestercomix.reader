@@ -12,6 +12,7 @@ var qs = (function(a) {
 var debugMode = qs['debug'] != 'undefined' ? Boolean(qs.debug) : false;
 // var deviceMode = ( typeof device != 'undefined' ) ? true : false; //
 var deviceMode =navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
+var myPhotoBrowserStandalone = null;
 
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
@@ -133,9 +134,6 @@ $$('#signin-button').on('click', function () {
             appFramework.alert( response.message, 'Login Attempt Failed' );
         }
     });
-});
-$$('.photo-browser-first').on('click',function(){
-
 });
 $$('.open-external').on('click', function () {
     // console.log('open external');
@@ -336,7 +334,7 @@ var chesterComix = {
             expires: 604800000 //900000
         };
 
-        cacheExpire = false;
+        // cacheExpire = false;
 
         amplify.request.define("comixManifest", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
@@ -713,27 +711,47 @@ function gotoComixPage( data, event ){
             // console.log(data);
             amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
                 // console.log(response);
-                var myPhotoBrowserStandalone = appFramework.photoBrowser({
+                myPhotoBrowserStandalone = appFramework.photoBrowser({
                     expositionHideCaptions: false,
                     // lazyLoading: true,
-                    toolbarTemplate: '<div class="toolbar tabbar"><div class="toolbar-inner"><!--<a href="#" class="link photo-browser-index"><i class="icon-iconmonstr-arrow-48-icon icon-direction-rotate-180"></i> <span>First</span></a>--><a href="#" class="link photo-browser-prev"><i class="icon-iconmonstr-arrow-37-icon icon-direction-rotate-180"></i> <span>Previous</span></a><a href="#" class="link photo-browser-next"><span>Next</span> <i class="icon-iconmonstr-arrow-37-icon"></i></a></div></div>',
+                    toolbarTemplate: '<div class="toolbar tabbar"><div class="toolbar-inner"><a href="#" class="link photo-browser-index photo-browser-link-inactive"><i class="icon-iconmonstr-arrow-48-icon icon-direction-rotate-180"></i> <span>First</span></a><a href="#" class="link photo-browser-prev"><i class="icon-iconmonstr-arrow-37-icon icon-direction-rotate-180"></i> <span>Previous</span></a><a href="#" class="link photo-browser-next"><span>Next</span> <i class="icon-iconmonstr-arrow-37-icon"></i></a></div></div>',
                     photos : response.comix[0].panels,
-                    onOpen: function(){
+                    onOpen: function(photobrowser){
                         var activeSlide = $('.slider-slide-active');
                         if( activeSlide.find('.align-claw-to-this').attr('alt') == '' ){
                             activeSlide.find('.align-claw-to-this').attr('alt',  response.comix[0].description );
                         }
+
+                        setTimeout(function(){
+                            console.log('get onResumeGoTo_' +  data.id());
+                            amplify.sqlite.instance.get('onResumeGoTo_' +  data.id() ).done(function( slideContext ){
+                                console.log('onResumeGoTo_',slideContext);
+                                photobrowser.open( slideContext.slide );
+                            });
+                            $$('.photo-browser-index').on('click',function(){
+                                photobrowser.open( 0 );
+                            });
+                        },500);
+
+                        
                     },
                     onSlideChangeEnd: function(slider){
 
                         var activeSlide = $('.slider-slide-active');
 
+                        if( slider.activeSlideIndex > 0 ){
+                            $(".photo-browser-index").removeClass('photo-browser-link-inactive');
+                        } else {
+                            $(".photo-browser-index").addClass('photo-browser-link-inactive');
+                        }
+
 
                         if( activeSlide.find('.align-claw-to-this').attr('alt') == '' ){
                             var caption = response.comix[0].panels[ slider.activeSlideIndex ].caption;
-                            if( caption == '' ) {
-                                caption = 'Slide ' + slider.activeSlideIndex;
-                            }
+                            // REDACTED below to keep caption blank if there is none
+                            // if( caption == '' ) {
+                            //     caption = 'Slide ' + slider.activeSlideIndex;
+                            // }
                             activeSlide.find('.align-claw-to-this').attr('alt',  caption );
                         }
 
@@ -755,7 +773,8 @@ function gotoComixPage( data, event ){
                             comix: context.comix,
                             slide: slider.activeSlideIndex
                         };
-                        amplify.sqlite.instance.put('onResumeGoTo', resumeContext, 86400000 ); // save state for 24 hours
+                        console.log('save onResumeGoTo_' +  data.id());
+                        amplify.sqlite.instance.put('onResumeGoTo_' +  data.id(), resumeContext, 2592000000 ); // save state for 30 days
                     },
                     photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this" alt="" ><span class="theClaw"></span></span></div>'
                 });
