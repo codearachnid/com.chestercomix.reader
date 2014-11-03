@@ -57,15 +57,14 @@ amplify.sqlite = function() {
 				key: key
 			}
 		});
-		execute(self.sprintf(sql.SELECT, options)).done(function(result,
-			sql) {
+		// console.log(self.sprintf(sql.SELECT, options));
+		execute(self.sprintf(sql.SELECT, options)).done(function(result, sql) {
 			// return first raw result
 			var response = "";
 			// always assume that we only want the first row
 			if (result.rows.length > 0) {
 				var row = parseRow(result.rows.item(0));
-				if (row.expiration > Date.now() || row.expiration ==
-					0) {
+				if (row.expiration > Date.now() || row.expiration == 0) {
 					response = row.data;
 				}
 			}
@@ -75,6 +74,7 @@ amplify.sqlite = function() {
 			//     var row = parseRow( result.rows.item(i) );
 			//     response.push( row.data );
 			// }  
+			console.log(result,response,sql);
 			if (response != "") {
 				deferred.resolve(response);
 			} else {
@@ -117,20 +117,14 @@ amplify.sqlite = function() {
 		clean().done(function() {
 			self.get(key).done(function(response) {
 				// update existing record
-				execute(self.sprintf(sql.UPDATE,
-					options)).done(function(result,
-					sql) {
-					deferred.resolve(result,
-						sql);
+				execute(self.sprintf(sql.UPDATE, options)).done(function(result, sql) {
+					deferred.resolve(result, sql);
 				});
 			}).fail(function(error) {
 				if (error.code == 404) {
 					// insert since no record found
-					execute(self.sprintf(sql.INSERT,
-						options)).done(function(
-						result, sql) {
-						deferred.resolve(result,
-							sql);
+					execute(self.sprintf(sql.INSERT, options)).done(function( result, sql) {
+						deferred.resolve(result, sql);
 					});
 				} else {
 					deferred.reject(error);

@@ -334,7 +334,7 @@ var chesterComix = {
             expires: 604800000 //900000
         };
 
-        // cacheExpire = false;
+        cacheExpire = false;
 
         amplify.request.define("comixManifest", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
@@ -554,9 +554,9 @@ var chesterComix = {
             appFramework.closePanel();
         });
 
-        appFramework.onPageBeforeAnimation('detect', function (page) {
-            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+        appFramework.onPageInit('detect', function (page) {
             setupRemotePage('remotePage-detect', vmRemotePageDetect, 'remotePageDetect');
+            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
         });
         function geolocationSuccess(position){
             appFramework.showPreloader('checking your location to unlock new screens...');
@@ -565,9 +565,9 @@ var chesterComix = {
                     if( response.user_new_comix_ids.length > 0 ){
                         fetchManifest();
                         $.each( vmRemotePageDetect.manifest(), function(key, value){
-                            console.log('checking', value.id(), response.user_owned_unlocked_comix_ids);
-                            if( $.inArray( value.id(), response.user_owned_unlocked_comix_ids ) ){
-                                vmRemotePageDetect.manifest()[ key ].unlocked( true );
+                            if( $.inArray( value.id(), response.user_owned_unlocked_comix_ids ) > -1 ){
+                                console.log('unlocking', value.id(), response.user_owned_unlocked_comix_ids, vmRemotePageDetect.manifest()[ key ]);
+                                vmRemotePageDetect.manifest()[ key ].unlocked( "true" );
                             }
                         });
                         // vmRemotePageDetect.manifest = vmComixManifest.manifest;
@@ -725,7 +725,7 @@ function gotoComixPage( data, event ){
                         setTimeout(function(){
                             console.log('get onResumeGoTo_' +  data.id());
                             amplify.sqlite.instance.get('onResumeGoTo_' +  data.id() ).done(function( slideContext ){
-                                console.log('onResumeGoTo_',slideContext);
+                                console.log('set new onResumeGoTo_',slideContext);
                                 photobrowser.open( slideContext.slide );
                             });
                             $$('.photo-browser-index').on('click',function(){
@@ -773,8 +773,9 @@ function gotoComixPage( data, event ){
                             comix: context.comix,
                             slide: slider.activeSlideIndex
                         };
-                        console.log('save onResumeGoTo_' +  data.id());
-                        amplify.sqlite.instance.put('onResumeGoTo_' +  data.id(), resumeContext, 2592000000 ); // save state for 30 days
+                        amplify.sqlite.instance.put('onResumeGoTo_' +  data.id(), resumeContext, 2592000000 ).done(function(){
+                            // console.log('save onResumeGoTo_' +  data.id());
+                        }); // save state for 30 days
                     },
                     photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this" alt="" ><span class="theClaw"></span></span></div>'
                 });
