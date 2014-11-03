@@ -566,7 +566,7 @@ var chesterComix = {
                         fetchManifest();
                         $.each( vmRemotePageDetect.manifest(), function(key, value){
                             if( $.inArray( value.id(), response.user_owned_unlocked_comix_ids ) > -1 ){
-                                console.log('unlocking', value.id(), response.user_owned_unlocked_comix_ids, vmRemotePageDetect.manifest()[ key ]);
+                                // console.log('unlocking', value.id(), response.user_owned_unlocked_comix_ids, vmRemotePageDetect.manifest()[ key ]);
                                 vmRemotePageDetect.manifest()[ key ].unlocked( "true" );
                             }
                         });
@@ -773,8 +773,8 @@ function gotoComixPage( data, event ){
                             comix: context.comix,
                             slide: slider.activeSlideIndex
                         };
-                        amplify.sqlite.instance.put('onResumeGoTo_' +  data.id(), resumeContext, 2592000000 ).done(function(){
-                            // console.log('save onResumeGoTo_' +  data.id());
+                        amplify.sqlite.instance.put('onResumeGoTo_' +  data.id(), resumeContext, 0 ).done(function(){
+                            console.log('save onResumeGoTo_' +  data.id(),resumeContext);
                         }); // save state for 30 days
                     },
                     photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this" alt="" ><span class="theClaw"></span></span></div>'

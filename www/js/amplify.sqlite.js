@@ -74,7 +74,7 @@ amplify.sqlite = function() {
 			//     var row = parseRow( result.rows.item(i) );
 			//     response.push( row.data );
 			// }  
-			console.log(result,response,sql);
+			// console.log(result,response,sql);
 			if (response != "") {
 				deferred.resolve(response);
 			} else {
