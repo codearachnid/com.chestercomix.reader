@@ -719,7 +719,7 @@ function generateGoogleMap(){
                 var locLatlng = new google.maps.LatLng(location.lat,location.lng);
                 var locName = ( location.locName != '') ? location.name + ': ' + location.locName: location.name;
                 var infowindow = new google.maps.InfoWindow({
-                      content: '<h3>' + locName + '</h3><div>' + location.description + '</div>'
+                      content: '<div class="gmapInfoBox"><h3 class="clickGoToComix" onclick="loadComixByID(' + location.ID + ')">' + locName + '</h3><div>' + location.description + '</div></div>'
                   });
                 var marker = new google.maps.Marker({
                     position: locLatlng,
@@ -729,7 +729,15 @@ function generateGoogleMap(){
                 google.maps.event.addListener(marker, 'click', function() {
                     infowindow.open(map,marker);
                   });
+
+                // if( key == response.locations.length-1 ){
+                //     $('.clickGoToComix').on('click', function (instance) {
+                //         alert( 'goto: ' + $(instance).attr('data-id') );
+                //     });
+                // }
             });
+
+
         }
     });
 }
@@ -820,6 +828,16 @@ function gotoComixPage( data, event ){
         } else {
             appMain.loadPage('purchase.html');
         }
+}
+
+function loadComixByID( cID ){
+    $.each(vmComixManifest.manifest(), function( key, comix ){
+        if( comix.id() == cID ){
+            console.log('load comix: ', comix.name());
+            gotoComixPage(comix);
+        }
+    });
+    // gotoComixPage
 }
 
 function buyComix( data, event ){

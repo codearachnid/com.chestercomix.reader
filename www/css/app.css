@@ -1,7 +1,11 @@
 #map-canvas{
   height:350px;
-  width:75%;
+  width:85%;
   margin: 0 auto;
+}
+#map-canvas .gmapInfoBox{
+  max-width: 300px;
+  max-height: 175px;
 }
 
 .logo{
