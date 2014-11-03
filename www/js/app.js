@@ -350,6 +350,13 @@ var chesterComix = {
             cache: cacheExpire
         });
 
+        amplify.request.define("comixLocations", "ajax", {
+            url: "http://www.chestercomix.com/app/api/locations/",
+            dataType: "json",
+            type: "POST",
+            cache: cacheExpire
+        });
+
         amplify.request.define("comixPayload", "ajax", {
             url: "http://www.chestercomix.com/app/api/comix/",
             dataType: "json",
@@ -557,6 +564,7 @@ var chesterComix = {
         appFramework.onPageInit('detect', function (page) {
             setupRemotePage('remotePage-detect', vmRemotePageDetect, 'remotePageDetect');
             navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+            generateGoogleMap();
         });
         function geolocationSuccess(position){
             appFramework.showPreloader('checking your location to unlock new screens...');
@@ -695,6 +703,34 @@ function fetchManifest(){
                 vmComixManifest.manifest.push( comixItem );    
             }
         });
+    });
+}
+
+function generateGoogleMap(){
+    amplify.request('comixLocations',function( response ){
+        if( response.status ) {
+            var myLatlng = new google.maps.LatLng(37.037778,-95.626389);
+            var mapOptions = {
+                zoom: 4,
+                center: myLatlng
+            };
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            $.each( response.locations, function( key, location ){
+                var locLatlng = new google.maps.LatLng(location.lat,location.lng);
+                var locName = ( location.locName != '') ? location.name + ': ' + location.locName: location.name;
+                var infowindow = new google.maps.InfoWindow({
+                      content: '<h3>' + locName + '</h3><div>' + location.description + '</div>'
+                  });
+                var marker = new google.maps.Marker({
+                    position: locLatlng,
+                    map: map,
+                    title: location.name + ': ' + location.locName
+                });
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map,marker);
+                  });
+            });
+        }
     });
 }
 

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="flaticon/flaticon.css"> 
     <link rel="stylesheet" href="icomoon/style.css"> 
     <link rel="stylesheet" href="css/app.css">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 </head>
 
@@ -115,7 +116,7 @@
                     </div>
                     <div class="right">
                         <a href="#" class="open-login-screen" data-bind="visible: !authenticated()">Login</a>
-                        <a href="detect.html" aria-label="Get current position"><i class="icon-iconmonstr-map-5-icon" aria-label="Get current position"></i></a>
+                        <a href="detect.html" aria-label="Get current position"><i class="icon-iconmonstr-location-16-icon" aria-label="Get current position"></i></a>
                         <a href="account.html" data-bind="visible: authenticated()">Account</a>
                         <a href="#" class="logout button" data-bind="visible: authenticated()">Logout</a>
                     </div>
@@ -137,7 +138,10 @@
                                                 <div class="item-inner">
                                                     <div class="item-title-row">
                                                         <div class="item-title" data-bind="html: name"></div>
-                                                        <div class="item-after" data-bind="text: owned() == 'true' ? 'Read Now' : 'Purchase'"></div>
+                                                        <div class="item-after" >
+                                                            <span class="icon-iconmonstr-location-12-icon" data-bind="visible:unlocked() == 'true'"></span>
+                                                            <span data-bind="text: owned() == 'true' ? 'Read Now' : 'Purchase'"></span>
+                                                        </div>
                                                     </div>
                                                     <div class="item-text" data-bind="html: description"></div>
                                                 </div>
