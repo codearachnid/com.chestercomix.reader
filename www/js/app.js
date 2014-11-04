@@ -467,12 +467,15 @@ var chesterComix = {
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
 
-        if( deviceMode ) {
+        // if( deviceMode ) {
             // alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
-            context.UUID( device.uuid );
-        } else {
-            context.UUID( 'testbrowser' );
-        }
+            
+        amplify.sqlite.instance.get('deviceUUID').done(function( deviceUUID ){
+            context.UUID( deviceUUID );
+        });
+        // } else {
+        //     context.UUID( 'testbrowser' );
+        // }
 
         chesterComix.checkAuthentication();
         
@@ -622,6 +625,10 @@ var chesterComix = {
                 successLogin( response );
                 appFramework.hidePreloader();
                 appFramework.closeModal();
+
+                amplify.sqlite.instance.set('deviceUUID', response.deviceUUID, 0).done(function( deviceUUID ){
+                    context.UUID( deviceUUID );
+                });
 
                 amplify.sqlite.instance.get('onResumeGoTo').done(function( onResumeContext ){
                     console.log(onResumeContext);
