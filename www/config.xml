@@ -84,7 +84,7 @@
           <icon src="www/res/icon-96-xhdpi.png" density="xhdpi" />
     </platform>
 
-    <icon src="icon.png" width="57" height="57" gap:platform="ios" />
+    <icon src="icon.png" gap:platform="ios" />
     <icon src="icon-57.png" width="57" height="57" gap:platform="ios" />
     <icon src="icon-57@2x.png" width="114" height="114" gap:platform="ios" />
     <icon src="icon-72.png" width="72" height="72" gap:platform="ios" />
