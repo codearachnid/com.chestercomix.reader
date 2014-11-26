@@ -1,0 +1,16 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "www"
+		}
+	],
+	"settings":
+	{
+		"xdebug":
+		{
+			"url": "http://wp.dev/"
+		}
+	}
+}

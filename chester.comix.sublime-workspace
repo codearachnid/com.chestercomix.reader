@@ -1,0 +1,528 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"sec",
+				"sections"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"filter_q",
+				"filter_query"
+			],
+			[
+				"imp",
+				"important"
+			],
+			[
+				"bo",
+				"border"
+			],
+			[
+				"sub",
+				"submitted_fields"
+			],
+			[
+				"ob_g",
+				"ob_get_clean"
+			],
+			[
+				"se",
+				"section"
+			],
+			[
+				"co",
+				"content"
+			],
+			[
+				"con",
+				"condition"
+			],
+			[
+				"file_",
+				"file_exists"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"field",
+				"field_id"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"prin",
+				"print_r"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"wp_en",
+				"wp_enqueue_script"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 287.0,
+		"selected_items":
+		[
+			[
+				"ins	",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"markdown",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+	],
+	"file_history":
+	[
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/65CA0C11-4091-4132-8877-CEA9CE28CC2F/loop-blog.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/4543BD11-89EF-439C-B1FA-84F2349F90EF/functions.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/FC309282-3E35-4709-BFBE-BA0C6DE89FEE/functions.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/318032D4-0E8F-493F-8206-3FA3D6D388A4/single-attorneys.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/EC37EB51-4344-48B5-9349-8B7B2394B006/content-major-section.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/classes/shortcodes/class-evo-shortcodes.php",
+		"/mamp/wp-dev/wp-content/plugins/eventon-event-lists/eventon-event-lists.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/16716EA2-AA47-45CA-8897-3677F031BE7E/content-attorneys.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/8895D66A-E86C-4166-9957-45D772ECA034/single-attorneys.php",
+		"/mamp/wp-dev/wp-content/plugins/eventon-event-lists/admin/eventonEL_shortcode.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/0E6D3BDB-2F2E-461C-A1C6-85DFF4281CFB/functions.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/admin/includes/settings_language_tab.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/admin/includes/settings_settings_tab.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/classes/class-evo-updater.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/includes/eventon_eventCard.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/classes/class-calendar_generator.php",
+		"/mamp/wp-dev/wp-content/plugins/wp-themer/wp-themer.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/eventon-core-functions.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/BD38773E-E380-46F6-A6ED-4DAECEE717AD/eventon-event-lists.php",
+		"/mamp/wp-dev/wp-content/plugins/eventON/eventon-ajax.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_view/AdminPageFramework_FieldType/AdminPageFramework_FieldType_default.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/template/addons.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/asset/style.css",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/admin_page/builtin_field_type/APF_Demo_BuiltinFieldTypes_Sections.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/admin_page/custom_field_type/APF_Demo_CustomFieldTypes_Revealer.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull-cpt.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/asset/script.js",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull-tags.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/template/metabox.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/legull.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/fields.md",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_controller/AdminPageFramework_Resource/AdminPageFramework_Resource_Base.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/README.md",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/APF_Demo_CustomFieldTypes.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Form_Model_Validation.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/1824207A-4A9D-4BE8-8EA3-3686FCD404FE/scripts.js",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/E25DD171-0E5A-4446-9940-42AE7FB41D44/single-attorneys.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/94CBCE16-40F3-4BB1-ACC8-4888A0E0B890/content-attorneys.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/A73C829A-5316-4838-82FA-510E841D481C/vcard.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/E4137022-5C77-42C2-924A-D66E4D2B0E1A/attorney.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/B5851DEA-1F6D-49F4-9593-483A3D9E4072/page-vcard.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/FCAF5713-FB85-40CB-B5B5-B8DF34AE769F/woo-cleanup.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/8D48B14D-7DBB-4429-AA87-2A5606802169/article.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/FE343626-3027-445A-B087-5C0F063FB2CD/style.css",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/5EE80CC4-B98E-43DA-8212-ECEEEC241B6A/practice-area.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/08585F5A-8AB5-48E2-9557-BE2354DEDB9D/functions.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/DC7880BA-CE43-491C-A773-44FDDCDBBF19/woo-cleanup.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/9CFA2402-24C7-4415-99BE-7C2B40B88F8C/footer.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/781E2826-C139-4518-B130-17970B3FDC43/article.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/7C351E80-8B6D-458E-8673-354BA2ECBFB4/wp-config.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/C4A49DDB-4B70-4408-A546-819688848F54/class_vcard.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/CE7404EA-0B3E-4876-A0F6-E05893B37730/wp-config.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/7B9AC2A0-5D2B-40CB-AFB4-17C7F9F299CA/page-vcard.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull-ajax.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/copyright-DMCA.md",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/APF_Demo_HiddenPage.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Page_Model.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/example-bootstrap.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Form_Model.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/template/generate-documents.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/template/dashboard.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework_Factory/AdminPageFramework_Factory_Controller.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Page_View.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_model/AdminPageFramework_FormElement/AdminPageFramework_FormElement_Utility.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/APF_Demo.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull-metabox.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull-conf.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_model/AdminPageFramework_Message.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/APF_Demo_Contact.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Controller.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework_MetaBox_Page/AdminPageFramework_MetaBox_Page.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_view/AdminPageFramework_FormTable/AdminPageFramework_FormTable.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/legull-metabox-for-dashboard.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Router.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_view/AdminPageFramework_PageLoadInfo/AdminPageFramework_PageLoadInfo_NetworkAdminPage.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_view/AdminPageFramework_PageLoadInfo/AdminPageFramework_PageLoadInfo_Base.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/_view/AdminPageFramework_PageLoadInfo/AdminPageFramework_PageLoadInfo_PostType.php",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework_Factory/AdminPageFramework_Factory_Router.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/deploy.sh",
+		"/mamp/wp-dev/wp-content/plugins/legull/readme.txt",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/part/subscriptions.md",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/example/APF_PostType.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/terms-of-service.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/part/classified_return_descriptions.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/part/account_termination.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/privacy-policy.md",
+		"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development/factory/AdminPageFramework/AdminPageFramework_Form_Controller.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/assets/script.js",
+		"/mamp/wp-dev/wp-content/wp-dev.sublime-project",
+		"/Users/codearachnid/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/codearachnid/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/mamp/wp-dev/wp-content/plugins/legull/nonbasic_Qs_fields.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/account_termination.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/anti-scraping.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/classified_return_descriptions.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/digital_ecomm.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/field list.txt",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/admin-page-framework.min.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/lib/parsedown.php",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/copyright_DMCA.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/product_ecomm.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/part/reviews.md",
+		"/mamp/wp-dev/wp-content/plugins/legull/docs/part/user_content_and_conduct.md",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/93C3DE24-557A-4E13-85AB-EC123AA44532/style.css",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/E7D83851-5F80-4B8B-BE6F-CCF9C6EF9CE6/common.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/5A444FBC-D768-4461-A163-F6DACF3BFBAE/common.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/2A8B5843-0571-46AC-B2F4-5095897CC0EA/common.php"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/mamp/wp-dev/wp-content/plugins/eventON",
+			"/mamp/wp-dev/wp-content/plugins/eventon-event-lists",
+			"/mamp/wp-dev/wp-content/plugins/eventON",
+			"/mamp/wp-dev/wp-content/plugins/eventon-event-lists",
+			"/mamp/wp-dev/wp-content/plugins/eventON",
+			"/Users/codearachnid/Downloads/[Eventon]Full.Cal.v0.22/eventon-full-cal",
+			"/mamp/wp-dev/wp-content/plugins/eventON",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework/development",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/admin-page-framework",
+			"/mamp/wp-dev/wp-content/plugins/legull",
+			"/mamp/wp-dev/wp-content/plugins/legull/docs",
+			"/mamp/wp-dev/wp-content/plugins/legull"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"ul.related-practice-area li h3 a",
+			"h2",
+			"goToURL",
+			"$type",
+			"type",
+			"url",
+			"goToURL",
+			"woo_slider_biz_view",
+			"75%",
+			"evo_date",
+			"generate_eventon_el_calendar",
+			"add_eventon_el",
+			"practice_areas_list",
+			"defaults",
+			"filter_name",
+			"filters",
+			"wp_query_event_cycle",
+			"filters",
+			"get_calendar_month_body",
+			"generate_events_list",
+			"get_supported_shortcode_atts",
+			"event_type",
+			"generate_eventon_el_calendar",
+			"evoEL_generate_calendar",
+			"class evo_addons",
+			"evo_addons",
+			"deactivate",
+			"EventON_full_cal",
+			"eventon_eventcard_print",
+			"eventon_eventcard_array",
+			"eventon_generate_calendar",
+			"get_calendar_month_body",
+			"eventon_generate_events",
+			"generate_event_data",
+			"_eventcard",
+			"evo_metarow_time",
+			"eventon_eventcard_print",
+			"evo_metarow_time",
+			"generate_event_data",
+			"eventon_EVC_sort",
+			"eventon_eventcard_print",
+			"evo_metarow_time",
+			"is_activated",
+			"General Calendar apparences are restricted to only activated copy of eventon",
+			"General Calendar apparences are restricted to only activated copy of eventon\n",
+			"license",
+			"organizer",
+			"admin_head",
+			"wp-has-current-submenu",
+			"admin_body_class",
+			"tip",
+			"script",
+			"reveal",
+			"support_email",
+			"load_legull",
+			"replyToInsertOutput",
+			"replyToAddFormElements",
+			"replyToAddTab",
+			"revealer",
+			"revealer_field_by_id",
+			"revealer",
+			"revealer_field_option_a",
+			"revealer_revealer_field_option_a",
+			"revealer_section_class_a",
+			"revealer_section_a",
+			"section name",
+			"section_title",
+			"Reveal Hidden Sections",
+			"legull_copy_documents_to_uploads",
+			"<option value=\"",
+			"</option>",
+			"shortcode_tmlaw_related_practice_areas",
+			"vcard",
+			"shortcode_tmlaw_related_attorneys",
+			"atts",
+			"tmlaw_related_attorneys",
+			"#nav-container",
+			"#footer-widgets .block",
+			"navigation",
+			"footer-widgets-container",
+			"#loopedSlider .content",
+			"row-random-posts",
+			".nav-toggle a",
+			"#footer-widgets",
+			"navigation",
+			"has_DMCA_agent",
+			"siteurl",
+			"has_DMCA_agent",
+			"validation_",
+			"exit",
+			"submit_after_",
+			"generate_documents",
+			"LegullGenerateSuccess",
+			"legull_get_value",
+			"legull_shortcode_part_include",
+			"legull_enqueue_scripts",
+			"legull_remove_anonymous_object_filter",
+			"revealer_section_class_b",
+			"revealer_section_b",
+			"usercontent",
+			"revealer_section_b",
+			"revealer_section_class_b",
+			"Revealer Custom Field Type",
+			"admin-page-framework-demo",
+			"validation_",
+			"required",
+			"_printMainContent",
+			"admin-page-framework-container",
+			"field_definition_APF_DEMO_callbacks_apf_post_titles",
+			"formatFields",
+			"field_definition_",
+			"field_",
+			"display field",
+			"load_apf_custom_field_types",
+			"add_settings_section",
+			"load_",
+			"submit_button",
+			"replyToSortCustomColumn",
+			"load_legull_dashboard",
+			"help",
+			"The options have been updated.",
+			"addSettingSections",
+			"legull_settings",
+			"addSettingSections",
+			"setting",
+			"settings",
+			"_sID",
+			"Legull_MetaBox_For_Active_Documents"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\n",
+			"\\r\\n",
+			"",
+			"',",
+			"'"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "chester.comix.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 257.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
