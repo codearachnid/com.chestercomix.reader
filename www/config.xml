@@ -85,6 +85,8 @@
     </platform>
 
     <icon src="icon.png" width="57" height="57" gap:platform="ios" />
+    <icon src="icon-72.png" width="57" height="57" gap:platform="ios" />
+    <icon src="icon-57.png" width="57" height="57" gap:platform="ios" />
 
     <platform name="ios">
               <!-- iOS 7.0+ -->
