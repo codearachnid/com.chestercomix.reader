@@ -85,33 +85,35 @@
     </platform>
 
     <icon src="icon.png" width="57" height="57" gap:platform="ios" />
-    <icon src="icon-72.png" width="72" height="72" gap:platform="ios" />
     <icon src="icon-57.png" width="57" height="57" gap:platform="ios" />
-
+    <icon src="icon-57@2x.png" width="114" height="114" gap:platform="ios" />
+    <icon src="icon-72.png" width="72" height="72" gap:platform="ios" />
+    <icon src="icon-72@2x.png" width="152" height="152" gap:platform="ios" />
+    
     <platform name="ios">
               <!-- iOS 7.0+ -->
               <!-- iPhone / iPod Touch  -->
-              <icon src="res/icons/ios/icon-72.png" width="60" height="60" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-72@2x.png" width="120" height="120" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-72.png" width="60" height="60" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-72@2x.png" width="120" height="120" gap:platform="ios" />
               <!-- iPad -->
-              <icon src="res/icons/ios/icon-72.png" width="76" height="76" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-72@2x.png" width="152" height="152" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-72.png" width="76" height="76" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-72@2x.png" width="152" height="152" gap:platform="ios" />
               <!-- iOS 6.1 -->
               <!-- Spotlight Icon -->
-              <icon src="res/icons/ios/icon-small-50.png" width="40" height="40" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-small-50@2x.png" width="80" height="80" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-small-50.png" width="40" height="40" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-small-50@2x.png" width="80" height="80" gap:platform="ios" />
               <!-- iPhone / iPod Touch -->
-              <icon src="res/icons/ios/icon-57.png" width="57" height="57" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-57@2x.png" width="114" height="114" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-57.png" width="57" height="57" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-57@2x.png" width="114" height="114" gap:platform="ios" />
               <!-- iPad -->
-              <icon src="res/icons/ios/icon-72.png" width="72" height="72" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-72@2x.png" width="144" height="144" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-72.png" width="72" height="72" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-72@2x.png" width="144" height="144" gap:platform="ios" />
               <!-- iPhone Spotlight and Settings Icon -->
-              <icon src="res/icons/ios/icon-small.png" width="29" height="29" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-small@2x.png" width="58" height="58" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-small.png" width="29" height="29" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-small@2x.png" width="58" height="58" gap:platform="ios" />
               <!-- iPad Spotlight and Settings Icon -->
-              <icon src="res/icons/ios/icon-Small-50.png" width="50" height="50" gap:platform="ios" />
-              <icon src="res/icons/ios/icon-Small-50@2x.png" width="100" height="100" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-Small-50.png" width="50" height="50" gap:platform="ios" />
+              <icon src="res/icon/ios/icon-Small-50@2x.png" width="100" height="100" gap:platform="ios" />
      </platform>
 
     <!-- Define app splash screen for each platform. -->
@@ -119,9 +121,9 @@
     <gap:splash src="res/android/chester-mdpi.png"  gap:platform="android" gap:density="mdpi" />
     <gap:splash src="res/android/chester-hdpi.png"  gap:platform="android" gap:density="hdpi" />
     <gap:splash src="res/android/chester-xhdpi.png" gap:platform="android" gap:density="xhdpi" />
-    <gap:splash src="res/icons/ios/chester-ipad.png"     gap:platform="ios"     width="1024" height="768" />
-    <gap:splash src="res/icons/ios/chester-iphone.png"     gap:platform="ios"     width="480" height="320" />
-    <gap:splash src="res/icons/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640"  height="1136" />
+    <gap:splash src="res/icon/ios/chester-ipad.png"     gap:platform="ios"     width="1024" height="768" />
+    <gap:splash src="res/icon/ios/chester-iphone.png"     gap:platform="ios"     width="480" height="320" />
+    <gap:splash src="res/icon/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640"  height="1136" />
     <gap:splash src="res/windows-phone/chester.jpg" gap:platform="winphone" />
 
 
