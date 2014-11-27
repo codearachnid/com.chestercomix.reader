@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
-        version     = "1.9.1" >
+        version     = "1.9.2" >
 
     <!-- app properties -->
     <name>Chester Comix</name>
@@ -28,18 +28,11 @@
     <gap:plugin name="org.apache.cordova.file" />
     <gap:plugin name="org.apache.cordova.geolocation" />
     <gap:plugin name="org.apache.cordova.inappbrowser" />
-    <!-- <gap:plugin name="com.phonegap.plugins.childbrowser" /> -->
-    <!-- <gap:plugin name="org.li8.inappbrowser" /> -->
-    <!-- <gap:plugin name="com.surfernetwork.startapp" /> -->
     <gap:plugin name="cc.fovea.plugins.inapppurchase" />
     <gap:plugin name="com.brodysoft.sqliteplugin" />
-    
-    <!--<gap:plugin name="com.millerjames01.sqlite-plugin" version="1.0.1" />-->
-    <!-- <gap:plugin name="org.apache.cordova.network-information" /> -->
+    <!-- <gap:plugin name="org.pushandplay.cordova.apprate" /> -->
     <!-- <gap:plugin name="com.adobe.plugins.gaplugin" /> -->
-    <!-- <gap:plugin name="de.appplant.cordova.plugin.background-mode" /> -->
-    <!-- https://github.com/katzer/cordova-plugin-background-mode -->
-
+    
 
     <!-- preferences for app -->
     <preference name="phonegap-version" value="3.6.3" />
@@ -89,6 +82,9 @@
     <icon src="icon-57@2x.png" width="114" height="114" gap:platform="ios" />
     <icon src="icon-72.png" width="72" height="72" gap:platform="ios" />
     <icon src="icon-72@2x.png" width="152" height="152" gap:platform="ios" />
+    <icon src="icon-76.png" width="76" height="76" gap:platform="ios" />
+    <icon src="icon-76@2x.png" width="152" height="152" gap:platform="ios" />
+    <icon src="icon-120.png" width="120" height="120" gap:platform="ios" />
     
     <platform name="ios">
               <!-- iOS 7.0+ -->

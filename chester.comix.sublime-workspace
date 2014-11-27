@@ -128,9 +128,13 @@
 	},
 	"expanded_folders":
 	[
+		"/mamp/com.chestercomix.reader/www",
+		"/mamp/com.chestercomix.reader/www/res"
 	],
 	"file_history":
 	[
+		"/mamp/com.chestercomix.reader/www/config.xml",
+		"/Users/codearachnid/Downloads/Payload/ChesterComix.app/Info.plist",
 		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/65CA0C11-4091-4132-8877-CEA9CE28CC2F/loop-blog.php",
 		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/4543BD11-89EF-439C-B1FA-84F2349F90EF/functions.php",
 		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/FC309282-3E35-4709-BFBE-BA0C6DE89FEE/functions.php",
@@ -242,7 +246,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{

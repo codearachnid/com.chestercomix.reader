@@ -1,3 +1,4 @@
+var gaPlugin;
 var qs = (function(a) {
     if (a == "") return {};
     var b = {};
@@ -466,6 +467,9 @@ var chesterComix = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
+
+        // gaPlugin = window.plugins.gaPlugin;
+        // gaPlugin.init(function(){}, function(){}, "UA-48983835-1", 10);
 
         // if( deviceMode ) {
             // alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
