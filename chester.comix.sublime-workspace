@@ -129,10 +129,12 @@
 	"expanded_folders":
 	[
 		"/mamp/com.chestercomix.reader/www",
+		"/mamp/com.chestercomix.reader/www/js",
 		"/mamp/com.chestercomix.reader/www/res"
 	],
 	"file_history":
 	[
+		"/mamp/com.chestercomix.reader/www/js/app.js",
 		"/mamp/com.chestercomix.reader/www/config.xml",
 		"/Users/codearachnid/Downloads/Payload/ChesterComix.app/Info.plist",
 		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/65CA0C11-4091-4132-8877-CEA9CE28CC2F/loop-blog.php",
@@ -296,6 +298,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"gaplugin",
 			"ul.related-practice-area li h3 a",
 			"h2",
 			"goToURL",
@@ -422,8 +425,7 @@
 			"addSettingSections",
 			"setting",
 			"settings",
-			"_sID",
-			"Legull_MetaBox_For_Active_Documents"
+			"_sID"
 		],
 		"highlight": true,
 		"in_selection": false,

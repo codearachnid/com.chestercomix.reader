@@ -471,15 +471,13 @@ var chesterComix = {
         // gaPlugin = window.plugins.gaPlugin;
         // gaPlugin.init(function(){}, function(){}, "UA-48983835-1", 10);
 
-        // if( deviceMode ) {
-            // alert(device.cordova + "|" + device.platform + "|" + device.version + "|" + device.uuid);
-            
-        amplify.sqlite.instance.get('deviceUUID').done(function( deviceUUID ){
-            context.UUID( deviceUUID );
-        });
-        // } else {
-        //     context.UUID( 'testbrowser' );
-        // }
+        if( deviceMode ) {
+            amplify.sqlite.instance.get('deviceUUID').done(function( deviceUUID ){
+                context.UUID( deviceUUID );
+            });
+        } else {
+            context.UUID( 'testbrowser' );
+        }
 
         chesterComix.checkAuthentication();
         

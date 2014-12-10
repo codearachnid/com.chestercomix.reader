@@ -3,8 +3,6 @@
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
         version     = "1.9.3" >
-
-    <!-- app properties -->
     <name>Chester Comix</name>
     <description>
         Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books! 
@@ -30,13 +28,10 @@
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="cc.fovea.plugins.inapppurchase" />
     <gap:plugin name="com.brodysoft.sqliteplugin" />
-    <!-- <gap:plugin name="org.pushandplay.cordova.apprate" /> -->
-    <!-- <gap:plugin name="com.adobe.plugins.gaplugin" /> -->
     
 
     <!-- preferences for app -->
     <preference name="phonegap-version" value="3.6.3" />
-    <!-- <preference name="permissions" value="none" /> -->
     <preference name="orientation" value="landscape" />
     <preference name="Fullscreen" value="true" />
     <gap:config-file platform="ios" parent="UIStatusBarHidden" overwrite="true">
@@ -46,27 +41,10 @@
         <false/>
     </gap:config-file>
     <preference name="WebViewBounce" value="true" />
-    <!-- <gap:platform name="android" /> -->
-    <!-- <gap:platform name="ios" /> -->
-    <!-- <preference name="target-device" value="universal"/> -->
     <preference name="splashscreen" value="splash.png" />
-<!--     <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="10000" />
- -->
     <preference name="detect-data-types" value="false" />
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="exit-on-suspend" value="false" />
-
-
-    <!-- ios only prefs -->
-
-    <!-- android only prefs -->
-    <!--<preference name="splash-screen-duration" value="100"/>-->
-
-    <!--<feature name="SplashScreen">-->
-        <!--<param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />-->
-        <!--<param name="ios-package" value="CDVSplashScreen" />-->
-    <!--</feature>-->
 
     <!-- Define app icon for each platform. -->
     <icon src="www/res/icon-96-xhdpi.png" />
@@ -122,8 +100,4 @@
     <gap:splash src="res/icons/ios/chester-iphone.png"     gap:platform="ios"     width="480" height="320" />
     <gap:splash src="res/icons/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640"  height="1136" />
     <gap:splash src="res/windows-phone/chester.jpg" gap:platform="winphone" />
-
-
-
-
 </widget>
