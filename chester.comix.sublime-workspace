@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"response",
+				"responseUUID"
+			],
+			[
 				"sec",
 				"sections"
 			],
@@ -135,6 +139,9 @@
 	"file_history":
 	[
 		"/mamp/com.chestercomix.reader/www/js/app.js",
+		"/mamp/com.chestercomix.reader/www/js/amplify.sqlite.js",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/C6F880B6-FF29-4313-BCBD-AC27B92ABFC1/template-api-user-login.php",
+		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/94F7A489-062E-4158-94AA-42259B200923/wp-config.php",
 		"/mamp/com.chestercomix.reader/www/config.xml",
 		"/Users/codearachnid/Downloads/Payload/ChesterComix.app/Info.plist",
 		"/Users/codearachnid/Library/Caches/Cleanup At Startup/Transmit/65CA0C11-4091-4132-8877-CEA9CE28CC2F/loop-blog.php",
@@ -298,6 +305,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"device",
+			"context.UUID",
+			"successlogin",
+			"username",
+			"login",
+			"checkAuthentication",
+			".set",
+			"checkAuthentication",
+			"login",
+			"UUID",
+			"deviceUUID",
+			"successLogin",
+			"context",
 			"gaplugin",
 			"ul.related-practice-area li h3 a",
 			"h2",
@@ -412,20 +432,7 @@
 			"field_definition_",
 			"field_",
 			"display field",
-			"load_apf_custom_field_types",
-			"add_settings_section",
-			"load_",
-			"submit_button",
-			"replyToSortCustomColumn",
-			"load_legull_dashboard",
-			"help",
-			"The options have been updated.",
-			"addSettingSections",
-			"legull_settings",
-			"addSettingSections",
-			"setting",
-			"settings",
-			"_sID"
+			"load_apf_custom_field_types"
 		],
 		"highlight": true,
 		"in_selection": false,
