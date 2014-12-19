@@ -57,6 +57,7 @@ amplify.sqlite = function() {
 				key: key
 			}
 		});
+
 		// console.log(self.sprintf(sql.SELECT, options));
 		execute(self.sprintf(sql.SELECT, options)).done(function(result, sql) {
 			// return first raw result
@@ -113,8 +114,9 @@ amplify.sqlite = function() {
 				expiration: expiration
 			}
 		});
+		// console.log(options);
 		// console.log("put options", options, Date.now(),self.sprintf( sql.UPDATE, options ));
-		clean().done(function() {
+		// clean().done(function() {
 			self.get(key).done(function(response) {
 				// update existing record
 				execute(self.sprintf(sql.UPDATE, options)).done(function(result, sql) {
@@ -130,7 +132,7 @@ amplify.sqlite = function() {
 					deferred.reject(error);
 				}
 			});
-		});
+		// });
 		return deferred.promise();
 	};
 	self.delete = function(key) {

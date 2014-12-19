@@ -471,15 +471,13 @@ var chesterComix = {
         // gaPlugin = window.plugins.gaPlugin;
         // gaPlugin.init(function(){}, function(){}, "UA-48983835-1", 10);
 
-        if( deviceMode ) {
-            amplify.sqlite.instance.get('deviceUUID').done(function( deviceUUID ){
-                context.UUID( deviceUUID );
-            });
-        } else {
-            context.UUID( 'testbrowser' );
-        }
-
-        chesterComix.checkAuthentication();
+        amplify.sqlite.instance.get('deviceUUID').done(function( responseUUID ){
+            if( responseUUID != '' )
+                context.UUID( responseUUID );
+            chesterComix.checkAuthentication();
+        }).fail(function(){
+            chesterComix.checkAuthentication();
+        });
         
         appFramework.onPageInit('index', function (page) {
             var element = document.getElementById('comix-index');
@@ -624,16 +622,13 @@ var chesterComix = {
         appFramework.showPreloader('loading...');
         amplify.request('userAuth',{ UUID: context.UUID() }, function(response){
             if( response.status ) {
+                context.UUID( response.UUID );
                 successLogin( response );
                 appFramework.hidePreloader();
                 appFramework.closeModal();
 
-                amplify.sqlite.instance.set('deviceUUID', response.deviceUUID, 0).done(function( deviceUUID ){
-                    context.UUID( deviceUUID );
-                });
-
                 amplify.sqlite.instance.get('onResumeGoTo').done(function( onResumeContext ){
-                    console.log(onResumeContext);
+                    // console.log(onResumeContext);
                     if( onResumeContext != '' ){
                         gotoComixPage( onResumeContext.comix );
                     }
@@ -653,6 +648,10 @@ chesterComix.init();
 function successLogin( response ){
     if( response.status ) {
         context.authenticated(true);
+
+        context.UUID( response.UUID );
+        amplify.sqlite.instance.put('deviceUUID', response.UUID, 0);
+
 
         fetchManifest();
 
