@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
-        version     = "2.0.0" >
+        version     = "2.0.1" >
     <name>Chester Comix</name>
     <description>
         Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books! 
@@ -64,6 +64,7 @@
     <icon src="icon-76@2x.png" width="152" height="152" gap:platform="ios" />
     <icon src="icon-120.png" width="120" height="120" gap:platform="ios" />
     <icon src="icon-152.png" width="152" height="152" gap:platform="ios" />
+    <icon src="icon-152@2x.png" width="304" height="304" gap:platform="ios" />
     
     <platform name="ios">
               <!-- iOS 7.0+ -->
