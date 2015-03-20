@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
-        version     = "1.9.4" >
+        version     = "2.0.0" >
     <name>Chester Comix</name>
     <description>
         Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books! 
@@ -31,7 +31,7 @@
     
 
     <!-- preferences for app -->
-    <preference name="phonegap-version" value="3.6.3" />
+    <preference name="phonegap-version" value="3.7.0" />
     <preference name="orientation" value="landscape" />
     <preference name="Fullscreen" value="true" />
     <gap:config-file platform="ios" parent="UIStatusBarHidden" overwrite="true">

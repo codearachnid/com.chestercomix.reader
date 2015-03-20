@@ -15,6 +15,64 @@ var debugMode = qs['debug'] != 'undefined' ? Boolean(qs.debug) : false;
 var deviceMode =navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
 var myPhotoBrowserStandalone = null;
 
+
+var IAP = {
+  list: []
+};
+
+
+IAP.load = function () {
+  // Check availability of the storekit plugin
+  if (!window.storekit) {
+    console.log("In-App Purchases not available");
+    return;
+  }
+ 
+  // Initialize
+  storekit.init({
+    debug:    true, // Enable IAP messages on the console
+    ready:    IAP.onReady,
+    purchase: IAP.onPurchase,
+    restore:  IAP.onRestore,
+    error:    IAP.onError
+  });
+};
+
+
+IAP.onReady = function () {
+    // Once setup is done, load all product data.
+    storekit.load(IAP.list, function (products, invalidIds) {
+      IAP.products = products;
+      IAP.loaded = true;
+      for (var i = 0; i < invalidIds.length; ++i) {
+        console.log("Error: could not load " + invalidIds[i]);
+      }
+  });
+};
+
+IAP.onPurchase = function (transactionId, productId, receipt) {
+  amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
+        // console.log(submitResponse);
+        if( submitResponse.status ) {
+            successfulPurchase( submitResponse );
+        } else {
+            appFramework.alert(submitResponse.message,"Purchase Error");
+        }
+    });
+};
+ 
+IAP.onError = function (errorCode, errorMessage) {
+  console.log('Error: ' + errorMessage);
+  appFramework.hidePreloader();
+    appFramework.alert( errorMessage, 'Purchase Error Occured.' );
+};
+IAP.onRestore = function () {};
+IAP.buy = function (productId) {
+    //testing
+    // IAP.onPurchase('transid',productId,'reciept');
+  storekit.purchase(productId);
+};
+
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
     {id:"AL",name:"Alabama"},
@@ -199,9 +257,10 @@ var paymentModalButtons = [
 
 
 
-var comixObject = function(id, name, description, thumb, featured, owned, unlocked){
+var comixObject = function(id, name, description, thumb, featured, owned, unlocked, iap){
     unlocked = unlocked || false;
     owned = owned || false;
+    iap = iap || '';
     return {
         thumb: ko.observable( thumb ),
         id: ko.observable( id ),
@@ -209,7 +268,8 @@ var comixObject = function(id, name, description, thumb, featured, owned, unlock
         unlocked: ko.observable( unlocked ),
         name: ko.observable( name ),
         featured: ko.observable( featured ),
-        description: ko.observable( description )
+        description: ko.observable( description ),
+        iap: ko.observable( iap )
     };
 };
 
@@ -413,6 +473,13 @@ var chesterComix = {
 
         amplify.request.define("submitPayment", "ajax", {
             url: "http://www.chestercomix.com/app/api/payment/",
+            dataType: "json",
+            type: "POST",
+            cache: cacheExpire
+        });
+
+        amplify.request.define("submitIAP", "ajax", {
+            url: "http://www.chestercomix.com/app/api/iap/",
             dataType: "json",
             type: "POST",
             cache: cacheExpire
@@ -688,6 +755,9 @@ function fetchManifest(){
     amplify.request("comixManifest", { UUID: context.UUID(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
         // console.log(response);
         jQuery.each(response.comix, function (i, comix) {
+            if( comix.iap != '' ){
+                IAP.list.push( comix.iap );
+            }
             var comixItem = new comixObject(
                 comix.ID,
                 comix.name,
@@ -695,7 +765,8 @@ function fetchManifest(){
                 comix.thumb,
                 comix.featured,
                 comix.owned,
-                comix.unlocked
+                comix.unlocked,
+                comix.iap
                 ) ;
             if( comix.owned.toString() == 'true' ){
                 bookshelf++;
@@ -849,43 +920,54 @@ function loadComixByID( cID ){
 }
 
 function buyComix( data, event ){
-    if( context.user.billing_zip() != '' ) {
-        // console.log(context.comix.name());
-        // console.log(data);
-        if( context.user.payment_id() != '' ){
+    // todo to go to other platforms
+    if( true || device.platform.toLowerCase() == 'ios' ){
+        // apple user
+        if( data.iap() ){
             appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
-                context.comix = data;
-                appFramework.showIndicator();
-                amplify.request('submitPayment', { UUID: context.UUID(), ID: context.comix.id(), res: { w: $(window).width(), h: $(window).height() } }, function (submitResponse) {
-                    // console.log(submitResponse);
-                    if( submitResponse.status ) {
-                        successfulPurchase( submitResponse );
-                    } else {
-                        appFramework.alert(submitResponse.message,"Purchase Error");
-                    }
-                });
+                IAP.buy( data.iap() );
             });
-        } else {
-            context.comix = data;
-            appFramework.modal({
-                title: paymentModalTitle,
-                afterText: paymentModal,
-                buttons: paymentModalButtons
-                });
         }
-        
+
     } else {
-        appMain.loadPage('account.html');
-        appFramework.addNotification({
-            hold: 1500,
-            title: 'Missing information',
-            message: 'Please fill in your billing details before purchasing',
-            onClose: function(){
-                context.purchaseAttempt( data );
-                appFramework.showTab('#account-billing-info');        
+        if( context.user.billing_zip() != '' ) {
+            // console.log(context.comix.name());
+            // console.log(data);
+            if( context.user.payment_id() != '' ){
+                appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
+                    context.comix = data;
+                    appFramework.showIndicator();
+                    amplify.request('submitPayment', { UUID: context.UUID(), ID: context.comix.id(), res: { w: $(window).width(), h: $(window).height() } }, function (submitResponse) {
+                        // console.log(submitResponse);
+                        if( submitResponse.status ) {
+                            successfulPurchase( submitResponse );
+                        } else {
+                            appFramework.alert(submitResponse.message,"Purchase Error");
+                        }
+                    });
+                });
+            } else {
+                context.comix = data;
+                appFramework.modal({
+                    title: paymentModalTitle,
+                    afterText: paymentModal,
+                    buttons: paymentModalButtons
+                    });
             }
-        });
-        
+            
+        } else {
+            appMain.loadPage('account.html');
+            appFramework.addNotification({
+                hold: 1500,
+                title: 'Missing information',
+                message: 'Please fill in your billing details before purchasing',
+                onClose: function(){
+                    context.purchaseAttempt( data );
+                    appFramework.showTab('#account-billing-info');        
+                }
+            });
+            
+        }
     }
 }
 function stripeRequestHandler (modal, index) {
