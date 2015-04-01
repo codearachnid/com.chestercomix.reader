@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
-        version     = "2.0.1" >
+        version     = "2.0.2" >
     <name>Chester Comix</name>
     <description>
         Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books! 
