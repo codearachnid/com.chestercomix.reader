@@ -3,7 +3,7 @@
             <div class="content-block">
                 <div class="buttons-row">
                     <a href="#account-general-info" class="tab-link active button">Account</a>
-                    <a href="#account-billing-info" class="tab-link button">Billing Information</a>
+                    <a href="#account-billing-info" data-bind="visible: !isApple" class="tab-link button">Billing Information</a>
                 </div>
             </div>
             <div class="tabs">
@@ -11,6 +11,8 @@
                 <form id="app-account-settings-form" action="http://www.chestercomix.com/app/api/user-account/" method="POST" class="ajax-submit">
 	                <div class="content-block-title">Account Settings</div>
                     <div class="content-block">
+                        <div class="button button-big button-round" data-bind="click:$root.restorePurchase">Restore Purchases</div>
+                        <br />
                         <div class="list-block">
                             <ul>
                                 <li>

@@ -66,7 +66,19 @@ IAP.onError = function (errorCode, errorMessage) {
   appFramework.hidePreloader();
     appFramework.alert( errorMessage, 'Purchase Error Occured.' );
 };
-IAP.onRestore = function () {};
+IAP.onRestore = function (transactionId, productId, transactionReceipt) {
+  amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
+        // console.log(submitResponse);
+        if( submitResponse.status ) {
+            appFramework.alert('Thank you for requesting to restore your comix! We have successfully restored them in the bookshelf for you.',"Restore Successful");
+        } else {
+            appFramework.alert(submitResponse.message,"Restore Error");
+        }
+    });
+};
+IAP.restore = function () {
+  storekit.restore();
+};
 IAP.buy = function (productId) {
     //testing
     // IAP.onPurchase('transid',productId,'reciept');
@@ -324,7 +336,9 @@ var vmAccount = {
     applied: false,
     user: context.user,
     UUID: context.UUID,
-    states: usStates
+    states: usStates,
+    isApple: ko.observable(true),
+    restorePurchase: restorePurchase
 };
 var vmRegister = {
     applied: false,
@@ -334,6 +348,7 @@ var vmRegister = {
 var vmAppSettings = {
     applied: false,
     version: ko.observable(),
+    restorePurchase: restorePurchase,
     clearLocalData: clearLocalData
 };
 var vmBookshelf = {
@@ -570,6 +585,7 @@ var chesterComix = {
             var element = document.getElementById('app-account');
             ko.cleanNode(element);
             ko.applyBindings( vmAccount, element );
+            vmAccount.isApple(true || device.platform.toLowerCase() == 'ios');
             $$('#app-account-details-form').on('submitted', function (e) {
                 console.log(e.detail.data);
               var response = JSON.parse(e.detail.data);
@@ -820,7 +836,10 @@ function generateGoogleMap(){
         }
     });
 }
-
+function restorePurchase(data, event){
+    appFramework.alert('Attempting to restore your purchased comix.', 'Restore Attempt');
+    IAP.restore();
+}
 function clearLocalData( data, event ){
     amplify.sqlite.instance.clear();
     appFramework.alert('Successfully cleared local data', 'Data Cleared');
