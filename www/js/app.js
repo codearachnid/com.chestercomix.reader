@@ -29,8 +29,8 @@ IAP.load = function () {
   }
  
   // Initialize
-  storekit.init({
-    debug:    true, // Enable IAP messages on the console
+  window.storekit.init({
+    debug:    false, // disable IAP messages on the console
     ready:    IAP.onReady,
     purchase: IAP.onPurchase,
     restore:  IAP.onRestore,
