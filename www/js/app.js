@@ -19,22 +19,27 @@ var myPhotoBrowserStandalone = null;
 var IAP = {
   list: []
 };
-
+/*
 
 IAP.load = function () {
-  // Check availability of the storekit plugin
-  if (!window.storekit) {
-    console.log("In-App Purchases not available");
-    return;
-  }
- 
+     // Check availability of the storekit plugin
+    if (!window.storekit) {
+        console.log("In-App Purchases not available");
+        return;
+    }
+
+    // Enable maximum logging level
+    window.store.verbosity = store.DEBUG;
+
   // Initialize
   window.storekit.init({
     debug:    false, // disable IAP messages on the console
     ready:    IAP.onReady,
     purchase: IAP.onPurchase,
     restore:  IAP.onRestore,
-    error:    IAP.onError
+    error:    IAP.onError,
+    restoreCompleted: function () {},
+    restoreFailed:    function (errorCode) {}
   });
 };
 
@@ -60,7 +65,7 @@ IAP.onPurchase = function (transactionId, productId, receipt) {
         }
     });
 };
- 
+
 IAP.onError = function (errorCode, errorMessage) {
   console.log('Error: ' + errorMessage);
   appFramework.hidePreloader();
@@ -84,6 +89,7 @@ IAP.buy = function (productId) {
     // IAP.onPurchase('transid',productId,'reciept');
   storekit.purchase(productId);
 };
+*/
 
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
@@ -236,7 +242,7 @@ $$('.panel-left').on('open', function () {
                 });
                 // console.log(vmAppSideNavigation.modules());
             });
-            
+
         }
     });
     // console.log( vmAppSideNavigation.bookshelf() );
@@ -252,7 +258,7 @@ $$('.logout').on('click', function () {
 });
 
 var paymentModal = '<div class="row no-gutter"><input type="text" placeholder="Credit Card" name="modal-cc" class="modal-text-input modal-text-input-double" /></div>' +
-        '<div class="row no-gutter"><input type="text" placeholder="MM/YY" name="modal-expires" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-left" />' + 
+        '<div class="row no-gutter"><input type="text" placeholder="MM/YY" name="modal-expires" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-left" />' +
         '<input type="text" name="modal-cvc" placeholder="CVC Code" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-right" /></div>' +
         '<div class="row"><label><input type="checkbox" name="modal-remember" /> Remember this card.</label></div>';
 var paymentModalTitle = 'Credit Card Details';
@@ -310,7 +316,7 @@ var context = {
 var emptyContext = context;
 var vmComixManifest = {
     manifest: ko.observableArray()
-    
+
 };
 var vmComixIndex = {
     applied: false,
@@ -383,7 +389,7 @@ var vmRemotePageDetect = {
 var chesterComix = {
     init: function () {
         if( navigator.splashscreen ){
-            navigator.splashscreen.show();    
+            navigator.splashscreen.show();
         }
         this.bindRequests();
         this.bindEvents();
@@ -401,7 +407,7 @@ var chesterComix = {
         } else {
             this.onDeviceReady();
         }
-            
+
     },
     bindRequests: function(){
 
@@ -546,6 +552,135 @@ var chesterComix = {
             cache: cacheExpire
         });
     },
+    initStoreCompleted: false,
+    // init the Apple IAP
+    initStore: function(){
+
+        if( this.initStoreCompleted )
+            return;
+
+        if (!window.store) {
+            appFramework.addNotification({
+                hold: 1500,
+                title: 'In-App purchase disabled',
+                message: 'In-App purchase encountered an error during startup. Please restart the app to reset.',
+            });
+            return;
+        }
+
+        appFramework.showPreloader('checking your location to unlock new screens...');
+
+        // Enable maximum logging level
+        store.verbosity = store.DEBUG;
+
+        // Enable remote receipt validation
+        store.validator = "https://api.fovea.cc:1982/check-purchase";
+
+        // Log all errors
+        store.error(function(error) {
+            appFramework.addNotification({
+                hold: 1500,
+                title: 'In-App purchase error',
+                message: 'IAP ERROR ' + error.code + ': ' + error.message,
+            });
+        });
+
+        // inform the store of your registered product
+        for(var i=0;i<IAP.list.length;i++){
+            store.register({
+               id:    IAP.list[i].id,
+               alias: IAP.list[i].alias,
+               type:   store.NON_CONSUMABLE
+           });
+        }
+
+
+       // When any product gets updated, refresh the HTML.
+        store.when("product").updated(function (p) {
+            this.renderIAP(p);
+        });
+
+        // When purchase of the full version is approved,
+        // show some logs and finish the transaction.
+        store.when("full version").approved(function (order) {
+            amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
+                  // console.log(submitResponse);
+                  if( submitResponse.status ) {
+                      successfulPurchase( submitResponse );
+                  } else {
+                      appFramework.alert(submitResponse.message,"Purchase Error");
+                  }
+              });
+            order.finish();
+        });
+
+        // The play button can only be accessed when the user
+        // owns the full version.
+        store.when("full version").updated(function (product) {
+            document.getElementById("access-full-version-button").style.display =
+                product.owned ? "block" : "none";
+        });
+
+        // When the store is ready (i.e. all products are loaded and in their "final"
+        // state), we hide the "loading" indicator.
+        //
+        // Note that the "ready" function will be called immediately if the store
+        // is already ready.
+        store.ready(function() {
+            appFramework.hidePreloader();
+        });
+
+        // When store is ready, activate the "refresh" button;
+        store.ready(function() {
+            var el = document.getElementById('refresh-button');
+            if (el) {
+                el.style.display = 'block';
+                el.onclick = function(ev) {
+                    store.refresh();
+                };
+            }
+        });
+
+        // Refresh the store.
+        //
+        // This will contact the server to check all registered products
+        // validity and ownership status.
+        //
+        // It's fine to do this only at application startup, as it could be
+        // pretty expensive.
+        this.initStoreCompleted = true;
+        store.refresh();
+
+    },
+
+    // renderIAP = function(p) {
+    //
+    //     var elId = p.id.split(".")[3];
+    //
+    //     var el = document.getElementById(elId + '-purchase');
+    //     if (!el) return;
+    //
+    //     if (!p.loaded) {
+    //         el.innerHTML = '<h3>...</h3>';
+    //     }
+    //     else if (!p.valid) {
+    //         el.innerHTML = '<h3>' + p.alias + ' Invalid</h3>';
+    //     }
+    //     else if (p.valid) {
+    //         var html = "<h3>" + p.title + "</h3>" + "<p>" + p.description + "</p>";
+    //         if (p.canPurchase) {
+    //             html += "<div class='button' id='buy-" + p.id + "' productId='" + p.id + "' type='button'>" + p.price + "</div>";
+    //         }
+    //         el.innerHTML = html;
+    //         if (p.canPurchase) {
+    //             document.getElementById("buy-" + p.id).onclick = function (event) {
+    //                 var pid = this.getAttribute("productId");
+    //                 store.order(pid);
+    //             };
+    //         }
+    //     }
+    // },
+
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
@@ -560,13 +695,13 @@ var chesterComix = {
         }).fail(function(){
             chesterComix.checkAuthentication();
         });
-        
+
         appFramework.onPageInit('index', function (page) {
             var element = document.getElementById('comix-index');
             ko.cleanNode(element);
             ko.applyBindings( vmComixIndex, element );
         });
-        appFramework.onPageInit('bookshelf', function (page) { 
+        appFramework.onPageInit('bookshelf', function (page) {
             var element = document.getElementById('comix-bookshelf');
             ko.cleanNode(element);
             ko.applyBindings( vmBookshelf, element );
@@ -639,7 +774,7 @@ var chesterComix = {
         appFramework.onPageBeforeAnimation('index', function (page) {
             appFramework.closePanel();
         });
-        
+
         appFramework.onPageBeforeAnimation('bookshelf', function (page) {
             appFramework.closePanel();
         });
@@ -694,7 +829,7 @@ var chesterComix = {
             setupRemotePage('remotePage-legal', vmRemotePageLegal, 'remotePageLegal');
         });
 
-        
+
 
 
 
@@ -716,7 +851,7 @@ var chesterComix = {
                         gotoComixPage( onResumeContext.comix );
                     }
                 });
-                
+
 
             } else {
                 appFramework.hidePreloader();
@@ -767,12 +902,16 @@ function successLogin( response ){
 }
 
 function fetchManifest(){
+
+
+    chesterComix.initStore();
+
     var bookshelf = 0;
     amplify.request("comixManifest", { UUID: context.UUID(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
         // console.log(response);
         jQuery.each(response.comix, function (i, comix) {
             if( comix.iap != '' ){
-                IAP.list.push( comix.iap );
+                IAP.list.push({ id: comix.iap, alias: comix.alias });
             }
             var comixItem = new comixObject(
                 comix.ID,
@@ -790,12 +929,12 @@ function fetchManifest(){
             }
             var foundItem = ko.utils.arrayFirst(vmComixManifest.manifest(), function(existingItem) {
                 // console.log('compare:',
-                //     existingItem.id(), 
+                //     existingItem.id(),
                 //     comixItem.id() );
                     return existingItem.id() == comixItem.id();
                 });
             if( !foundItem ){
-                vmComixManifest.manifest.push( comixItem );    
+                vmComixManifest.manifest.push( comixItem );
             }
         });
     });
@@ -875,7 +1014,7 @@ function gotoComixPage( data, event ){
                             });
                         },500);
 
-                        
+
                     },
                     onSlideChangeEnd: function(slider){
 
@@ -899,7 +1038,7 @@ function gotoComixPage( data, event ){
 
                         // claw
                         if( response.comix[0].panels[ slider.activeSlideIndex ].link != '' && isEmptyElement($('.slider-slide-active').find('.theClaw')) ){
-                            
+
                             var position = activeSlide.find('.align-claw-to-this').position();
                             if( position ) {
                                 // activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" data-popup=".popup-external" class="open-external"><img src="img/iCLAWscreen.png" /></a>');
@@ -944,7 +1083,8 @@ function buyComix( data, event ){
         // apple user
         if( data.iap() ){
             appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
-                IAP.buy( data.iap() );
+                store.order( data.iap() );
+                // IAP.buy( data.iap() );
             });
         }
 
@@ -973,7 +1113,7 @@ function buyComix( data, event ){
                     buttons: paymentModalButtons
                     });
             }
-            
+
         } else {
             appMain.loadPage('account.html');
             appFramework.addNotification({
@@ -982,10 +1122,10 @@ function buyComix( data, event ){
                 message: 'Please fill in your billing details before purchasing',
                 onClose: function(){
                     context.purchaseAttempt( data );
-                    appFramework.showTab('#account-billing-info');        
+                    appFramework.showTab('#account-billing-info');
                 }
             });
-            
+
         }
     }
 }
@@ -1035,7 +1175,7 @@ function stripeRequestHandler (modal, index) {
     }
 }
 function stripeResponseHandler(status, response){
-    
+
     // console.log('stripeResponseHandler', status, response, context);
   if (response.error) {
     appFramework.hideIndicator();
