@@ -1,4 +1,3 @@
-var gaPlugin;
 var qs = (function(a) {
     if (a == "") return {};
     var b = {};
@@ -10,8 +9,8 @@ var qs = (function(a) {
     }
     return b;
 })(window.location.search.substr(1).split('&'));
+
 var debugMode = qs['debug'] != 'undefined' ? Boolean(qs.debug) : false;
-// var deviceMode = ( typeof device != 'undefined' ) ? true : false; //
 var deviceMode =navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/) ? true : false;
 var myPhotoBrowserStandalone = null;
 
@@ -19,77 +18,6 @@ var myPhotoBrowserStandalone = null;
 var IAP = {
   list: []
 };
-/*
-
-IAP.load = function () {
-     // Check availability of the storekit plugin
-    if (!window.storekit) {
-        console.log("In-App Purchases not available");
-        return;
-    }
-
-    // Enable maximum logging level
-    window.store.verbosity = store.DEBUG;
-
-  // Initialize
-  window.storekit.init({
-    debug:    false, // disable IAP messages on the console
-    ready:    IAP.onReady,
-    purchase: IAP.onPurchase,
-    restore:  IAP.onRestore,
-    error:    IAP.onError,
-    restoreCompleted: function () {},
-    restoreFailed:    function (errorCode) {}
-  });
-};
-
-
-IAP.onReady = function () {
-    // Once setup is done, load all product data.
-    storekit.load(IAP.list, function (products, invalidIds) {
-      IAP.products = products;
-      IAP.loaded = true;
-      for (var i = 0; i < invalidIds.length; ++i) {
-        console.log("Error: could not load " + invalidIds[i]);
-      }
-  });
-};
-
-IAP.onPurchase = function (transactionId, productId, receipt) {
-  amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
-        // console.log(submitResponse);
-        if( submitResponse.status ) {
-            successfulPurchase( submitResponse );
-        } else {
-            appFramework.alert(submitResponse.message,"Purchase Error");
-        }
-    });
-};
-
-IAP.onError = function (errorCode, errorMessage) {
-  console.log('Error: ' + errorMessage);
-  appFramework.hidePreloader();
-    appFramework.alert( errorMessage, 'Purchase Error Occured.' );
-};
-IAP.onRestore = function (transactionId, productId, transactionReceipt) {
-  amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
-        // console.log(submitResponse);
-        if( submitResponse.status ) {
-            appFramework.alert('Thank you for requesting to restore your comix! We have successfully restored them in the bookshelf for you.',"Restore Successful");
-        } else {
-            appFramework.alert(submitResponse.message,"Restore Error");
-        }
-    });
-};
-IAP.restore = function () {
-  storekit.restore();
-};
-IAP.buy = function (productId) {
-    //testing
-    // IAP.onPurchase('transid',productId,'reciept');
-  storekit.purchase(productId);
-};
-*/
 
 var usStates = ko.observableArray([
     {id:"", name: "Select your state"},
@@ -153,6 +81,15 @@ var usStates = ko.observableArray([
     {id:"WI",name: "Wisconsin"},
     {id:"WY",name: "Wyoming"}]);
 
+// log both in the console and in the HTML #log element.
+var log = function(arg) {
+    try {
+        if (typeof arg !== 'string')
+            arg = JSON.stringify(arg);
+        console.log(arg);
+        document.getElementById('log').innerHTML += '<div>' + arg + '</div>';
+    } catch (e) {}
+};
 
 var appFramework = new Framework7();
 var $$ = Framework7.$;
@@ -171,10 +108,12 @@ var appMain = appFramework.addView('.view-main', {
 });
 
 $$('.prompt-register').on('click', function () {
+    window.analytics.trackEvent('UserEvent', 'tap', 'register');
     appMain.loadPage('register.html');
     appFramework.closeModal();
 });
 $$('.prompt-forgot-password').on('click', function () {
+    window.analytics.trackEvent('UserEvent', 'tap', 'forgot-password');
     var modalTitle = 'Password Reset';
     appFramework.prompt('What is your registered email?', modalTitle + " Request", function (email) {
         if( email == '' ) {
@@ -197,6 +136,7 @@ $$('.prompt-forgot-password').on('click', function () {
     });
 });
 $$('#signin-button').on('click', function () {
+    window.analytics.trackEvent('UserEvent', 'tap', 'signin-button');
     var pageContainer = $$('.login-screen');
     var username = pageContainer.find('input[name="email"]').val();
     var password = pageContainer.find('input[name="password"]').val();
@@ -213,13 +153,14 @@ $$('#signin-button').on('click', function () {
     });
 });
 $$('.open-external').on('click', function () {
-    // console.log('open external');
+    window.analytics.trackEvent('UserEvent', 'tap', 'open-external');
     appFramework.popup('.popup-external');
 });
 function openDeviceBrowser(externalLinkToOpen){
     window.open(externalLinkToOpen, '_system', 'location=no');
 }
 $$('.panel-left').on('open', function () {
+    window.analytics.trackEvent('UserEvent', 'tap', 'open-menu');
     var element = document.getElementById('app-flyout-panel');
     ko.cleanNode( element );
     ko.applyBindings( vmAppSideNavigation, element );
@@ -227,27 +168,18 @@ $$('.panel-left').on('open', function () {
     amplify.request('remoteSidebar',{},function(response){
         if( response.status ){
             vmAppSideNavigation.modules([]);
-            // console.log( response.sidebar );
             $.each(response.sidebar, function(i, module){
                 vmAppSideNavigation.modules.push({
                     title: module.title,
                     image: module.image,
-                    // link: module.link
-                    // link: "window.open('" + module.link + "', '_blank', 'location=yes')"
                     link: "openDeviceBrowser('" + module.link + "')"
-                    // link: "navigator.startApp.start('" + module.link + "')"
-                    // link: (navigator.userAgent.match(/Android/i)) == "Android" ?  "navigator.app.loadUrl('" + module.link + "', { openExternal:true })" : "window.open('" + module.link + "', '_system', 'location=yes&toolbar=yes')"
-                    // link: "window.plugins.ChildBrowser.showWebPage('" + module.link + "', { showLocationBar: true })"
-                    // link: "window.open('" + module.link + "', '_system')"
                 });
-                // console.log(vmAppSideNavigation.modules());
             });
-
         }
     });
-    // console.log( vmAppSideNavigation.bookshelf() );
 });
 $$('.logout').on('click', function () {
+    window.analytics.trackEvent('UserEvent', 'tap', 'logout');
     amplify.request('userLogout',{ UUID: context.UUID() },function(response){
         context.authenticated(false);
         context.UUID(false);
@@ -394,8 +326,6 @@ var chesterComix = {
         this.bindRequests();
         this.bindEvents();
     },
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function () {
 
         ko.applyBindings( vmComixIndex, document.getElementById('comix-index') );
@@ -571,7 +501,7 @@ var chesterComix = {
         appFramework.showPreloader('checking your location to unlock new screens...');
 
         // Enable maximum logging level
-        store.verbosity = store.DEBUG;
+        store.verbosity = store.ERROR;
 
         // Enable remote receipt validation
         store.validator = "https://api.fovea.cc:1982/check-purchase";
@@ -586,23 +516,17 @@ var chesterComix = {
         });
 
         // inform the store of your registered product
-        for(var i=0;i<IAP.list.length;i++){
-            store.register({
-               id:    IAP.list[i].id,
-               alias: IAP.list[i].alias,
-               type:   store.NON_CONSUMABLE
-           });
-        }
-
+        storeRegisterProducts();
 
        // When any product gets updated, refresh the HTML.
-        store.when("product").updated(function (p) {
-            this.renderIAP(p);
-        });
+        // store.when("product").updated(function (p) {
+        //     console.log('product updated',p);
+        // });
 
-        // When purchase of the full version is approved,
+        // When purchase of the product is approved,
         // show some logs and finish the transaction.
-        store.when("full version").approved(function (order) {
+        store.when("product").approved(function (order) {
+            // console.log('product approved', order);
             amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
                   // console.log(submitResponse);
                   if( submitResponse.status ) {
@@ -612,13 +536,6 @@ var chesterComix = {
                   }
               });
             order.finish();
-        });
-
-        // The play button can only be accessed when the user
-        // owns the full version.
-        store.when("full version").updated(function (product) {
-            document.getElementById("access-full-version-button").style.display =
-                product.owned ? "block" : "none";
         });
 
         // When the store is ready (i.e. all products are loaded and in their "final"
@@ -631,17 +548,17 @@ var chesterComix = {
         });
 
         // When store is ready, activate the "refresh" button;
-        store.ready(function() {
-            var el = document.getElementById('refresh-button');
-            if (el) {
-                el.style.display = 'block';
-                el.onclick = function(ev) {
-                    store.refresh();
-                };
-            }
-        });
+        // store.ready(function() {
+        //     var el = document.getElementById('refresh-button');
+        //     if (el) {
+        //         el.style.display = 'block';
+        //         el.onclick = function(ev) {
+        //             store.refresh();
+        //         };
+        //     }
+        // });
 
-        // Refresh the store.
+        // Refresh the store on first load.
         //
         // This will contact the server to check all registered products
         // validity and ownership status.
@@ -652,41 +569,12 @@ var chesterComix = {
         store.refresh();
 
     },
-
-    // renderIAP = function(p) {
-    //
-    //     var elId = p.id.split(".")[3];
-    //
-    //     var el = document.getElementById(elId + '-purchase');
-    //     if (!el) return;
-    //
-    //     if (!p.loaded) {
-    //         el.innerHTML = '<h3>...</h3>';
-    //     }
-    //     else if (!p.valid) {
-    //         el.innerHTML = '<h3>' + p.alias + ' Invalid</h3>';
-    //     }
-    //     else if (p.valid) {
-    //         var html = "<h3>" + p.title + "</h3>" + "<p>" + p.description + "</p>";
-    //         if (p.canPurchase) {
-    //             html += "<div class='button' id='buy-" + p.id + "' productId='" + p.id + "' type='button'>" + p.price + "</div>";
-    //         }
-    //         el.innerHTML = html;
-    //         if (p.canPurchase) {
-    //             document.getElementById("buy-" + p.id).onclick = function (event) {
-    //                 var pid = this.getAttribute("productId");
-    //                 store.order(pid);
-    //             };
-    //         }
-    //     }
-    // },
-
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'chesterComix.receivedEvent(...);'
     onDeviceReady: function () {
 
-        // gaPlugin = window.plugins.gaPlugin;
-        // gaPlugin.init(function(){}, function(){}, "UA-48983835-1", 10);
+
+        chesterComix.initStore();
+
+        window.analytics.startTrackerWithId('UA-48983835-1')
 
         amplify.sqlite.instance.get('deviceUUID').done(function( responseUUID ){
             if( responseUUID != '' )
@@ -697,16 +585,19 @@ var chesterComix = {
         });
 
         appFramework.onPageInit('index', function (page) {
+            window.analytics.trackView('Dashboard');
             var element = document.getElementById('comix-index');
             ko.cleanNode(element);
             ko.applyBindings( vmComixIndex, element );
         });
         appFramework.onPageInit('bookshelf', function (page) {
+            window.analytics.trackView('Bookshelf');
             var element = document.getElementById('comix-bookshelf');
             ko.cleanNode(element);
             ko.applyBindings( vmBookshelf, element );
         });
         appFramework.onPageInit('purchase', function (page) {
+            window.analytics.trackView('Purchase');
             vmAppTopNavigation.allowBack(true);
             var element = document.getElementById('comix-purchase');
             ko.cleanNode(element);
@@ -716,13 +607,14 @@ var chesterComix = {
             vmAppTopNavigation.allowBack(false);
         });
         appFramework.onPageInit('account', function (page) {
+            window.analytics.trackView('Account');
             vmAppTopNavigation.allowBack(true);
             var element = document.getElementById('app-account');
             ko.cleanNode(element);
             ko.applyBindings( vmAccount, element );
             vmAccount.isApple(true || device.platform.toLowerCase() == 'ios');
             $$('#app-account-details-form').on('submitted', function (e) {
-                console.log(e.detail.data);
+                // console.log(e.detail.data);
               var response = JSON.parse(e.detail.data);
               if( response.status ){
                 appFramework.addNotification({
@@ -746,11 +638,13 @@ var chesterComix = {
             vmAppTopNavigation.allowBack(false);
         });
         appFramework.onPageInit('settings', function (page) {
+            window.analytics.trackView('Settings');
             var element = document.getElementById('app-settings');
             ko.cleanNode(element);
             ko.applyBindings( vmAppSettings, element );
         });
         appFramework.onPageInit('register', function (page){
+            window.analytics.trackView('Register');
             var element = document.getElementById('app-register');
             ko.cleanNode(element);
             ko.applyBindings( vmRegister, element );
@@ -783,6 +677,7 @@ var chesterComix = {
         });
 
         appFramework.onPageInit('detect', function (page) {
+            window.analytics.trackView('Detect');
             setupRemotePage('remotePage-detect', vmRemotePageDetect, 'remotePageDetect');
             navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
             generateGoogleMap();
@@ -817,25 +712,26 @@ var chesterComix = {
 
         // remote pages
         appFramework.onPageBeforeAnimation('about', function (page) {
+            window.analytics.trackView('About');
             setupRemotePage('remotePage-about', vmRemotePageAbout, 'remotePageAbout');
         });
         appFramework.onPageBeforeAnimation('author', function (page) {
+            window.analytics.trackView('Author');
             setupRemotePage('remotePage-author', vmRemotePageAuthorBio, 'remotePageAuthorBio');
         });
         appFramework.onPageBeforeAnimation('credits', function (page) {
+            window.analytics.trackView('Credits');
             setupRemotePage('remotePage-credits', vmRemotePageCredits, 'remotePageCredits');
         });
         appFramework.onPageBeforeAnimation('legal', function (page) {
+            window.analytics.trackView('Legal');
             setupRemotePage('remotePage-legal', vmRemotePageLegal, 'remotePageLegal');
         });
-
-
-
-
 
         appFramework.init();
     },
     checkAuthentication: function(){
+        window.analytics.trackEvent('SystemEvent', 'serverCall', 'CheckAuthentication');
         appFramework.loginScreen();
         appFramework.showPreloader('loading...');
         amplify.request('userAuth',{ UUID: context.UUID() }, function(response){
@@ -864,6 +760,7 @@ var chesterComix = {
 chesterComix.init();
 
 function successLogin( response ){
+    window.analytics.trackEvent('SystemEvent', 'serverCall', 'SuccessLogin');
     if( response.status ) {
         context.authenticated(true);
 
@@ -903,8 +800,7 @@ function successLogin( response ){
 
 function fetchManifest(){
 
-
-    chesterComix.initStore();
+    window.analytics.trackEvent('SystemEvent', 'serverCall', 'FetchManifest');
 
     var bookshelf = 0;
     amplify.request("comixManifest", { UUID: context.UUID(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
@@ -941,6 +837,7 @@ function fetchManifest(){
 }
 
 function generateGoogleMap(){
+    window.analytics.trackEvent('SystemEvent', 'serverCall', 'generateGoogleMap');
     amplify.request('comixLocations',function( response ){
         if( response.status ) {
             var myLatlng = new google.maps.LatLng(37.037778,-95.626389);
@@ -976,16 +873,19 @@ function generateGoogleMap(){
     });
 }
 function restorePurchase(data, event){
+    window.analytics.trackEvent('UserEvent', 'tap', 'RestorePurchase');
     appFramework.alert('Attempting to restore your purchased comix.', 'Restore Attempt');
-    IAP.restore();
+    store.refresh();
 }
 function clearLocalData( data, event ){
+    window.analytics.trackEvent('UserEvent', 'tap', 'ClearLocalData');
     amplify.sqlite.instance.clear();
     appFramework.alert('Successfully cleared local data', 'Data Cleared');
     chesterComix.checkAuthentication();
 }
 
 function gotoComixPage( data, event ){
+    window.analytics.trackEvent('UserEvent', 'tap', 'ViewComix', data.id() );
         context.comix = data;
         // amplify.sqlite.instance.delete('onResumeGoTo');
         if( data.owned() == 'true'){
@@ -1004,9 +904,9 @@ function gotoComixPage( data, event ){
                         }
 
                         setTimeout(function(){
-                            console.log('get onResumeGoTo_' +  data.id());
+                            // console.log('get onResumeGoTo_' +  data.id());
                             amplify.sqlite.instance.get('onResumeGoTo_' +  data.id() ).done(function( slideContext ){
-                                console.log('set new onResumeGoTo_',slideContext);
+                                // console.log('set new onResumeGoTo_',slideContext);
                                 photobrowser.open( slideContext.slide );
                             });
                             $$('.photo-browser-index').on('click',function(){
@@ -1055,7 +955,7 @@ function gotoComixPage( data, event ){
                             slide: slider.activeSlideIndex
                         };
                         amplify.sqlite.instance.put('onResumeGoTo_' +  data.id(), resumeContext, 0 ).done(function(){
-                            console.log('save onResumeGoTo_' +  data.id(),resumeContext);
+                            // console.log('save onResumeGoTo_' +  data.id(),resumeContext);
                         }); // save state for 30 days
                     },
                     photoTemplate : '<div class="photo-browser-slide slider-slide"><span class="photo-browser-zoom-container"><img src="{{url}}" class="align-claw-to-this" alt="" ><span class="theClaw"></span></span></div>'
@@ -1070,11 +970,23 @@ function gotoComixPage( data, event ){
 function loadComixByID( cID ){
     $.each(vmComixManifest.manifest(), function( key, comix ){
         if( comix.id() == cID ){
-            console.log('load comix: ', comix.name());
+            // console.log('load comix: ', comix.name());
             gotoComixPage(comix);
         }
     });
     // gotoComixPage
+}
+
+function storeRegisterProducts(){
+    if( store.products.length != IAP.list.length ){
+        for(var i=0;i<IAP.list.length;i++){
+            store.register({
+               id:    IAP.list[i].id,
+               alias: IAP.list[i].alias,
+               type:   store.NON_CONSUMABLE
+           });
+        }
+    }
 }
 
 function buyComix( data, event ){
@@ -1083,6 +995,9 @@ function buyComix( data, event ){
         // apple user
         if( data.iap() ){
             appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
+                storeRegisterProducts();
+                // console.log('confirm purchase attempt',data.iap());
+                // console.log(store.products);
                 store.order( data.iap() );
                 // IAP.buy( data.iap() );
             });

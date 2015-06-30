@@ -2,7 +2,7 @@
     <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.chestercomix.reader"
-        version     = "3.0.0" >
+        version     = "3.0.9" >
     <name>Chester Comix</name>
     <description>
         Put 15 years of funny and colorful history onto a mobile platform for young people who don't usually pick up books!
@@ -26,8 +26,11 @@
     <gap:plugin name="org.apache.cordova.file" />
     <gap:plugin name="org.apache.cordova.geolocation" />
     <gap:plugin name="org.apache.cordova.inappbrowser" />
-    <gap:plugin name="cc.fovea.cordova.purchase" source="npm" version="3.11.0" />
+    <gap:plugin name="cc.fovea.cordova.purchase" source="npm" version="3.11.0">
+        <param name="BILLING_KEY" value="MIIB...."/>
+    </gap:plugin>
     <gap:plugin name="com.brodysoft.sqliteplugin" />
+    <gap:plugin name="com.danielcwilson.plugins.googleanalytics" version="0.6.1" />
 
 
     <!-- preferences for app -->
