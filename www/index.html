@@ -11,11 +11,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="css/framework7.min.css">
-    <link rel="stylesheet" href="flaticon/flaticon.css"> 
-    <link rel="stylesheet" href="icomoon/style.css"> 
+    <link rel="stylesheet" href="flaticon/flaticon.css">
+    <link rel="stylesheet" href="icomoon/style.css">
     <link rel="stylesheet" href="css/app.css">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 </head>
 
 <body>
@@ -29,16 +28,6 @@
                         <a href="index.html" class="item-link item-content">
                             <div class="item-inner">
                                 <div class="item-title">Home</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li data-bind="visible: authenticated()">
-                        <a href="bookshelf.html" class="item-link item-content">
-                            <div class="item-inner">
-                                <div class="item-title">Bookshelf</div>
-                                <div class="item-after">
-                                    <span class="badge" data-bind="text:bookshelf"></span>
-                                </div>
                             </div>
                         </a>
                     </li>
@@ -111,14 +100,10 @@
                         <img src="img/chestercomix-logo.png" class="logo" />
                         <span>
                             Chester Comix
-                            <sup>1.0</sup>
                         </span>
                     </div>
                     <div class="right">
-                        <a href="#" class="open-login-screen" data-bind="visible: !authenticated()">Login</a>
                         <a href="detect.html" aria-label="Get current position"><i class="icon-iconmonstr-location-16-icon" aria-label="Get current position"></i></a>
-                        <a href="account.html" data-bind="visible: authenticated()">Account</a>
-                        <a href="#" class="logout button" data-bind="visible: authenticated()">Logout</a>
                     </div>
                 </div>
             </div>
@@ -155,51 +140,6 @@
                             <p>&copy; 2014 Copyright Chester Comix LLC. No duplication without permission from the author.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="login-screen">
-        <div class="view">
-            <div class="page">
-                <div class="page-content login-screen-content">
-                    <div class="login-screen-title">
-                        <div class="center sliding">
-                            <img src="img/chestercomix-logo.png" class="logo" />
-                        </div>
-                    </div>
-                    <form>
-                        <div class="list-block">
-                            <ul>
-                                <li class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title label">Email</div>
-                                        <div class="item-input">
-                                            <input type="text" name="email" placeholder="Email">
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title label">Password</div>
-                                        <div class="item-input">
-                                            <input type="password" name="password" placeholder="Password">
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="list-block">
-                            <ul>
-                                <li>
-                                    <p><a id="signin-button" href="#" class="item-link list-button">Sign In</a>
-                                    </p>
-                                </li>
-                            </ul>
-                            <div class="list-block-label">To get Chester Comix, for whereever you read, <a href="register.html" class="prompt-register">register</a>.<br />Or forgot your password? <a href="#" class="prompt-forgot-password">Request a reset</a>.
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

@@ -1,8 +1,10 @@
-var qs = (function(a) {
-    if (a == "") return {};
+var qs = (function (a) {
+    'use strict';
+    if (a === "") {
+        return {};
+    }
     var b = {};
-    for (var i = 0; i < a.length; ++i)
-    {
+    for (var i = 0; i < a.length; ++i){
         var p=a[i].split('=');
         if (p.length != 2) continue;
         b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
@@ -107,51 +109,6 @@ var appMain = appFramework.addView('.view-main', {
     }
 });
 
-$$('.prompt-register').on('click', function () {
-    window.analytics.trackEvent('UserEvent', 'tap', 'register');
-    appMain.loadPage('register.html');
-    appFramework.closeModal();
-});
-$$('.prompt-forgot-password').on('click', function () {
-    window.analytics.trackEvent('UserEvent', 'tap', 'forgot-password');
-    var modalTitle = 'Password Reset';
-    appFramework.prompt('What is your registered email?', modalTitle + " Request", function (email) {
-        if( email == '' ) {
-            appFramework.alert( "You must supply a valid email to reset your password.", modalTitle + " Failure" );
-        } else {
-            appFramework.showPreloader('requesting reset');
-            amplify.request('userPasswordReset',{ u: email }, function(response){
-                appFramework.hidePreloader();
-                if( response.status ) {
-                    appFramework.addNotification({
-                        hold: 3000,
-                        title: modalTitle + " Success",
-                        message: 'You will receive an email at "' + email + '" with a link to change your password. Thank you for supporting Chester Comix!',
-                    });
-                } else {
-                    appFramework.alert( response.message, modalTitle + ' Failed' );
-                }
-            });
-        }
-    });
-});
-$$('#signin-button').on('click', function () {
-    window.analytics.trackEvent('UserEvent', 'tap', 'signin-button');
-    var pageContainer = $$('.login-screen');
-    var username = pageContainer.find('input[name="email"]').val();
-    var password = pageContainer.find('input[name="password"]').val();
-    appFramework.showPreloader('checking access...');
-    amplify.request('userAuth',{ UUID: context.UUID(), u: username, p: password }, function(response){
-        if( response.status ) {
-            successLogin( response );
-            appFramework.hidePreloader();
-            appFramework.closeModal();
-        } else {
-            appFramework.hidePreloader();
-            appFramework.alert( response.message, 'Login Attempt Failed' );
-        }
-    });
-});
 $$('.open-external').on('click', function () {
     window.analytics.trackEvent('UserEvent', 'tap', 'open-external');
     appFramework.popup('.popup-external');
@@ -178,34 +135,6 @@ $$('.panel-left').on('open', function () {
         }
     });
 });
-$$('.logout').on('click', function () {
-    window.analytics.trackEvent('UserEvent', 'tap', 'logout');
-    amplify.request('userLogout',{ UUID: context.UUID() },function(response){
-        context.authenticated(false);
-        context.UUID(false);
-        chesterComix.checkAuthentication();
-        appFramework.alert( response.message, 'Logout Successful' );
-        navigator.app.exitApp();
-    });
-});
-
-var paymentModal = '<div class="row no-gutter"><input type="text" placeholder="Credit Card" name="modal-cc" class="modal-text-input modal-text-input-double" /></div>' +
-        '<div class="row no-gutter"><input type="text" placeholder="MM/YY" name="modal-expires" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-left" />' +
-        '<input type="text" name="modal-cvc" placeholder="CVC Code" class="col-50 modal-text-input modal-text-input-double modal-text-input-double-right" /></div>' +
-        '<div class="row"><label><input type="checkbox" name="modal-remember" /> Remember this card.</label></div>';
-var paymentModalTitle = 'Credit Card Details';
-var paymentModalButtons = [
-              {
-                text: 'Purchase',
-                bold: true,
-                onClick: stripeRequestHandler
-              },
-              {
-                text: 'Cancel'
-              }
-            ];
-
-
 
 var comixObject = function(id, name, description, thumb, featured, owned, unlocked, iap){
     unlocked = unlocked || false;
@@ -225,25 +154,7 @@ var comixObject = function(id, name, description, thumb, featured, owned, unlock
 
 var context = {
     comix: new comixObject,
-    authenticated: ko.observable(false),
-    UUID: ko.observable(''),
-    paymentKey: {
-        secret: ko.observable(),
-        publish: ko.observable()
-    },
-    user: {
-        name: ko.observable(''),
-        email: ko.observable(''),
-        password: ko.observable(''),
-        billing_name: ko.observable(''),
-        billing_address: ko.observable(''),
-        billing_address2: ko.observable(''),
-        billing_city: ko.observable(''),
-        billing_state: ko.observable(''),
-        billing_zip: ko.observable(''),
-        payment_id: ko.observable('')
-    },
-    purchaseAttempt: ko.observable('')
+    UUID: ko.observable('')
 };
 var emptyContext = context;
 var vmComixManifest = {
@@ -257,12 +168,10 @@ var vmComixIndex = {
 };
 var vmAppTopNavigation = {
     applied: false,
-    authenticated: context.authenticated,
     allowBack: ko.observable(false)
 };
 var vmAppSideNavigation = {
     applied: false,
-    authenticated: context.authenticated,
     bookshelf: ko.observable(0),
     modules: ko.observableArray()
 };
@@ -278,11 +187,6 @@ var vmAccount = {
     isApple: ko.observable(true),
     restorePurchase: restorePurchase
 };
-var vmRegister = {
-    applied: false,
-    UUID: context.UUID
-};
-
 var vmAppSettings = {
     applied: false,
     version: ko.observable(),
@@ -387,55 +291,6 @@ var chesterComix = {
             cache: cacheExpire
         });
 
-        amplify.request.define("userAuth", "ajax", {
-            url: "http://www.chestercomix.com/app/api/user-user/",
-            dataType: "json",
-            type: "POST",
-            cache: cacheExpire
-        });
-
-        amplify.request.define("userPasswordReset", "ajax", {
-            url: "http://www.chestercomix.com/app/api/user-password-reset/",
-            dataType: "json",
-            type: "POST",
-            cache: false
-        });
-
-        amplify.request.define("userContext", "ajax", {
-            url: "http://www.chestercomix.com/app/api/user-context/",
-            dataType: "json",
-            type: "POST",
-            cache: cacheExpire
-        });
-
-        amplify.request.define("userLogout", "ajax", {
-            url: "http://www.chestercomix.com/app/api/user-logout/",
-            dataType: "json",
-            type: "POST",
-            cache: cacheExpire
-        });
-
-        amplify.request.define("getPaymentKey", "ajax", {
-            url: "http://www.chestercomix.com/app/api/payment-key/",
-            dataType: "json",
-            type: "POST",
-            cache: cacheExpire
-        });
-
-        amplify.request.define("submitPayment", "ajax", {
-            url: "http://www.chestercomix.com/app/api/payment/",
-            dataType: "json",
-            type: "POST",
-            cache: cacheExpire
-        });
-
-        amplify.request.define("submitIAP", "ajax", {
-            url: "http://www.chestercomix.com/app/api/iap/",
-            dataType: "json",
-            type: "POST",
-            cache: cacheExpire
-        });
-
         amplify.request.define("remotePageAbout", "ajax", {
             url: "http://www.chestercomix.com/app/page/about/",
             dataType: "json",
@@ -486,6 +341,8 @@ var chesterComix = {
     // init the Apple IAP
     initStore: function(){
 
+        fetchManifest();
+
         if( this.initStoreCompleted )
             return;
 
@@ -498,75 +355,62 @@ var chesterComix = {
             return;
         }
 
-        appFramework.showPreloader('checking your location to unlock new screens...');
-
         // Enable maximum logging level
         store.verbosity = store.ERROR;
 
         // Enable remote receipt validation
-        store.validator = "https://api.fovea.cc:1982/check-purchase";
+        // store.validator = "https://api.fovea.cc:1982/check-purchase";
+        store.validator = function(product, callback){
+            callback(true, product);
+        };
 
         // Log all errors
         store.error(function(error) {
+            console.log(error);
             appFramework.addNotification({
-                hold: 1500,
+                hold: 3000,
                 title: 'In-App purchase error',
                 message: 'IAP ERROR ' + error.code + ': ' + error.message,
             });
         });
 
         // inform the store of your registered product
-        storeRegisterProducts();
+        storeRegisterProducts().done(function(){
+             store.when("product").updated(function(){
+                 var newManifest = [];
+                 $.each(vmComixManifest.manifest(), function( key, comix ){
+                     var product = store.get( comix.iap() );
+                     newManifest[key] = comix;
+                     if( product.owned ){
+                         newManifest[key].owned = true;
+                     }
+                     if( vmComixManifest.manifest().length-1 === key ){
+                         vmComixManifest.manifest(newManifest);
+                     }
+                 });
+             });
 
-       // When any product gets updated, refresh the HTML.
-        // store.when("product").updated(function (p) {
-        //     console.log('product updated',p);
-        // });
+             // When purchase of the product is approved,
+             // show some logs and finish the transaction.
+             store.when("product").approved(function (order) {
+                 successfulPurchase( order );
+                 order.finish();
+             });
 
-        // When purchase of the product is approved,
-        // show some logs and finish the transaction.
-        store.when("product").approved(function (order) {
-            // console.log('product approved', order);
-            amplify.request('submitIAP', { UUID: context.UUID(), ID: productId, receipt: receipt, transactionId: transactionId }, function (submitResponse) {
-                  // console.log(submitResponse);
-                  if( submitResponse.status ) {
-                      successfulPurchase( submitResponse );
-                  } else {
-                      appFramework.alert(submitResponse.message,"Purchase Error");
-                  }
-              });
-            order.finish();
+             // When the store is ready (i.e. all products are loaded and in their "final"
+             // state), we hide the "loading" indicator.
+             //
+             // Note that the "ready" function will be called immediately if the store
+             // is already ready.
+             store.ready(function() {
+                 alert('store ready');
+                 appFramework.hidePreloader();
+             });
+            store.refresh();
+            chesterComix.initStoreCompleted = true;
+
         });
 
-        // When the store is ready (i.e. all products are loaded and in their "final"
-        // state), we hide the "loading" indicator.
-        //
-        // Note that the "ready" function will be called immediately if the store
-        // is already ready.
-        store.ready(function() {
-            appFramework.hidePreloader();
-        });
-
-        // When store is ready, activate the "refresh" button;
-        // store.ready(function() {
-        //     var el = document.getElementById('refresh-button');
-        //     if (el) {
-        //         el.style.display = 'block';
-        //         el.onclick = function(ev) {
-        //             store.refresh();
-        //         };
-        //     }
-        // });
-
-        // Refresh the store on first load.
-        //
-        // This will contact the server to check all registered products
-        // validity and ownership status.
-        //
-        // It's fine to do this only at application startup, as it could be
-        // pretty expensive.
-        this.initStoreCompleted = true;
-        store.refresh();
 
     },
     onDeviceReady: function () {
@@ -574,15 +418,7 @@ var chesterComix = {
 
         chesterComix.initStore();
 
-        window.analytics.startTrackerWithId('UA-48983835-1')
-
-        amplify.sqlite.instance.get('deviceUUID').done(function( responseUUID ){
-            if( responseUUID != '' )
-                context.UUID( responseUUID );
-            chesterComix.checkAuthentication();
-        }).fail(function(){
-            chesterComix.checkAuthentication();
-        });
+        window.analytics.startTrackerWithId('UA-48983835-1');
 
         appFramework.onPageInit('index', function (page) {
             window.analytics.trackView('Dashboard');
@@ -590,12 +426,7 @@ var chesterComix = {
             ko.cleanNode(element);
             ko.applyBindings( vmComixIndex, element );
         });
-        appFramework.onPageInit('bookshelf', function (page) {
-            window.analytics.trackView('Bookshelf');
-            var element = document.getElementById('comix-bookshelf');
-            ko.cleanNode(element);
-            ko.applyBindings( vmBookshelf, element );
-        });
+
         appFramework.onPageInit('purchase', function (page) {
             window.analytics.trackView('Purchase');
             vmAppTopNavigation.allowBack(true);
@@ -606,72 +437,17 @@ var chesterComix = {
         appFramework.onPageBeforeRemove('purchase',function (page){
             vmAppTopNavigation.allowBack(false);
         });
-        appFramework.onPageInit('account', function (page) {
-            window.analytics.trackView('Account');
-            vmAppTopNavigation.allowBack(true);
-            var element = document.getElementById('app-account');
-            ko.cleanNode(element);
-            ko.applyBindings( vmAccount, element );
-            vmAccount.isApple(true || device.platform.toLowerCase() == 'ios');
-            $$('#app-account-details-form').on('submitted', function (e) {
-                // console.log(e.detail.data);
-              var response = JSON.parse(e.detail.data);
-              if( response.status ){
-                appFramework.addNotification({
-                    hold: 3000,
-                    title: 'Success',
-                    message: 'Thank you for updating your account information!',
-                    onClose: function () {
-                        if( context.purchaseAttempt() != '' ) {
-                            gotoComixPage( context.purchaseAttempt() );
-                        } else {
-                            appMain.loadPage('index.html');
-                        }
-                    }
-                });
-              } else {
-                appFramework.alert(response.message);
-              }
-            });
-        });
-        appFramework.onPageBeforeRemove('account',function (page){
-            vmAppTopNavigation.allowBack(false);
-        });
+
         appFramework.onPageInit('settings', function (page) {
             window.analytics.trackView('Settings');
             var element = document.getElementById('app-settings');
             ko.cleanNode(element);
             ko.applyBindings( vmAppSettings, element );
         });
-        appFramework.onPageInit('register', function (page){
-            window.analytics.trackView('Register');
-            var element = document.getElementById('app-register');
-            ko.cleanNode(element);
-            ko.applyBindings( vmRegister, element );
-            $$('#app-register-form').on('submitted', function (e) {
-              var response = JSON.parse(e.detail.data);
-              if( response.status ){
-                appFramework.addNotification({
-                    hold: 3000,
-                    title: 'Success',
-                    message: 'Thank you for registering an account. Now you may find new comix or read previously purchased comix!',
-                    onClose: function () {
-                        appMain.loadPage('index.html');
-                    }
-                });
-              } else {
-                appFramework.alert(response.message);
-              }
-            });
-        });
-
         appFramework.onPageBeforeAnimation('index', function (page) {
             appFramework.closePanel();
         });
 
-        appFramework.onPageBeforeAnimation('bookshelf', function (page) {
-            appFramework.closePanel();
-        });
         appFramework.onPageBeforeAnimation('settings', function (page) {
             appFramework.closePanel();
         });
@@ -690,15 +466,11 @@ var chesterComix = {
                         fetchManifest();
                         $.each( vmRemotePageDetect.manifest(), function(key, value){
                             if( $.inArray( value.id(), response.user_owned_unlocked_comix_ids ) > -1 ){
-                                // console.log('unlocking', value.id(), response.user_owned_unlocked_comix_ids, vmRemotePageDetect.manifest()[ key ]);
                                 vmRemotePageDetect.manifest()[ key ].unlocked( "true" );
                             }
                         });
-                        // vmRemotePageDetect.manifest = vmComixManifest.manifest;
-                        // console.log(vmRemotePageDetect.manifest);
                     }
                     appFramework.hidePreloader();
-                    // appFramework.closeModal();
                 } else {
                     appFramework.hidePreloader();
                     appFramework.alert( response.message, 'Failed detecting your current location' );
@@ -729,74 +501,12 @@ var chesterComix = {
         });
 
         appFramework.init();
-    },
-    checkAuthentication: function(){
-        window.analytics.trackEvent('SystemEvent', 'serverCall', 'CheckAuthentication');
-        appFramework.loginScreen();
-        appFramework.showPreloader('loading...');
-        amplify.request('userAuth',{ UUID: context.UUID() }, function(response){
-            if( response.status ) {
-                context.UUID( response.UUID );
-                successLogin( response );
-                appFramework.hidePreloader();
-                appFramework.closeModal();
-
-                amplify.sqlite.instance.get('onResumeGoTo').done(function( onResumeContext ){
-                    // console.log(onResumeContext);
-                    if( onResumeContext != '' ){
-                        gotoComixPage( onResumeContext.comix );
-                    }
-                });
-
-
-            } else {
-                appFramework.hidePreloader();
-                amplify.sqlite.instance.clear();
-            }
-        });
     }
+
 };
 
 chesterComix.init();
 
-function successLogin( response ){
-    window.analytics.trackEvent('SystemEvent', 'serverCall', 'SuccessLogin');
-    if( response.status ) {
-        context.authenticated(true);
-
-        context.UUID( response.UUID );
-        amplify.sqlite.instance.put('deviceUUID', response.UUID, 0);
-
-
-        fetchManifest();
-
-        amplify.request('userContext',{ UUID: context.UUID() }, function(newContext){
-            if( newContext.status ) {
-                context.user.name( newContext.user.name );
-                context.user.email( newContext.user.email );
-                context.user.billing_name( newContext.user.billing_name );
-                context.user.billing_address( newContext.user.billing_address );
-                context.user.billing_address2( newContext.user.billing_address2 );
-                context.user.billing_city( newContext.user.billing_city );
-                context.user.billing_state( newContext.user.billing_state );
-                context.user.billing_zip( newContext.user.billing_zip );
-                context.user.payment_id( newContext.user.payment_id );
-            }
-            // console.log("get userContext", newContext);
-        });
-
-        amplify.request('getPaymentKey',{ UUID: context.UUID() }, function(newContext){
-            context.paymentKey.secret( newContext.paymentKey.secret );
-            context.paymentKey.publish( newContext.paymentKey.publish );
-        });
-
-        appFramework.addNotification({
-            hold: 1500,
-            title: 'Login successful',
-            message: 'You are logged in successfully. Thank you for supporting Chester Comix!',
-        });
-    }
-}
 
 function fetchManifest(){
 
@@ -824,9 +534,6 @@ function fetchManifest(){
                 vmAppSideNavigation.bookshelf( bookshelf );
             }
             var foundItem = ko.utils.arrayFirst(vmComixManifest.manifest(), function(existingItem) {
-                // console.log('compare:',
-                //     existingItem.id(),
-                //     comixItem.id() );
                     return existingItem.id() == comixItem.id();
                 });
             if( !foundItem ){
@@ -861,11 +568,6 @@ function generateGoogleMap(){
                     infowindow.open(map,marker);
                   });
 
-                // if( key == response.locations.length-1 ){
-                //     $('.clickGoToComix').on('click', function (instance) {
-                //         alert( 'goto: ' + $(instance).attr('data-id') );
-                //     });
-                // }
             });
 
 
@@ -881,20 +583,15 @@ function clearLocalData( data, event ){
     window.analytics.trackEvent('UserEvent', 'tap', 'ClearLocalData');
     amplify.sqlite.instance.clear();
     appFramework.alert('Successfully cleared local data', 'Data Cleared');
-    chesterComix.checkAuthentication();
 }
 
 function gotoComixPage( data, event ){
     window.analytics.trackEvent('UserEvent', 'tap', 'ViewComix', data.id() );
         context.comix = data;
-        // amplify.sqlite.instance.delete('onResumeGoTo');
         if( data.owned() == 'true'){
-            // console.log(data);
             amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
-                // console.log(response);
                 myPhotoBrowserStandalone = appFramework.photoBrowser({
                     expositionHideCaptions: false,
-                    // lazyLoading: true,
                     toolbarTemplate: '<div class="toolbar tabbar"><div class="toolbar-inner"><a href="#" class="link photo-browser-index photo-browser-link-inactive"><i class="icon-iconmonstr-arrow-48-icon icon-direction-rotate-180"></i> <span>First</span></a><a href="#" class="link photo-browser-prev"><i class="icon-iconmonstr-arrow-37-icon icon-direction-rotate-180"></i> <span>Previous</span></a><a href="#" class="link photo-browser-next"><span>Next</span> <i class="icon-iconmonstr-arrow-37-icon"></i></a></div></div>',
                     photos : response.comix[0].panels,
                     onOpen: function(photobrowser){
@@ -904,9 +601,7 @@ function gotoComixPage( data, event ){
                         }
 
                         setTimeout(function(){
-                            // console.log('get onResumeGoTo_' +  data.id());
                             amplify.sqlite.instance.get('onResumeGoTo_' +  data.id() ).done(function( slideContext ){
-                                // console.log('set new onResumeGoTo_',slideContext);
                                 photobrowser.open( slideContext.slide );
                             });
                             $$('.photo-browser-index').on('click',function(){
@@ -929,10 +624,6 @@ function gotoComixPage( data, event ){
 
                         if( activeSlide.find('.align-claw-to-this').attr('alt') == '' ){
                             var caption = response.comix[0].panels[ slider.activeSlideIndex ].caption;
-                            // REDACTED below to keep caption blank if there is none
-                            // if( caption == '' ) {
-                            //     caption = 'Slide ' + slider.activeSlideIndex;
-                            // }
                             activeSlide.find('.align-claw-to-this').attr('alt',  caption );
                         }
 
@@ -941,9 +632,7 @@ function gotoComixPage( data, event ){
 
                             var position = activeSlide.find('.align-claw-to-this').position();
                             if( position ) {
-                                // activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" data-popup=".popup-external" class="open-external"><img src="img/iCLAWscreen.png" /></a>');
                                 activeSlide.find('.theClaw').html('<a href="#" onclick="openDeviceBrowser(\'' + response.comix[0].panels[ slider.activeSlideIndex ].link + '\')"><img src="img/iCLAWscreen.png" /></a>');
-                                // activeSlide.find('.theClaw').html('<a href="' + response.comix[0].panels[ slider.activeSlideIndex ].link + '" target="_system" class="external"><img src="img/iCLAWscreen.png" /></a>');
                                 activeSlide.find('.theClaw img').css({left:(position.left+8)+"px"});
                             }
 
@@ -970,7 +659,6 @@ function gotoComixPage( data, event ){
 function loadComixByID( cID ){
     $.each(vmComixManifest.manifest(), function( key, comix ){
         if( comix.id() == cID ){
-            // console.log('load comix: ', comix.name());
             gotoComixPage(comix);
         }
     });
@@ -978,6 +666,7 @@ function loadComixByID( cID ){
 }
 
 function storeRegisterProducts(){
+    var deferred = $.Deferred();
     if( store.products.length != IAP.list.length ){
         for(var i=0;i<IAP.list.length;i++){
             store.register({
@@ -986,134 +675,20 @@ function storeRegisterProducts(){
                type:   store.NON_CONSUMABLE
            });
         }
+        store.refresh();
+        deferred.resolve( store.products );
     }
+    return deferred.promise();
 }
 
 function buyComix( data, event ){
-    // todo to go to other platforms
-    if( true || device.platform.toLowerCase() == 'ios' ){
-        // apple user
         if( data.iap() ){
             appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
-                storeRegisterProducts();
-                // console.log('confirm purchase attempt',data.iap());
-                // console.log(store.products);
-                store.order( data.iap() );
-                // IAP.buy( data.iap() );
-            });
-        }
-
-    } else {
-        if( context.user.billing_zip() != '' ) {
-            // console.log(context.comix.name());
-            // console.log(data);
-            if( context.user.payment_id() != '' ){
-                appFramework.confirm('Are you sure you wish to purchase ' + data.name() + '?', 'Confirm Purchase', function () {
-                    context.comix = data;
-                    appFramework.showIndicator();
-                    amplify.request('submitPayment', { UUID: context.UUID(), ID: context.comix.id(), res: { w: $(window).width(), h: $(window).height() } }, function (submitResponse) {
-                        // console.log(submitResponse);
-                        if( submitResponse.status ) {
-                            successfulPurchase( submitResponse );
-                        } else {
-                            appFramework.alert(submitResponse.message,"Purchase Error");
-                        }
-                    });
+                storeRegisterProducts().done(function(){
+                    store.order( data.iap() );
                 });
-            } else {
-                context.comix = data;
-                appFramework.modal({
-                    title: paymentModalTitle,
-                    afterText: paymentModal,
-                    buttons: paymentModalButtons
-                    });
-            }
-
-        } else {
-            appMain.loadPage('account.html');
-            appFramework.addNotification({
-                hold: 1500,
-                title: 'Missing information',
-                message: 'Please fill in your billing details before purchasing',
-                onClose: function(){
-                    context.purchaseAttempt( data );
-                    appFramework.showTab('#account-billing-info');
-                }
             });
-
         }
-    }
-}
-function stripeRequestHandler (modal, index) {
-    appFramework.showIndicator();
-    var cc = $(modal).find('.modal-text-input[name="modal-cc"]').val();
-    var cvc = $(modal).find('.modal-text-input[name="modal-cvc"]').val();
-    var expires = $(modal).find('.modal-text-input[name="modal-expires"]').val().split("/");
-    // console.log('expires',expires);
-    var expMo = expires[0];
-    var expYr = "20" + expires[1];
-    var validated = true;
-    var errorMessage = '';
-
-    if( ! Stripe.card.validateCardNumber(cc) ){
-        validated = false;
-        errorMessage = 'Your credit card number is invalid. Please correct and try again.';
-    }
-
-    if( validated && ! Stripe.card.validateCVC(cvc) ){
-        validated = false;
-        errorMessage = 'Your CVC number is invalid. Please correct and try again.';
-    }
-
-    if( validated && ! Stripe.card.validateExpiry(expMo, expYr) ){
-        validated = false;
-        errorMessage = 'Your card expiration is invalid. Please correct and try again.';
-    }
-
-    if( validated ){
-        // appFramework.showIndicator();
-        Stripe.setPublishableKey(context.paymentKey.publish());
-        Stripe.card.createToken({
-          number: cc,
-          cvc: cvc,
-          exp_month: expMo,
-          exp_year: expYr
-        }, stripeResponseHandler);
-    } else {
-        appFramework.hideIndicator();
-        appFramework.modal({
-            title: paymentModalTitle,
-            text: '<div class="error">' + errorMessage + '</div>',
-            afterText: paymentModal,
-            buttons: paymentModalButtons
-            });
-    }
-}
-function stripeResponseHandler(status, response){
-
-    // console.log('stripeResponseHandler', status, response, context);
-  if (response.error) {
-    appFramework.hideIndicator();
-// Show the errors on the form
-    appFramework.modal({
-        title: paymentModalTitle,
-        text: '<div class="error">' + response.error.message + '</div>',
-        afterText: paymentModal,
-        buttons: paymentModalButtons
-        });
-  } else {
-
-    amplify.request('submitPayment', { UUID: context.UUID(), token: response.id, ID: context.comix.id() }, function (submitResponse) {
-        // console.log(submitResponse);
-        if( submitResponse.status ) {
-            successfulPurchase( submitResponse );
-        } else {
-            appFramework.hideIndicator();
-            appFramework.alert(response.error.message,"Payment Error");
-        }
-    });
-
-  }
 }
 
 function successfulPurchase( response ){
@@ -1130,7 +705,6 @@ function successfulPurchase( response ){
 
 function setupRemotePage(domid, vm, aReq){
     appFramework.closePanel();
-    // vmAppTopNavigation.allowBack(true);
     var element = document.getElementById(domid);
     ko.cleanNode(element);
     ko.applyBindings( vm, element );
