@@ -382,7 +382,7 @@ var chesterComix = {
                      var product = store.get( comix.iap() );
                      newManifest[key] = comix;
                      if( product.owned ){
-                         newManifest[key].owned = true;
+                         newManifest[key].owned( 'true' );
                      }
                      if( vmComixManifest.manifest().length-1 === key ){
                          vmComixManifest.manifest(newManifest);
@@ -529,10 +529,10 @@ function fetchManifest(){
                 comix.unlocked,
                 comix.iap
                 ) ;
-            if( comix.owned.toString() == 'true' ){
-                bookshelf++;
-                vmAppSideNavigation.bookshelf( bookshelf );
-            }
+            // if( comix.owned.toString() == 'true' ){
+            //     bookshelf++;
+            //     vmAppSideNavigation.bookshelf( bookshelf );
+            // }
             var foundItem = ko.utils.arrayFirst(vmComixManifest.manifest(), function(existingItem) {
                     return existingItem.id() == comixItem.id();
                 });
