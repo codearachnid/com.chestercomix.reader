@@ -306,6 +306,8 @@ var chesterComix = {
 
         // inform the store of your registered product
         storeRegisterProducts().done(function(){
+            store.refresh();
+            
              store.when("product").updated(function(){
                  var newManifest = [];
                  $.each(vmComixManifest.manifest(), function( key, comix ){
