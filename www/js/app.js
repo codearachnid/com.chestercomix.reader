@@ -520,6 +520,14 @@ function clearLocalData( data, event ){
 function gotoComixPage( data, event ){
     window.analytics.trackEvent('UserEvent', 'tap', 'ViewComix', data.id() );
         context.comix = data;
+        
+        // another store refresh for ownership
+        store.refresh();
+        var product = store.get( data.iap() );
+        if( product.owned ){
+            data.owned( 'true' );
+        }
+        
         if( data.owned() == 'true'){
             amplify.request("comixManifest", { UUID: context.UUID(), ID: data.id(), res: { w: $(window).width(), h: $(window).height() } }, function (response) {
                 myPhotoBrowserStandalone = appFramework.photoBrowser({
