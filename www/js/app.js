@@ -308,38 +308,37 @@ var chesterComix = {
         storeRegisterProducts().done(function(){
             store.refresh();
             
-             store.when("product").updated(function(){
-                 var newManifest = [];
-                 $.each(vmComixManifest.manifest(), function( key, comix ){
-                     var product = store.get( comix.iap() );
-                     newManifest[key] = comix;
-                     if( product.owned ){
-                         newManifest[key].owned( 'true' );
-                     }
-                     if( vmComixManifest.manifest().length-1 === key ){
-                         vmComixManifest.manifest(newManifest);
-                     }
+            var newManifest = [];
+             $.each(vmComixManifest.manifest(), function( key, comix ){
+                 var product = store.get( comix.iap() );
+                 newManifest[key] = comix;
+                             
+                 store.when(comix.iap()).updated(function(){
+                     newManifest[key].owned( 'true' );
                  });
-             });
+                 
+                 // When purchase of the product is approved,
+                 // show some logs and finish the transaction.
+                 store.when(comix.iap()).approved(function (order) {
+                     successfulPurchase( order );
+                     order.finish();
+                 });
 
-             // When purchase of the product is approved,
-             // show some logs and finish the transaction.
-             store.when("product").approved(function (order) {
-                 successfulPurchase( order );
-                 order.finish();
+                 if( vmComixManifest.manifest().length-1 === key ){
+                     vmComixManifest.manifest(newManifest);
+                     // When the store is ready (i.e. all products are loaded and in their "final"
+                     // state), we hide the "loading" indicator.
+                     //
+                     // Note that the "ready" function will be called immediately if the store
+                     // is already ready.
+                     store.ready(function() {
+                         alert('store ready');
+                         appFramework.hidePreloader();
+                     });
+                    store.refresh();
+                    chesterComix.initStoreCompleted = true;
+                 }
              });
-
-             // When the store is ready (i.e. all products are loaded and in their "final"
-             // state), we hide the "loading" indicator.
-             //
-             // Note that the "ready" function will be called immediately if the store
-             // is already ready.
-             store.ready(function() {
-                 alert('store ready');
-                 appFramework.hidePreloader();
-             });
-            store.refresh();
-            chesterComix.initStoreCompleted = true;
 
         });
 
